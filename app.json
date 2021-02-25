@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "Simple-Shopping-List",
+    "slug": "Simple-Shopping-List",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/icon_nademi.png",
+    "splash": {
+      "image": "./app/assets/splash_nademi.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./app/assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./app/assets/favicon.png"
+    },
+    "description": "A simple App for storing a Shopping list"
+  }
+}
