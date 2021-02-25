@@ -65,7 +65,7 @@ export default function AppPopup(props) {
 const styles = StyleSheet.create({
   button: {},
   popupMenuContainer: {
-    padding: 2,
+    paddingTop: 15,
     position: "absolute",
     top: StatusBar.currentHeight || 0,
     right: 10,
