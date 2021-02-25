@@ -8,6 +8,7 @@ import {
 
 import HomeScreen from "../screens/HomeScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import AboutScreen from "../screens/AboutScreen";
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,14 @@ export default function HomeNavigator() {
           component={SettingsScreen}
           options={{
             title: "Settings",
+            headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
+          }}
+        />
+        <Stack.Screen
+          name="AboutScreen"
+          component={AboutScreen}
+          options={{
+            title: "About",
             headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
           }}
         />

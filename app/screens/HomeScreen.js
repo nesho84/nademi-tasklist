@@ -8,18 +8,17 @@ import {
   Text,
   View,
   StatusBar,
-  Button,
   TouchableOpacity,
 } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Custom Components
 import AppScreen from "../components/AppScreen";
 import AddText from "../components/AddText";
 import AppList from "../components/AppList";
 import AppModal from "../components/AppModal";
+import AppPopup from "../components/AppPopup";
 
 export default function HomeScreen({ navigation }) {
   const [items, setItems] = useState([]);
@@ -71,7 +70,8 @@ export default function HomeScreen({ navigation }) {
   // Read from storage
   const readItemFromStorage = async () => {
     const storageItems = await getItem();
-    console.log(storageItems);
+    // console.log(storageItems);
+
     // Make sure we have a non empty array to avoid android error:
     // (TypeError: Invalid attempt to spread non-iterable instance.)
     storageItems && setItems(JSON.parse(storageItems));
@@ -85,7 +85,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   // Clear stoage or Remove all items from storage
-  const removeItemFromStorage = async () => {
+  const clearStorage = async () => {
     // remove items
     await removeItem();
     // set state
@@ -109,28 +109,12 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.container}>
         <Image style={styles.Image} source={require("../assets/nademi.png")} />
         <Text style={styles.text}>Simple Shopping List</Text>
-        <Button
-          title="Go to Settings"
-          onPress={() =>
-            navigation.navigate("SettingsScreen", {
-              itemId: 86,
-              otherParam: "anything you want here",
-            })
-          }
-        />
 
-        <TouchableOpacity
-          style={styles.popupMenuContainer}
-          onPress={removeItemFromStorage}
-        >
-          <View>
-            <MaterialCommunityIcons
-              name="dots-vertical"
-              size={34}
-              color="white"
-            />
-          </View>
-        </TouchableOpacity>
+        <AppPopup
+          navigation={navigation}
+          clearStorage={clearStorage}
+          itemsList={items}
+        />
 
         <TouchableOpacity
           style={styles.addButtonContainer}
@@ -146,21 +130,21 @@ export default function HomeScreen({ navigation }) {
           handleChecked={handleChecked}
           handleDelete={handleDelete}
         />
-      </View>
 
-      <AppModal
-        modalVisible={modalVisible}
-        handleModalVisible={handleModalVisible}
-        inputRef={inputRef}
-      >
-        <AddText handleAdd={handleAdd} inputRef={inputRef} />
-        <TouchableOpacity
-          style={styles.closeModalButton}
-          onPress={() => setModalVisible(false)}
+        <AppModal
+          modalVisible={modalVisible}
+          handleModalVisible={handleModalVisible}
+          inputRef={inputRef}
         >
-          <Text style={styles.cancelModalButton}>Cancel</Text>
-        </TouchableOpacity>
-      </AppModal>
+          <AddText handleAdd={handleAdd} inputRef={inputRef} />
+          <TouchableOpacity
+            style={styles.closeModalButton}
+            onPress={() => setModalVisible(false)}
+          >
+            <Text style={styles.cancelModalButton}>Cancel</Text>
+          </TouchableOpacity>
+        </AppModal>
+      </View>
     </AppScreen>
   );
 }
@@ -173,7 +157,7 @@ const styles = StyleSheet.create({
     backgroundColor: "dodgerblue",
     paddingVertical: StatusBar.currentHeight || 0,
   },
-  Image: { marginVertical: 15 },
+  Image: { marginTop: 60, marginBottom: 15 },
   text: {
     marginBottom: 15,
     color: "#fff",
@@ -187,12 +171,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#5cb85c",
     marginTop: 15,
     borderRadius: 20,
-  },
-  popupMenuContainer: {
-    padding: 2,
-    position: "absolute",
-    top: StatusBar.currentHeight || 0,
-    right: 30,
   },
   closeModalButton: {
     width: "80%",
