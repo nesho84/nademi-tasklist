@@ -6,8 +6,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 export default function AppPopup(props) {
   const items = [
     { screen: "clearStorage", label: "Delete All", visible: true },
-    { screen: "SettingsScreen", label: "Settings", visible: true },
+    // { screen: "SettingsScreen", label: "Settings", visible: true },
     { screen: "AboutScreen", label: "About", visible: true },
+    { screen: "exitApp", label: "Exit", visible: true },
   ];
 
   const handleOnSelect = (item) => {
@@ -42,6 +43,8 @@ export default function AppPopup(props) {
         ],
         { cancelable: false }
       );
+    } else if (item.screen === "exitApp") {
+      props.exitApp();
     } else {
       props.navigation.navigate(item.screen, {
         itemId: item.screen,

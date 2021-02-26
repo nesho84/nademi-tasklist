@@ -9,6 +9,7 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -96,9 +97,28 @@ export default function HomeScreen({ navigation }) {
     setModalVisible(value);
   };
 
+  const exitApp = () => {
+    Alert.alert("Hold on!", "Are you sure you want to go exit?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel",
+      },
+      { text: "YES", onPress: () => BackHandler.exitApp() },
+    ]);
+    return true;
+  };
+
   // Screen first renders
   useEffect(() => {
     readItemFromStorage();
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      exitApp
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   // Trick to show Keyboard on input focus
@@ -113,6 +133,7 @@ export default function HomeScreen({ navigation }) {
         <AppPopup
           navigation={navigation}
           clearStorage={clearStorage}
+          exitApp={exitApp}
           itemsList={items}
         />
 

@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Linking,
+  TouchableOpacity,
+} from "react-native";
 
 export default function AboutScreen({ route, navigation }) {
   const { itemId, otherParam } = route.params;
@@ -25,16 +31,21 @@ export default function AboutScreen({ route, navigation }) {
       >
         Version 1.0.0
       </Text>
-      <Text
-        style={{
-          paddingBottom: 10,
-          fontWeight: "bold",
-          fontSize: 12,
-          color: "#999",
-        }}
+      <TouchableOpacity
+        onPress={async () => await Linking.openURL("https://nademi.com")}
       >
-        ©2021 nademi.com
-      </Text>
+        <Text
+          style={{
+            paddingBottom: 10,
+            fontWeight: "bold",
+            fontSize: 12,
+            color: "#999",
+          }}
+        >
+          ©2021{" "}
+          <Text style={{ color: "skyblue", fontSize: 14 }}>nademi.com</Text>
+        </Text>
+      </TouchableOpacity>
       <View style={{ paddingTop: 20 }}>
         {/* <Button
           title="Go to Home"
