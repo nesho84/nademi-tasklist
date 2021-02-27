@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Simple-Shopping-List",
-    "slug": "simple-shopping-list",
+    "name": "nademi-tasklist",
+    "slug": "nademi-tasklist",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -24,12 +22,13 @@
         "foregroundImage": "./app/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "nademi.shopping.list"
+      "package": "nademi.task.list",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
     },
-    "description": "A simple App for storing a Shopping list",
-    "githubUrl": "https://github.com/nesho84/Simple-Shopping-List"
+    "description": "A simple App for storing Tasks",
+    "githubUrl": "https://github.com/nesho84/nademi-tasklist"
   }
 }

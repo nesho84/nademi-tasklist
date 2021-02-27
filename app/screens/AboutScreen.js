@@ -19,7 +19,7 @@ export default function AboutScreen({ route, navigation }) {
           color: "#777",
         }}
       >
-        Simple Shopping List
+        nademi-tasklist
       </Text>
       <Text
         style={{

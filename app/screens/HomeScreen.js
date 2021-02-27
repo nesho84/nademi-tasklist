@@ -128,7 +128,7 @@ export default function HomeScreen({ navigation }) {
     <AppScreen>
       <View style={styles.container}>
         <Image style={styles.Image} source={require("../assets/nademi.png")} />
-        <Text style={styles.text}>Simple Shopping List</Text>
+        <Text style={styles.text}>Simple TaskList</Text>
 
         <AppPopup
           navigation={navigation}
