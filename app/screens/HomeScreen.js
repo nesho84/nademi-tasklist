@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Alert,
   Image,
@@ -22,9 +22,10 @@ import AppModal from "../components/AppModal";
 import AppPopup from "../components/AppPopup";
 
 export default function HomeScreen({ navigation }) {
-  const [items, setItems] = useState([]);
-  const { getItem, setItem, removeItem } = useAsyncStorage("@ShoppingList_Key");
   const [modalVisible, setModalVisible] = useState(false);
+  const [tasks, setTasks] = useState([]);
+
+  const tasksKey = "@TaskList_Key";
 
   // Handling Add item function
   const handleAdd = (text) => {
@@ -36,65 +37,74 @@ export default function HomeScreen({ navigation }) {
         { cancelable: false }
       );
     } else {
+      const newTask = [
+        {
+          key: Math.random().toString(),
+          name: text,
+          checked: false,
+        },
+        ...tasks,
+      ];
       // First write the item to the storage
-      writeItemToStorage([
-        { key: Math.random().toString(), name: text, checked: false },
-        ...items,
-      ]);
+      writeToStorage(tasksKey, newTask);
       Keyboard.dismiss();
       setModalVisible(false);
+      // Then set the new state
+      setTasks(newTask);
     }
   };
 
   // Change item from the state and update the storage
-  const handleChecked = (itemKey) => {
-    // Update items array of objects using 'map' / toggle value 'checked'
+  const handleChecked = (taskKey) => {
+    // Update tasks array of objects using 'map' / toggle value 'checked'
     // Fitst method
-    const updatedItems = items.map((item) =>
-      item.key === itemKey ? { ...item, checked: !item.checked } : item
+    const updatedTasks = tasks.map((task) =>
+      task.key === taskKey ? { ...task, checked: !task.checked } : task
     );
-    // Then set the new state
-    setItems(updatedItems);
     // First write the item to the storage
-    writeItemToStorage(updatedItems);
+    writeToStorage(tasksKey, updatedTasks);
+    // Then set the new state
+    setTasks(updatedTasks);
   };
 
   // Delete item from the state and update the storage
-  const handleDelete = (itemKey) => {
-    const filteredItems = items.filter((item) => item.key !== itemKey);
+  const handleDelete = (taskKey) => {
+    const filteredTasks = tasks.filter((task) => task.key !== taskKey);
     // First write the item to the storage
-    writeItemToStorage(filteredItems);
+    writeToStorage(tasksKey, filteredTasks);
     // Then set the new state
-    setItems(filteredItems);
-  };
-
-  // Read from storage
-  const readItemFromStorage = async () => {
-    const storageItems = await getItem();
-    // console.log(storageItems);
-
-    // Make sure we have a non empty array to avoid android error:
-    // (TypeError: Invalid attempt to spread non-iterable instance.)
-    storageItems && setItems(JSON.parse(storageItems));
+    setTasks(filteredTasks);
   };
 
   // Write to the storage
-  const writeItemToStorage = async (newItems) => {
-    await setItem(JSON.stringify(newItems));
-    // Then set the new state
-    setItems(newItems);
+  const writeToStorage = async (key, item) => {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(item));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // Read from storage
+  const getAllTasks = async () => {
+    try {
+      const storageTasks = await AsyncStorage.getItem(tasksKey);
+      // (TypeError: Invalid attempt to spread non-iterable instance.)
+      storageTasks && setTasks(JSON.parse(storageTasks));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   // Clear stoage or Remove all items from storage
-  const clearStorage = async () => {
-    // remove items
-    await removeItem();
+  const clearAllTasks = async () => {
+    try {
+      await AsyncStorage.removeItem(tasksKey);
+    } catch (e) {
+      console.log(e);
+    }
     // set state
-    setItems([]);
-  };
-
-  handleModalVisible = (value) => {
-    setModalVisible(value);
+    setTasks([]);
   };
 
   const exitApp = () => {
@@ -109,15 +119,27 @@ export default function HomeScreen({ navigation }) {
     return true;
   };
 
+  // Get all stored keys - for testing!!
+  getAllKeys = async () => {
+    let keys = [];
+    try {
+      keys = await AsyncStorage.getAllKeys();
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(keys);
+  };
+
   // Screen first renders
   useEffect(() => {
-    readItemFromStorage();
+    // getAllKeys();
+    getAllTasks();
 
+    // Exit app Handler
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       exitApp
     );
-
     return () => backHandler.remove();
   }, []);
 
@@ -132,9 +154,9 @@ export default function HomeScreen({ navigation }) {
 
         <AppPopup
           navigation={navigation}
-          clearStorage={clearStorage}
+          clearAllTasks={clearAllTasks}
           exitApp={exitApp}
-          itemsList={items}
+          itemsList={tasks}
         />
 
         <TouchableOpacity
@@ -147,14 +169,14 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
 
         <AppList
-          items={items}
+          items={tasks}
           handleChecked={handleChecked}
           handleDelete={handleDelete}
         />
 
         <AppModal
           modalVisible={modalVisible}
-          handleModalVisible={handleModalVisible}
+          handleModalVisible={setModalVisible}
           inputRef={inputRef}
         >
           <AddText handleAdd={handleAdd} inputRef={inputRef} />

@@ -15,6 +15,7 @@ export default function HomeNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        mode="card"
         screenOptions={{
           headerStyle: { backgroundColor: "dodgerblue" },
           headerTintColor: "white",

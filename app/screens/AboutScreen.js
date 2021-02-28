@@ -6,6 +6,7 @@ import {
   Linking,
   TouchableOpacity,
 } from "react-native";
+import Constants from "expo-constants";
 
 export default function AboutScreen({ route, navigation }) {
   const { itemId, otherParam } = route.params;
@@ -29,7 +30,7 @@ export default function AboutScreen({ route, navigation }) {
           color: "#888",
         }}
       >
-        Version 1.0.0
+        Version {Constants.nativeAppVersion}
       </Text>
       <TouchableOpacity
         onPress={async () => await Linking.openURL("https://nademi.com")}

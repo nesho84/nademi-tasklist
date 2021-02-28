@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function AppPopup(props) {
   const items = [
-    { screen: "clearStorage", label: "Delete All", visible: true },
+    { screen: "clearAllTasks", label: "Delete All", visible: true },
     // { screen: "SettingsScreen", label: "Settings", visible: true },
     { screen: "AboutScreen", label: "About", visible: true },
     { screen: "exitApp", label: "Exit", visible: true },
@@ -13,7 +13,7 @@ export default function AppPopup(props) {
 
   const handleOnSelect = (item) => {
     // console.log(item.screen);
-    if (item.screen === "clearStorage") {
+    if (item.screen === "clearAllTasks") {
       if (props.itemsList.length === 0) {
         Alert.alert(
           "",
@@ -35,7 +35,7 @@ export default function AppPopup(props) {
         [
           {
             text: "Yes",
-            onPress: () => props.clearStorage(),
+            onPress: () => props.clearAllTasks(),
           },
           {
             text: "No",
