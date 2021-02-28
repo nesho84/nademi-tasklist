@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
 
 import * as Permissions from "expo-permissions";
 
@@ -23,5 +22,3 @@ export default function App() {
   // return Home stack navigation
   return <HomeNavigator />;
 }
-
-const styles = StyleSheet.create({});
