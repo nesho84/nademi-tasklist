@@ -121,7 +121,7 @@ export default function HomeScreen({ navigation }) {
               items={checkedTasks}
               handleChecked={handleChecked}
               handleDelete={handleDelete}
-              style={{ flex: 1 }}
+              style={checkedTasks.length > 0 ? { flex: 1 } : { flex: 0 }}
             />
           </View>
         ) : (
