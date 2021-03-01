@@ -92,7 +92,8 @@ export default function HomeScreen({ navigation }) {
                 items={unCheckedTasks}
                 handleChecked={handleChecked}
                 handleDelete={handleDelete}
-                style={unCheckedTasks.length > 3 ? { flex: 3 } : { flex: 0 }}
+                // style={unCheckedTasks.length > 4 ? { flex: 2 } : { flex: 0 }}
+                style={{ flex: 2 }}
               />
             ) : (
               <View style={styles.noItemsContainer}>
@@ -120,7 +121,7 @@ export default function HomeScreen({ navigation }) {
               items={checkedTasks}
               handleChecked={handleChecked}
               handleDelete={handleDelete}
-              style={{ flex: 2 }}
+              style={{ flex: 1 }}
             />
           </View>
         ) : (
@@ -159,7 +160,9 @@ const styles = StyleSheet.create({
     backgroundColor: "dodgerblue",
     paddingVertical: StatusBar.currentHeight || 0,
   },
-  logo: { marginTop: 50 },
+  logo: {
+    marginTop: 15,
+  },
   title: {
     marginTop: 10,
     color: "#fff",
@@ -194,16 +197,16 @@ const styles = StyleSheet.create({
   },
   listDividerContainer: {
     width: "100%",
-    marginVertical: 13,
+    marginVertical: 10,
   },
   listDivider: {
     width: "100%",
     borderWidth: 1,
     borderColor: colors.lightSkyBlue,
-    marginBottom: 5,
+    marginBottom: 1,
   },
   listDividerText: {
-    color: colors.light,
+    color: colors.checkedItemText,
   },
   noItemsContainer: {
     flex: 1,

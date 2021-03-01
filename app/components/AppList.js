@@ -25,7 +25,7 @@ export default function AppList({
           // Items Container
           <View
             style={[
-              styles.itemTitle,
+              styles.flatList,
               {
                 backgroundColor: item.checked
                   ? colors.checkedItem
@@ -34,7 +34,7 @@ export default function AppList({
             ]}
           >
             {/* Items checkbox */}
-            <View style={styles.checkboxContainer}>
+            <View style={styles.checkboxAndTitleContainer}>
               <CheckBox
                 disabled={false}
                 tintColors={{
@@ -95,18 +95,18 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
   },
-  checkboxContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexShrink: 1,
-  },
-  itemTitle: {
+  flatList: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     fontSize: 20,
-    padding: 10,
+    padding: 3,
     borderRadius: 5,
-    marginVertical: 5,
+    marginVertical: 3,
+  },
+  checkboxAndTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexShrink: 1,
   },
 });
