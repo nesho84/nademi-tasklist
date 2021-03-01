@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Alert,
   Image,
@@ -25,6 +25,8 @@ export default function HomeScreen({ navigation }) {
   // Custom Hook returned functions
   const {
     tasks,
+    unCheckedTasks,
+    checkedTasks,
     modalVisible,
     setModalVisible,
     handleAdd,
@@ -41,7 +43,7 @@ export default function HomeScreen({ navigation }) {
         onPress: () => null,
         style: "cancel",
       },
-      { text: "YES", onPress: () => BackHandler.exitApp() },
+      { text: "Yes", onPress: () => BackHandler.exitApp() },
     ]);
     return true;
   };
@@ -81,11 +83,44 @@ export default function HomeScreen({ navigation }) {
           </View>
         </TouchableOpacity>
 
-        <AppList
-          items={tasks}
-          handleChecked={handleChecked}
-          handleDelete={handleDelete}
-        />
+        {tasks.length > 0 ? (
+          // Tasks List
+          <View style={styles.listContainer}>
+            <AppList
+              // Unchecked List
+              items={unCheckedTasks}
+              handleChecked={handleChecked}
+              handleDelete={handleDelete}
+              style={{ flex: 2 }}
+            />
+
+            {checkedTasks.length > 0 && (
+              // List Divider
+              <View style={styles.listDividerContainer}>
+                <View style={styles.listDivider}></View>
+                <Text style={styles.listDividerText}>
+                  {checkedTasks.length} Checked Items
+                </Text>
+              </View>
+            )}
+
+            <AppList
+              // Checked List
+              items={checkedTasks}
+              handleChecked={handleChecked}
+              handleDelete={handleDelete}
+              style={{ flex: 1 }}
+            />
+          </View>
+        ) : (
+          // No Tasks View
+          <View style={styles.noItemsContainer}>
+            <Text style={styles.noItemsText}>
+              No Items to show.{"\n\n"}
+              <Text>You can use the plus button (+) to create new tasks.</Text>
+            </Text>
+          </View>
+        )}
 
         <AppModal
           modalVisible={modalVisible}
@@ -140,5 +175,37 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     color: "white",
+  },
+  listContainer: {
+    flex: 1,
+    width: "90%",
+    alignItems: "center",
+  },
+  listDividerContainer: {
+    width: "100%",
+    marginVertical: 13,
+  },
+  listDivider: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: colors.lightSkyBlue,
+    marginBottom: 5,
+  },
+  listDividerText: {
+    color: colors.light,
+  },
+  noItemsContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.uncheckedItem,
+    borderWidth: 1,
+    margin: 30,
+    padding: 11,
+  },
+  noItemsText: {
+    color: colors.light,
+    fontSize: 17,
+    textAlign: "center",
   },
 });

@@ -15,4 +15,5 @@ export default {
   checkedItem: "#3C85CC",
   uncheckedItem: "#4BA6FF",
   checkedItemText: "#A9CDF9",
+  lightSkyBlue: "#82CAFA",
 };

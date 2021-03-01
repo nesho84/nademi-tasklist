@@ -40,14 +40,13 @@ export default useTasks = () => {
   // Change item from the state and update the storage
   const handleChecked = (taskKey) => {
     // Update tasks array of objects using 'map' / toggle value 'checked'
-    // Fitst method
-    const updatedTasks = tasks.map((task) =>
+    let updatedTasks = tasks.map((task) =>
       task.key === taskKey ? { ...task, checked: !task.checked } : task
     );
     // First write the item to the storage
     writeToStorage(tasksKey, updatedTasks);
-    // Then set the new state
-    setTasks(updatedTasks.sort((a, b) => a.checked - b.checked));
+    // Update the state
+    setTasks(filterTasks(updatedTasks));
   };
 
   // Delete item from the state and update the storage
@@ -56,7 +55,7 @@ export default useTasks = () => {
     // First write the item to the storage
     writeToStorage(tasksKey, filteredTasks);
     // Then set the new state
-    setTasks(filteredTasks);
+    setTasks(filterTasks(filteredTasks));
   };
 
   // Write to the storage
@@ -82,25 +81,37 @@ export default useTasks = () => {
   // Read from storage
   const getAllTasks = async (key) => {
     try {
-      const storageTasks = await AsyncStorage.getItem(key);
-      // console.log(storageTasks);
-      const sortedTasks = JSON.parse(storageTasks).sort(
-        (a, b) => a.checked - b.checked
-      );
+      let storageTasks = await AsyncStorage.getItem(key);
+      storageTasks = JSON.parse(storageTasks);
+
       // (Fix TypeError: Invalid attempt to spread non-iterable instance)
-      storageTasks && setTasks(sortedTasks);
+      storageTasks && setTasks(filterTasks(storageTasks));
     } catch (e) {
       console.log(e);
     }
   };
 
-  // Screen first renders
+  // Filter checked and unchecked Tasks
+  const filterTasks = (tasks) => {
+    // Filter tasks
+    const unCheckedTasks = tasks
+      .filter((task) => task.checked == false)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+    const checkedTasks = tasks
+      .filter((task) => task.checked == true)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    return [...unCheckedTasks, ...checkedTasks];
+  };
+
   useEffect(() => {
     getAllTasks(tasksKey);
   }, []);
 
   return {
     tasks,
+    unCheckedTasks: tasks.filter((task) => task.checked === false),
+    checkedTasks: tasks.filter((task) => task.checked === true),
     modalVisible,
     setModalVisible,
     handleAdd,
