@@ -15,14 +15,13 @@ export default function App() {
     try {
       const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
+        // ... notify user of update ...
+        registerUpdate();
         await Updates.fetchUpdateAsync();
         await Updates.reloadAsync();
       }
     } catch (e) {
-      alert("Update Error: nademi-tasklist could not be updated!");
-    } finally {
-      // ... notify user of update ...
-      registerUpdate();
+      console.log("Update Error: nademi-tasklist could not be updated!");
     }
   };
 

@@ -23,7 +23,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "nademi.task.list",
-      "versionCode": 23
+      "versionCode": 24
     },
     "web": {
       "favicon": "./app/assets/favicon.png"

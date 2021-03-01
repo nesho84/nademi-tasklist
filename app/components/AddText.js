@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import colors from "../config/colors";
 
 export default function AddText({ handleAdd, inputRef }) {
   const [text, setText] = useState("");
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Add new Item</Text>
+      <Text style={styles.text}>Add new Task</Text>
       <TextInput
         ref={inputRef}
         onChangeText={(text) => setText(text)}
@@ -21,7 +22,7 @@ export default function AddText({ handleAdd, inputRef }) {
         placeholder="Enter text..."
       />
       <TouchableOpacity style={styles.btnStyle} onPress={() => handleAdd(text)}>
-        <Text style={styles.btnText}>Add</Text>
+        <Text style={styles.btnText}>SAVE</Text>
       </TouchableOpacity>
     </View>
   );
@@ -35,16 +36,17 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 100,
     backgroundColor: "#fff",
-    color: "#000",
+    color: colors.dark,
     height: 50,
-    borderColor: "#F3F3F3",
-    borderBottomColor: "#C9C6C7",
+    fontSize: 16,
+    borderColor: colors.light,
+    borderBottomColor: "#DEE9F3",
     borderWidth: 1,
     marginBottom: 15,
     padding: 5,
   },
   btnStyle: {
-    backgroundColor: "#A93238",
+    backgroundColor: colors.success,
     padding: 11,
   },
   btnText: {

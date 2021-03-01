@@ -6,7 +6,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-
 import { MaterialIcons } from "@expo/vector-icons";
 
 export default function AppModal({

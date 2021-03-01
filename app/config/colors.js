@@ -1,0 +1,18 @@
+export default {
+  primary: "#007bff",
+  secondary: "#6c757d",
+  success: "#28a745",
+  successLight: "#5cb85c",
+  danger: "#dc3545",
+  warning: "#ffc107",
+  info: "#17a2b8",
+  light: "#f8f9fa",
+  dark: "#343a40",
+  muted: "#6c757d",
+  white: "#ffffff",
+  inverse: "#292b2c",
+  faded: "#f7f7f7",
+  checkedItem: "#3C85CC",
+  uncheckedItem: "#4BA6FF",
+  checkedItemText: "#A9CDF9",
+};

@@ -11,9 +11,8 @@ import {
   TouchableOpacity,
   BackHandler,
 } from "react-native";
-
 import { MaterialIcons } from "@expo/vector-icons";
-
+import colors from "../config/colors";
 // Custom Components
 import AppScreen from "../components/AppScreen";
 import AddText from "../components/AddText";
@@ -149,8 +148,8 @@ export default function HomeScreen({ navigation }) {
   return (
     <AppScreen>
       <View style={styles.container}>
-        <Image style={styles.Image} source={require("../assets/nademi.png")} />
-        <Text style={styles.text}>Simple TaskList</Text>
+        <Image style={styles.logo} source={require("../assets/nademi.png")} />
+        <Text style={styles.title}>Simple TaskList</Text>
 
         <AppPopup
           navigation={navigation}
@@ -181,10 +180,10 @@ export default function HomeScreen({ navigation }) {
         >
           <AddText handleAdd={handleAdd} inputRef={inputRef} />
           <TouchableOpacity
-            style={styles.closeModalButton}
+            style={styles.cancelModalButton}
             onPress={() => setModalVisible(false)}
           >
-            <Text style={styles.cancelModalButton}>Cancel</Text>
+            <Text style={styles.cancelModalButtonText}>CANCEL</Text>
           </TouchableOpacity>
         </AppModal>
       </View>
@@ -200,9 +199,9 @@ const styles = StyleSheet.create({
     backgroundColor: "dodgerblue",
     paddingVertical: StatusBar.currentHeight || 0,
   },
-  Image: { marginTop: 60, marginBottom: 15 },
-  text: {
-    marginBottom: 15,
+  logo: { marginTop: 50 },
+  title: {
+    marginVertical: 10,
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
@@ -211,17 +210,18 @@ const styles = StyleSheet.create({
     width: "80%",
     paddingVertical: 2,
     alignItems: "center",
-    backgroundColor: "#5cb85c",
+    backgroundColor: colors.successLight,
     marginTop: 15,
+    marginBottom: 10,
     borderRadius: 20,
   },
-  closeModalButton: {
+  cancelModalButton: {
     width: "80%",
-    backgroundColor: "#A93238",
+    backgroundColor: colors.danger,
     padding: 11,
     marginVertical: 8,
   },
-  cancelModalButton: {
+  cancelModalButtonText: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 18,
