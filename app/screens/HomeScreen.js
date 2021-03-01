@@ -86,13 +86,24 @@ export default function HomeScreen({ navigation }) {
         {tasks.length > 0 ? (
           // Tasks List
           <View style={styles.listContainer}>
-            <AppList
-              // Unchecked List
-              items={unCheckedTasks}
-              handleChecked={handleChecked}
-              handleDelete={handleDelete}
-              style={{ flex: 2 }}
-            />
+            {unCheckedTasks.length > 0 ? (
+              <AppList
+                // Unchecked List
+                items={unCheckedTasks}
+                handleChecked={handleChecked}
+                handleDelete={handleDelete}
+                style={unCheckedTasks.length > 3 ? { flex: 3 } : { flex: 0 }}
+              />
+            ) : (
+              <View style={styles.noItemsContainer}>
+                <Text style={styles.noItemsText}>
+                  No Tasks to show.{"\n\n"}
+                  <Text>
+                    You can use the plus button (+) to create new tasks.
+                  </Text>
+                </Text>
+              </View>
+            )}
 
             {checkedTasks.length > 0 && (
               // List Divider
@@ -109,14 +120,14 @@ export default function HomeScreen({ navigation }) {
               items={checkedTasks}
               handleChecked={handleChecked}
               handleDelete={handleDelete}
-              style={{ flex: 1 }}
+              style={{ flex: 2 }}
             />
           </View>
         ) : (
           // No Tasks View
           <View style={styles.noItemsContainer}>
             <Text style={styles.noItemsText}>
-              No Items to show.{"\n\n"}
+              No Tasks to show.{"\n\n"}
               <Text>You can use the plus button (+) to create new tasks.</Text>
             </Text>
           </View>
