@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Alert,
   Image,
-  Keyboard,
   StyleSheet,
   Text,
   View,
@@ -12,7 +10,10 @@ import {
   BackHandler,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+// Custom colos Object
 import colors from "../config/colors";
+// Custom Hook
+import useTasks from "../hooks/useTasks";
 // Custom Components
 import AppScreen from "../components/AppScreen";
 import AddText from "../components/AddText";
@@ -21,91 +22,18 @@ import AppModal from "../components/AppModal";
 import AppPopup from "../components/AppPopup";
 
 export default function HomeScreen({ navigation }) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  // Custom Hook returned functions
+  const {
+    tasks,
+    modalVisible,
+    setModalVisible,
+    handleAdd,
+    handleChecked,
+    handleDelete,
+    clearAllTasks,
+  } = useTasks();
 
-  const tasksKey = "@TaskList_Key";
-
-  // Handling Add item function
-  const handleAdd = (text) => {
-    if (text.length < 3) {
-      Alert.alert(
-        "Required field",
-        "Please insert at least 3 charachters...",
-        [{ text: "OK" }],
-        { cancelable: false }
-      );
-    } else {
-      const newTask = [
-        {
-          key: Math.random().toString(),
-          name: text,
-          checked: false,
-        },
-        ...tasks,
-      ];
-      // First write the item to the storage
-      writeToStorage(tasksKey, newTask);
-      Keyboard.dismiss();
-      setModalVisible(false);
-      // Then set the new state
-      setTasks(newTask);
-    }
-  };
-
-  // Change item from the state and update the storage
-  const handleChecked = (taskKey) => {
-    // Update tasks array of objects using 'map' / toggle value 'checked'
-    // Fitst method
-    const updatedTasks = tasks.map((task) =>
-      task.key === taskKey ? { ...task, checked: !task.checked } : task
-    );
-    // First write the item to the storage
-    writeToStorage(tasksKey, updatedTasks);
-    // Then set the new state
-    setTasks(updatedTasks);
-  };
-
-  // Delete item from the state and update the storage
-  const handleDelete = (taskKey) => {
-    const filteredTasks = tasks.filter((task) => task.key !== taskKey);
-    // First write the item to the storage
-    writeToStorage(tasksKey, filteredTasks);
-    // Then set the new state
-    setTasks(filteredTasks);
-  };
-
-  // Write to the storage
-  const writeToStorage = async (key, item) => {
-    try {
-      await AsyncStorage.setItem(key, JSON.stringify(item));
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  // Read from storage
-  const getAllTasks = async () => {
-    try {
-      const storageTasks = await AsyncStorage.getItem(tasksKey);
-      // (TypeError: Invalid attempt to spread non-iterable instance.)
-      storageTasks && setTasks(JSON.parse(storageTasks));
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  // Clear stoage or Remove all items from storage
-  const clearAllTasks = async () => {
-    try {
-      await AsyncStorage.removeItem(tasksKey);
-    } catch (e) {
-      console.log(e);
-    }
-    // set state
-    setTasks([]);
-  };
-
+  // confirm Exit application
   const exitApp = () => {
     Alert.alert("Hold on!", "Are you sure you want to go exit?", [
       {
@@ -118,22 +46,8 @@ export default function HomeScreen({ navigation }) {
     return true;
   };
 
-  // Get all stored keys - for testing!!
-  getAllKeys = async () => {
-    let keys = [];
-    try {
-      keys = await AsyncStorage.getAllKeys();
-    } catch (e) {
-      console.log(e);
-    }
-    console.log(keys);
-  };
-
   // Screen first renders
   useEffect(() => {
-    // getAllKeys();
-    getAllTasks();
-
     // Exit app Handler
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -201,7 +115,7 @@ const styles = StyleSheet.create({
   },
   logo: { marginTop: 50 },
   title: {
-    marginVertical: 10,
+    marginTop: 10,
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
@@ -211,8 +125,8 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     alignItems: "center",
     backgroundColor: colors.successLight,
-    marginTop: 15,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 20,
     borderRadius: 20,
   },
   cancelModalButton: {

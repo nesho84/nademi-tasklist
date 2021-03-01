@@ -12,8 +12,6 @@ export default function AppList({ items, handleChecked, handleDelete }) {
     handleChecked(itemKey);
   };
 
-  // console.log(items.length > 0 ? "some items" : "no items");
-
   return (
     <View style={styles.container}>
       {items.length > 0 ? (
@@ -110,7 +108,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flexShrink: 1,
-    // justifyContent: "space-between",
   },
   itemTitle: {
     flexDirection: "row",
