@@ -1,13 +1,23 @@
 import React, { useState } from "react";
-import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import CheckBox from "@react-native-community/checkbox";
 import colors from "../config/colors";
+
+import DraggableFlatList from "react-native-draggable-flatlist";
 
 export default function AppList({
   items,
   handleChecked,
   handleDelete,
+  handleReorderedTasks,
   ...otherProps
 }) {
   const [, setToggleCheckBox] = useState(false);
@@ -19,17 +29,18 @@ export default function AppList({
 
   return (
     <View style={[styles.container, otherProps.style]}>
-      <FlatList
+      <DraggableFlatList
         data={items}
-        renderItem={({ item }) => (
-          // Items Container
+        renderItem={({ item, index, drag, isActive }) => (
           <View
+            // Items Container
             style={[
               styles.flatList,
               {
-                backgroundColor: item.checked
-                  ? colors.checkedItem
-                  : colors.uncheckedItem,
+                backgroundColor:
+                  isActive && !item.checked
+                    ? colors.checkedItem
+                    : colors.uncheckedItem,
               },
             ]}
           >
@@ -44,8 +55,11 @@ export default function AppList({
                 value={item.checked}
                 onValueChange={(newValue) => handleCheckbox(newValue, item.key)}
               />
-              {/* Item title or text */}
-              <View style={{ flexShrink: 1, marginHorizontal: 10 }}>
+            </View>
+
+            {/* Item title or text */}
+            <TouchableOpacity style={styles.itemText} onLongPress={drag}>
+              <View>
                 <Text
                   style={{
                     textDecorationLine: item.checked ? "line-through" : "none",
@@ -53,12 +67,11 @@ export default function AppList({
                     fontWeight: "bold",
                     fontSize: 17,
                   }}
-                  onPress={() => handleChecked(item.key)}
                 >
                   {item.name}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
 
             {/* Item delete icon */}
             <View>
@@ -86,6 +99,9 @@ export default function AppList({
             </View>
           </View>
         )}
+        keyExtractor={(item, index) => `draggable-item-${item.key}`}
+        // @TODO: save order state when drag end!
+        onDragEnd={({ data }) => {}}
       />
     </View>
   );
@@ -103,6 +119,11 @@ const styles = StyleSheet.create({
     padding: 3,
     borderRadius: 5,
     marginVertical: 3,
+  },
+  itemText: {
+    flexShrink: 1,
+    marginHorizontal: 10,
+    width: "100%",
   },
   checkboxAndTitleContainer: {
     flexDirection: "row",

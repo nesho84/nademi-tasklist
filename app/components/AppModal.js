@@ -11,7 +11,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 export default function AppModal({
   children,
   modalVisible,
-  handleModalVisible,
+  setModalVisible,
   inputRef,
 }) {
   return (
@@ -27,7 +27,7 @@ export default function AppModal({
             name="close"
             size={45}
             color="#A93238"
-            onPress={() => handleModalVisible(false)}
+            onPress={() => setModalVisible(false)}
           />
           {children}
         </View>

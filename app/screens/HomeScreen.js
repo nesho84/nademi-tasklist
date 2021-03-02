@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -23,7 +23,7 @@ import AppPopup from "../components/AppPopup";
 
 export default function HomeScreen({ navigation }) {
   // Custom Hook returned functions
-  const {
+  let {
     tasks,
     unCheckedTasks,
     checkedTasks,
@@ -38,12 +38,12 @@ export default function HomeScreen({ navigation }) {
   // confirm Exit application
   const exitApp = () => {
     Alert.alert("Hold on!", "Are you sure you want to go exit?", [
+      { text: "Yes", onPress: () => BackHandler.exitApp() },
       {
         text: "Cancel",
         onPress: () => null,
         style: "cancel",
       },
-      { text: "Yes", onPress: () => BackHandler.exitApp() },
     ]);
     return true;
   };
@@ -83,6 +83,18 @@ export default function HomeScreen({ navigation }) {
           </View>
         </TouchableOpacity>
 
+        <AppModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          inputRef={inputRef}
+        >
+          <AddText
+            handleAdd={handleAdd}
+            setModalVisible={setModalVisible}
+            inputRef={inputRef}
+          />
+        </AppModal>
+
         {tasks.length > 0 ? (
           // Tasks List
           <View style={styles.listContainer}>
@@ -92,7 +104,6 @@ export default function HomeScreen({ navigation }) {
                 items={unCheckedTasks}
                 handleChecked={handleChecked}
                 handleDelete={handleDelete}
-                // style={unCheckedTasks.length > 4 ? { flex: 2 } : { flex: 0 }}
                 style={{ flex: 2 }}
               />
             ) : (
@@ -105,7 +116,6 @@ export default function HomeScreen({ navigation }) {
                 </Text>
               </View>
             )}
-
             {checkedTasks.length > 0 && (
               // List Divider
               <View style={styles.listDividerContainer}>
@@ -115,7 +125,6 @@ export default function HomeScreen({ navigation }) {
                 </Text>
               </View>
             )}
-
             <AppList
               // Checked List
               items={checkedTasks}
@@ -133,20 +142,6 @@ export default function HomeScreen({ navigation }) {
             </Text>
           </View>
         )}
-
-        <AppModal
-          modalVisible={modalVisible}
-          handleModalVisible={setModalVisible}
-          inputRef={inputRef}
-        >
-          <AddText handleAdd={handleAdd} inputRef={inputRef} />
-          <TouchableOpacity
-            style={styles.cancelModalButton}
-            onPress={() => setModalVisible(false)}
-          >
-            <Text style={styles.cancelModalButtonText}>CANCEL</Text>
-          </TouchableOpacity>
-        </AppModal>
       </View>
     </AppScreen>
   );
@@ -177,18 +172,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     borderRadius: 20,
-  },
-  cancelModalButton: {
-    width: "80%",
-    backgroundColor: colors.danger,
-    padding: 11,
-    marginVertical: 8,
-  },
-  cancelModalButtonText: {
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 18,
-    color: "white",
   },
   listContainer: {
     flex: 1,

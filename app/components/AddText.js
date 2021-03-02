@@ -8,21 +8,30 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 
-export default function AddText({ handleAdd, inputRef }) {
+export default function AddText(props) {
   const [text, setText] = useState("");
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Add new Task</Text>
+      <Text style={styles.title}>Add new Task</Text>
       <TextInput
-        ref={inputRef}
+        ref={props.inputRef}
         onChangeText={(text) => setText(text)}
         style={styles.input}
         multiline
         placeholder="Enter text..."
       />
-      <TouchableOpacity style={styles.btnStyle} onPress={() => handleAdd(text)}>
-        <Text style={styles.btnText}>SAVE</Text>
+      <TouchableOpacity
+        style={styles.btnAdd}
+        onPress={() => props.handleAdd(text)}
+      >
+        <Text style={styles.btnAddText}>SAVE</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.btnCancel}
+        onPress={() => props.setModalVisible(false)}
+      >
+        <Text style={styles.btnCancelText}>CANCEL</Text>
       </TouchableOpacity>
     </View>
   );
@@ -32,6 +41,13 @@ const styles = StyleSheet.create({
   container: {
     width: "80%",
     paddingTop: "20%",
+  },
+  title: {
+    marginBottom: 25,
+    color: "#A93238",
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   input: {
     marginBottom: 100,
@@ -45,21 +61,25 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
   },
-  btnStyle: {
+  btnAdd: {
     backgroundColor: colors.success,
     padding: 11,
   },
-  btnText: {
+  btnAddText: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 18,
     color: "white",
   },
-  text: {
-    marginBottom: 25,
-    color: "#A93238",
-    fontSize: 30,
-    fontWeight: "bold",
+  btnCancel: {
+    backgroundColor: colors.danger,
+    padding: 11,
+    marginVertical: 8,
+  },
+  btnCancelText: {
     textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 18,
+    color: "white",
   },
 });
