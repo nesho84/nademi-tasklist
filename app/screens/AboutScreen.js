@@ -12,9 +12,7 @@ export default function AboutScreen(params) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>nademi-tasklist</Text>
-      <Text style={styles.versionText}>
-        Version {Constants.nativeAppVersion}
-      </Text>
+      <Text style={styles.versionText}>Version 2.0.4</Text>
       <TouchableOpacity
         onPress={async () => await Linking.openURL("https://nademi.com")}
       >

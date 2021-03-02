@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 3,
     borderRadius: 5,
-    marginVertical: 3,
+    marginVertical: 2,
   },
   itemText: {
     flexShrink: 1,

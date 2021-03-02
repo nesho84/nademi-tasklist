@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "dodgerblue",
-    paddingVertical: StatusBar.currentHeight || 0,
+    paddingTop: StatusBar.currentHeight || 0,
+    paddingBottom: 5,
   },
   logo: {
     marginTop: 15,
@@ -180,7 +181,8 @@ const styles = StyleSheet.create({
   },
   listDividerContainer: {
     width: "100%",
-    marginVertical: 10,
+    marginTop: 7,
+    marginBottom: 3,
   },
   listDivider: {
     width: "100%",
@@ -190,6 +192,7 @@ const styles = StyleSheet.create({
   },
   listDividerText: {
     color: colors.checkedItemText,
+    fontSize: 13,
   },
   noItemsContainer: {
     flex: 1,
