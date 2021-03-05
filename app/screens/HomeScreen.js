@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Alert,
-  Image,
   StyleSheet,
   Text,
   View,
   StatusBar,
   TouchableOpacity,
-  BackHandler,
 } from "react-native";
+// header Elements
+import { Header, Icon, Divider } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
 // Custom colos Object
 import colors from "../config/colors";
@@ -16,12 +15,15 @@ import colors from "../config/colors";
 import useTasks from "../hooks/useTasks";
 // Custom Components
 import AppScreen from "../components/AppScreen";
-import AddText from "../components/AddText";
 import AppList from "../components/AppList";
 import AppModal from "../components/AppModal";
 import AppPopup from "../components/AppPopup";
+import AddInput from "../components/AddInput";
+import EditInput from "../components/EditInput";
 
 export default function HomeScreen({ navigation }) {
+  const [modalAction, setModalAction] = useState("");
+  const [taskToEdit, setTaskToEdit] = useState(null);
   // Custom Hook returned functions
   let {
     tasks,
@@ -30,69 +32,75 @@ export default function HomeScreen({ navigation }) {
     modalVisible,
     setModalVisible,
     handleAdd,
+    handleEdit,
     handleChecked,
+    handleOrderedTasks,
     handleDelete,
     clearAllTasks,
   } = useTasks();
 
-  // confirm Exit application
-  const exitApp = () => {
-    Alert.alert("Hold on!", "Are you sure you want to go exit?", [
-      { text: "Yes", onPress: () => BackHandler.exitApp() },
-      {
-        text: "Cancel",
-        onPress: () => null,
-        style: "cancel",
-      },
-    ]);
-    return true;
-  };
-
-  // Screen first renders
-  useEffect(() => {
-    // Exit app Handler
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      exitApp
-    );
-    return () => backHandler.remove();
-  }, []);
-
   // Trick to show Keyboard on input focus
   const inputRef = React.useRef();
 
+  // Open modal for add or edit Task
+  const handleModalAction = (task, action) => {
+    if (action === "add") {
+      setModalAction("add");
+    } else {
+      setModalAction("edit");
+      setTaskToEdit(task);
+    }
+    setModalVisible(true);
+  };
+
   return (
     <AppScreen>
+      <Header
+        leftComponent={
+          <Icon
+            name="menu"
+            type="material-community"
+            color="#fff"
+            size={30}
+            onPress={() => navigation.openDrawer()}
+          />
+        }
+        centerComponent={{
+          text: "Simple TaskList",
+          style: styles.title,
+        }}
+        rightComponent={
+          <AppPopup
+            navigation={navigation}
+            clearAllTasks={clearAllTasks}
+            itemsList={tasks}
+          />
+        }
+        containerStyle={{
+          backgroundColor: "dodgerblue",
+        }}
+      />
+      <StatusBar backgroundColor="dodgerblue" />
       <View style={styles.container}>
-        <Image style={styles.logo} source={require("../assets/nademi.png")} />
-        <Text style={styles.title}>Simple TaskList</Text>
-
-        <AppPopup
-          navigation={navigation}
-          clearAllTasks={clearAllTasks}
-          exitApp={exitApp}
-          itemsList={tasks}
-        />
-
-        <TouchableOpacity
-          style={styles.addButtonContainer}
-          onPress={() => setModalVisible(true)}
-        >
-          <View style={styles.addButton}>
-            <MaterialIcons name="add-circle" size={45} color="white" />
-          </View>
-        </TouchableOpacity>
-
         <AppModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           inputRef={inputRef}
         >
-          <AddText
-            handleAdd={handleAdd}
-            setModalVisible={setModalVisible}
-            inputRef={inputRef}
-          />
+          {modalAction === "add" ? (
+            <AddInput
+              handleAdd={handleAdd}
+              setModalVisible={setModalVisible}
+              inputRef={inputRef}
+            />
+          ) : (
+            <EditInput
+              taskToEdit={taskToEdit}
+              handleEdit={handleEdit}
+              setModalVisible={setModalVisible}
+              inputRef={inputRef}
+            />
+          )}
         </AppModal>
 
         {tasks.length > 0 ? (
@@ -102,7 +110,9 @@ export default function HomeScreen({ navigation }) {
               <AppList
                 // Unchecked List
                 items={unCheckedTasks}
+                handleModalAction={handleModalAction}
                 handleChecked={handleChecked}
+                handleOrderedTasks={handleOrderedTasks}
                 handleDelete={handleDelete}
                 style={{ flex: 2 }}
               />
@@ -118,7 +128,7 @@ export default function HomeScreen({ navigation }) {
             )}
             {checkedTasks.length > 0 && (
               // List Divider
-              <View style={styles.listDividerContainer}>
+              <View style={styles.checkListDividerContainer}>
                 <View style={styles.listDivider}></View>
                 <Text style={styles.listDividerText}>
                   {checkedTasks.length} Checked Items
@@ -128,7 +138,9 @@ export default function HomeScreen({ navigation }) {
             <AppList
               // Checked List
               items={checkedTasks}
+              handleModalAction={handleModalAction}
               handleChecked={handleChecked}
+              handleOrderedTasks={handleOrderedTasks}
               handleDelete={handleDelete}
               style={checkedTasks.length > 0 ? { flex: 1 } : { flex: 0 }}
             />
@@ -142,6 +154,16 @@ export default function HomeScreen({ navigation }) {
             </Text>
           </View>
         )}
+        <Divider style={styles.nativeDivider} />
+        <TouchableOpacity
+          // Add Button
+          style={styles.addButtonContainer}
+          onPress={() => handleModalAction(null, "add")}
+        >
+          <View style={styles.addButton}>
+            <MaterialIcons name="add-circle" size={45} color="white" />
+          </View>
+        </TouchableOpacity>
       </View>
     </AppScreen>
   );
@@ -153,25 +175,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "dodgerblue",
-    paddingTop: StatusBar.currentHeight || 0,
+    paddingTop: 10,
     paddingBottom: 5,
   },
-  logo: {
-    marginTop: 15,
-  },
   title: {
-    marginTop: 10,
     color: "#fff",
     fontSize: 20,
     fontWeight: "bold",
   },
   addButtonContainer: {
-    width: "80%",
-    paddingVertical: 2,
+    width: "70%",
+    // marginTop: 5,
     alignItems: "center",
     backgroundColor: colors.successLight,
-    marginTop: 20,
-    marginBottom: 20,
     borderRadius: 20,
   },
   listContainer: {
@@ -179,7 +195,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignItems: "center",
   },
-  listDividerContainer: {
+  checkListDividerContainer: {
     width: "100%",
     marginTop: 7,
     marginBottom: 3,
@@ -193,6 +209,12 @@ const styles = StyleSheet.create({
   listDividerText: {
     color: colors.checkedItemText,
     fontSize: 13,
+  },
+  nativeDivider: {
+    width: "100%",
+    height: 0.2,
+    backgroundColor: colors.light,
+    marginVertical: 5,
   },
   noItemsContainer: {
     flex: 1,

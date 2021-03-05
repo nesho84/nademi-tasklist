@@ -16,4 +16,5 @@ export default {
   uncheckedItem: "#4BA6FF",
   checkedItemText: "#A9CDF9",
   lightSkyBlue: "#82CAFA",
+  lightDodgerBlue: "#47A3FF",
 };

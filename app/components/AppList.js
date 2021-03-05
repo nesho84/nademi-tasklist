@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Alert,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { Alert, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import CheckBox from "@react-native-community/checkbox";
 import colors from "../config/colors";
@@ -15,9 +8,10 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 
 export default function AppList({
   items,
+  handleModalAction,
   handleChecked,
   handleDelete,
-  handleReorderedTasks,
+  handleOrderedTasks,
   ...otherProps
 }) {
   const [, setToggleCheckBox] = useState(false);
@@ -37,10 +31,9 @@ export default function AppList({
             style={[
               styles.flatList,
               {
-                backgroundColor:
-                  isActive && !item.checked
-                    ? colors.checkedItem
-                    : colors.uncheckedItem,
+                backgroundColor: item.checked
+                  ? colors.checkedItem
+                  : colors.uncheckedItem,
               },
             ]}
           >
@@ -58,7 +51,11 @@ export default function AppList({
             </View>
 
             {/* Item title or text */}
-            <TouchableOpacity style={styles.itemText} onLongPress={drag}>
+            <TouchableOpacity
+              style={styles.itemText}
+              onPress={() => handleModalAction(item, "edit")}
+              onLongPress={drag}
+            >
               <View>
                 <Text
                   style={{
@@ -101,7 +98,7 @@ export default function AppList({
         )}
         keyExtractor={(item, index) => `draggable-item-${item.key}`}
         // @TODO: save order state when drag end!
-        onDragEnd={({ data }) => {}}
+        onDragEnd={({ data }) => handleOrderedTasks(data)}
       />
     </View>
   );
@@ -118,7 +115,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 3,
     borderRadius: 5,
-    marginVertical: 2,
+    marginVertical: 2.5,
   },
   itemText: {
     flexShrink: 1,

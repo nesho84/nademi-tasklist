@@ -1,18 +1,16 @@
 import React from "react";
-import { StyleSheet, View, StatusBar, Alert } from "react-native";
+import { Alert } from "react-native";
 import SimplePopupMenu from "react-native-simple-popup-menu";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Icon } from "react-native-elements";
 
 export default function AppPopup(props) {
   const items = [
     { screen: "clearAllTasks", label: "Delete All", visible: true },
     // { screen: "SettingsScreen", label: "Settings", visible: true },
-    { screen: "AboutScreen", label: "About", visible: true },
-    { screen: "exitApp", label: "Exit", visible: true },
+    // { screen: "About", label: "About", visible: true },
   ];
 
   const handleOnSelect = (item) => {
-    // console.log(item.screen);
     if (item.screen === "clearAllTasks") {
       if (props.itemsList.length === 0) {
         Alert.alert(
@@ -28,7 +26,6 @@ export default function AppPopup(props) {
         );
         return;
       }
-
       Alert.alert(
         "Delete all items in the Storage!",
         "Are you sure?",
@@ -43,8 +40,6 @@ export default function AppPopup(props) {
         ],
         { cancelable: false }
       );
-    } else if (item.screen === "exitApp") {
-      props.exitApp();
     } else {
       props.navigation.navigate(item.screen, {
         itemId: item.screen,
@@ -56,21 +51,15 @@ export default function AppPopup(props) {
   return (
     <SimplePopupMenu
       items={items}
-      style={styles.popupMenuContainer}
       onSelect={handleOnSelect}
       onCancel={() => {}}
     >
-      <MaterialCommunityIcons name="dots-vertical" size={34} color="white" />
+      <Icon
+        name="dots-vertical"
+        type="material-community"
+        color="#fff"
+        size={30}
+      />
     </SimplePopupMenu>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {},
-  popupMenuContainer: {
-    paddingTop: 15,
-    position: "absolute",
-    top: StatusBar.currentHeight || 0,
-    right: 10,
-  },
-});

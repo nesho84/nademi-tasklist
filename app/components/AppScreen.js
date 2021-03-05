@@ -1,11 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 function Screen({ children, style }) {
   return (
-    <View style={[styles.screen, style]}>
-      <View style={[styles.view, style]}>{children}</View>
-    </View>
+    <SafeAreaProvider>
+      <View style={[styles.screen, style]}>
+        <View style={[styles.view, style]}>{children}</View>
+      </View>
+    </SafeAreaProvider>
   );
 }
 

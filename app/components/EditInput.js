@@ -8,24 +8,25 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 
-export default function AddText(props) {
-  const [text, setText] = useState("");
+export default function EditInput(props) {
+  const [text, setText] = useState(props.taskToEdit.name.toString());
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add new Task</Text>
+      <Text style={styles.title}>Edit Task</Text>
       <TextInput
         ref={props.inputRef}
         onChangeText={(text) => setText(text)}
         style={styles.input}
         multiline
         placeholder="Enter text..."
+        value={text.toString()}
       />
       <TouchableOpacity
-        style={styles.btnAdd}
-        onPress={() => props.handleAdd(text)}
+        style={styles.btnEdit}
+        onPress={() => props.handleEdit(props.taskToEdit.key, text)}
       >
-        <Text style={styles.btnAddText}>SAVE</Text>
+        <Text style={styles.btnEditInput}>SAVE</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btnCancel}
@@ -61,11 +62,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
   },
-  btnAdd: {
+  btnEdit: {
     backgroundColor: colors.success,
     padding: 11,
   },
-  btnAddText: {
+  btnEditInput: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 18,

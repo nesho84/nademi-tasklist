@@ -37,7 +37,21 @@ export default useTasks = () => {
     }
   };
 
-  // Change item from the state and update the storage
+  // Edit item from the state and update the storage
+  const handleEdit = (taskKey, taskName) => {
+    // Update tasks array of objects using 'map' / edit name
+    let updatedTasks = tasks.map((task) =>
+      task.key === taskKey ? { ...task, name: taskName } : task
+    );
+    // First write the item to the storage
+    writeToStorage(tasksKey, updatedTasks);
+    Keyboard.dismiss();
+    setModalVisible(false);
+    // Update the state
+    setTasks(updatedTasks);
+  };
+
+  // Change to checked or unchecked item from the state and update the storage
   const handleChecked = (taskKey) => {
     // Update tasks array of objects using 'map' / toggle value 'checked'
     let updatedTasks = tasks.map((task) =>
@@ -46,7 +60,26 @@ export default useTasks = () => {
     // First write the item to the storage
     writeToStorage(tasksKey, updatedTasks);
     // Update the state
-    setTasks(filterTasks(updatedTasks));
+    setTasks(updatedTasks);
+  };
+
+  // Ordering Tasks with drag and drop
+  const handleOrderedTasks = (orderedTasks) => {
+    let unCheckedTasks = tasks.filter((task) => task.checked === false);
+    let checkedTasks = tasks.filter((task) => task.checked === true);
+
+    orderedTasks.map((task) => {
+      // If the order of unchecked tasks was changed
+      if (task.checked === false) {
+        writeToStorage(tasksKey, [...orderedTasks, ...checkedTasks]);
+        setTasks([...orderedTasks, ...checkedTasks]);
+      }
+      // If the order of checked tasks was changed
+      else if (task.checked === true) {
+        writeToStorage(tasksKey, [...orderedTasks, ...unCheckedTasks]);
+        setTasks([...orderedTasks, ...unCheckedTasks]);
+      }
+    });
   };
 
   // Delete item from the state and update the storage
@@ -55,7 +88,7 @@ export default useTasks = () => {
     // First write the item to the storage
     writeToStorage(tasksKey, filteredTasks);
     // Then set the new state
-    setTasks(filterTasks(filteredTasks));
+    setTasks(filteredTasks);
   };
 
   // Write to the storage
@@ -83,26 +116,25 @@ export default useTasks = () => {
     try {
       let storageTasks = await AsyncStorage.getItem(key);
       storageTasks = JSON.parse(storageTasks);
-
       // (Fix TypeError: Invalid attempt to spread non-iterable instance)
-      storageTasks && setTasks(filterTasks(storageTasks));
+      storageTasks && setTasks(storageTasks);
     } catch (e) {
       console.log(e);
     }
   };
 
-  // Filter checked and unchecked Tasks
-  const filterTasks = (tasks) => {
-    // Filter tasks
-    const unCheckedTasks = tasks
-      .filter((task) => task.checked == false)
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
-    const checkedTasks = tasks
-      .filter((task) => task.checked == true)
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  // // Filter checked and unchecked Tasks
+  // const filterTasks = (tasks) => {
+  //   // Filter tasks
+  //   const unCheckedTasks = tasks
+  //     .filter((task) => task.checked == false)
+  //     .sort((a, b) => new Date(b.date) - new Date(a.date));
+  //   const checkedTasks = tasks
+  //     .filter((task) => task.checked == true)
+  //     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    return [...unCheckedTasks, ...checkedTasks];
-  };
+  //   return [...unCheckedTasks, ...checkedTasks];
+  // };
 
   useEffect(() => {
     getAllTasks(tasksKey);
@@ -115,7 +147,9 @@ export default useTasks = () => {
     modalVisible,
     setModalVisible,
     handleAdd,
+    handleEdit,
     handleChecked,
+    handleOrderedTasks,
     handleDelete,
     writeToStorage,
     getAllTasks,

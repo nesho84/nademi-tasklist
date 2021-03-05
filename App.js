@@ -1,13 +1,12 @@
 import "react-native-gesture-handler";
-
 import React, { useEffect } from "react";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationContainer } from "@react-navigation/native";
+import DrawerNavigator from "./app/navigation/DrawerNavigator";
 
 import * as Permissions from "expo-permissions";
 import * as Updates from "expo-updates";
-// Custom Components
-import HomeNavigator from "./app/navigation/HomeNavigator";
 
 export default function App() {
   // update and reload
@@ -72,5 +71,10 @@ export default function App() {
   }, []);
 
   // return Home stack navigation
-  return <HomeNavigator />;
+  return (
+    <NavigationContainer>
+      {/* Root Navigator */}
+      <DrawerNavigator />
+    </NavigationContainer>
+  );
 }

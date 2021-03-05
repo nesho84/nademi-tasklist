@@ -4,15 +4,16 @@ import {
   Text,
   View,
   Linking,
+  Image,
   TouchableOpacity,
 } from "react-native";
-import Constants from "expo-constants";
 
-export default function AboutScreen(params) {
+export default function AboutScreen(props) {
   return (
     <View style={styles.container}>
+      <Image style={styles.logo} source={require("../assets/nademi.png")} />
       <Text style={styles.title}>nademi-tasklist</Text>
-      <Text style={styles.versionText}>Version 2.0.4</Text>
+      <Text style={styles.versionText}>Version 2.0.8</Text>
       <TouchableOpacity
         onPress={async () => await Linking.openURL("https://nademi.com")}
       >
@@ -30,6 +31,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#fff",
+  },
+  logo: {
+    marginBottom: 10,
+    width: 150,
+    height: 150,
   },
   title: {
     paddingBottom: 10,
