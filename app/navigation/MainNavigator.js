@@ -4,16 +4,16 @@ import {
   HeaderStyleInterpolators,
 } from "@react-navigation/stack";
 
-import HomeScreen from "../screens/HomeScreen";
+import MainScreen from "../screens/MainScreen";
 import AboutScreen from "../screens/AboutScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+// import SettingsScreen from "../screens/SettingsScreen";
 
 const Stack = createStackNavigator();
 
-export default function HomeStackNavigator() {
+export default function MainStackNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Main"
       mode="card"
       screenOptions={{
         headerStyle: { backgroundColor: "dodgerblue" },
@@ -21,8 +21,8 @@ export default function HomeStackNavigator() {
       }}
     >
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Main"
+        component={MainScreen}
         options={{
           headerShown: false,
         }}
@@ -36,7 +36,7 @@ export default function HomeStackNavigator() {
           headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
         }}
       />
-      {/* <HomeStack.Screen
+      {/* <Stack.Screen
         name="SettingsScreen"
         component={SettingsScreen}
         options={{

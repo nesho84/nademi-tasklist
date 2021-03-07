@@ -1,114 +1,230 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { TasksContext } from "../context/TasksContext";
 import { MaterialIcons } from "@expo/vector-icons";
 import CheckBox from "@react-native-community/checkbox";
+import DraggableFlatList from "react-native-draggable-flatlist";
 import colors from "../config/colors";
 
-import DraggableFlatList from "react-native-draggable-flatlist";
+export default function AppList(props) {
+  const { tasks, checkUncheckTask, orderTasks, deleteTask } = useContext(
+    TasksContext
+  );
 
-export default function AppList({
-  items,
-  handleModalAction,
-  handleChecked,
-  handleDelete,
-  handleOrderedTasks,
-  ...otherProps
-}) {
-  const [, setToggleCheckBox] = useState(false);
+  const [_, setToggleCheckBox] = useState(false);
 
   const handleCheckbox = (newValue, itemKey) => {
+    checkUncheckTask(itemKey);
     setToggleCheckBox(newValue);
-    handleChecked(itemKey);
   };
 
+  // Filter Tasks
+  let unCheckedTasks = tasks && tasks.filter((task) => task.checked === false);
+  let checkedTasks = tasks && tasks.filter((task) => task.checked === true);
+
   return (
-    <View style={[styles.container, otherProps.style]}>
-      <DraggableFlatList
-        data={items}
-        renderItem={({ item, index, drag, isActive }) => (
-          <View
-            // Items Container
-            style={[
-              styles.flatList,
-              {
-                backgroundColor: item.checked
-                  ? colors.checkedItem
-                  : colors.uncheckedItem,
-              },
-            ]}
-          >
-            {/* Items checkbox */}
-            <View style={styles.checkboxAndTitleContainer}>
-              <CheckBox
-                disabled={false}
-                tintColors={{
-                  true: colors.successLight,
-                  false: colors.light,
-                }}
-                value={item.checked}
-                onValueChange={(newValue) => handleCheckbox(newValue, item.key)}
-              />
-            </View>
-
-            {/* Item title or text */}
-            <TouchableOpacity
-              style={styles.itemText}
-              onPress={() => handleModalAction(item, "edit")}
-              onLongPress={drag}
-            >
-              <View>
-                <Text
-                  style={{
-                    textDecorationLine: item.checked ? "line-through" : "none",
-                    color: item.checked ? colors.checkedItemText : "white",
-                    fontWeight: "bold",
-                    fontSize: 17,
-                  }}
+    <View style={styles.container}>
+      {/* -----Unchecked Tasks----- */}
+      {unCheckedTasks.length > 0 ? (
+        <View style={{ flex: 2 }}>
+          <DraggableFlatList
+            data={unCheckedTasks}
+            renderItem={({ item, index, drag, isActive }) => (
+              <View
+                style={[
+                  styles.flatList1,
+                  {
+                    backgroundColor: item.checked
+                      ? colors.checkedItem
+                      : colors.uncheckedItem,
+                  },
+                ]}
+              >
+                {/* -----Items checkbox----- */}
+                <View style={styles.checkboxAndTitleContainer}>
+                  <CheckBox
+                    disabled={false}
+                    tintColors={{
+                      true: colors.successLight,
+                      false: colors.light,
+                    }}
+                    value={item.checked}
+                    onValueChange={(newValue) =>
+                      handleCheckbox(newValue, item.key)
+                    }
+                  />
+                </View>
+                {/* -----Item title or text----- */}
+                <TouchableOpacity
+                  style={styles.itemText}
+                  onPress={() => props.handleModalAction(item, "edit")}
+                  onLongPress={drag}
                 >
-                  {item.name}
-                </Text>
+                  <View>
+                    <Text
+                      style={{
+                        textDecorationLine: item.checked
+                          ? "line-through"
+                          : "none",
+                        color: item.checked ? colors.checkedItemText : "white",
+                        fontWeight: "bold",
+                        fontSize: 17,
+                      }}
+                    >
+                      {item.name}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                {/* -----Item delete icon----- */}
+                <View>
+                  <MaterialIcons
+                    name="delete"
+                    size={23}
+                    color="white"
+                    onPress={() =>
+                      Alert.alert(
+                        "Delete",
+                        "Are you sure?",
+                        [
+                          {
+                            text: "Yes",
+                            onPress: () => deleteTask(item.key),
+                          },
+                          {
+                            text: "No",
+                          },
+                        ],
+                        { cancelable: false }
+                      )
+                    }
+                  />
+                </View>
               </View>
-            </TouchableOpacity>
+            )}
+            keyExtractor={(item, index) => `draggable-item-${item.key}`}
+            // @TODO: save order state when drag end!
+            onDragEnd={({ data }) => orderTasks(data)}
+          />
+        </View>
+      ) : (
+        <View style={styles.noItemsContainer}>
+          <Text style={styles.noItemsText}>
+            No Tasks to show.{"\n\n"}
+            <Text>You can use the plus button (+) to create new tasks.</Text>
+          </Text>
+        </View>
+      )}
 
-            {/* Item delete icon */}
-            <View>
-              <MaterialIcons
-                name="delete"
-                size={23}
-                color="white"
-                onPress={() =>
-                  Alert.alert(
-                    "Delete",
-                    "Are you sure?",
-                    [
-                      {
-                        text: "Yes",
-                        onPress: () => handleDelete(item.key),
-                      },
-                      {
-                        text: "No",
-                      },
-                    ],
-                    { cancelable: false }
-                  )
-                }
-              />
+      {/* -----List Divider----- */}
+      {checkedTasks.length > 0 && (
+        <View style={styles.checkListDividerContainer}>
+          <View style={styles.listDivider}></View>
+          <Text style={styles.listDividerText}>
+            {checkedTasks.length} Checked Items
+          </Text>
+        </View>
+      )}
+
+      {/* -----Checked Tasks----- */}
+      <View style={checkedTasks.length > 0 ? { flex: 1 } : { flex: 0 }}>
+        <DraggableFlatList
+          data={checkedTasks}
+          renderItem={({ item, index, drag, isActive }) => (
+            <View
+              style={[
+                styles.flatList2,
+                {
+                  // flex: 1,
+                  backgroundColor: item.checked
+                    ? colors.checkedItem
+                    : colors.uncheckedItem,
+                },
+              ]}
+            >
+              {/* -----Items checkbox----- */}
+              <View style={styles.checkboxAndTitleContainer}>
+                <CheckBox
+                  disabled={false}
+                  tintColors={{
+                    true: colors.successLight,
+                    false: colors.light,
+                  }}
+                  value={item.checked}
+                  onValueChange={(newValue) =>
+                    handleCheckbox(newValue, item.key)
+                  }
+                />
+              </View>
+              {/* -----Item title or text----- */}
+              <TouchableOpacity
+                style={styles.itemText}
+                onPress={() => props.handleModalAction(item, "edit")}
+                onLongPress={drag}
+              >
+                <View>
+                  <Text
+                    style={{
+                      textDecorationLine: item.checked
+                        ? "line-through"
+                        : "none",
+                      color: item.checked ? colors.checkedItemText : "white",
+                      fontWeight: "bold",
+                      fontSize: 17,
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              {/* -----Item delete icon----- */}
+              <View>
+                <MaterialIcons
+                  name="delete"
+                  size={23}
+                  color="white"
+                  onPress={() =>
+                    Alert.alert(
+                      "Delete",
+                      "Are you sure?",
+                      [
+                        {
+                          text: "Yes",
+                          onPress: () => deleteTask(item.key),
+                        },
+                        {
+                          text: "No",
+                        },
+                      ],
+                      { cancelable: false }
+                    )
+                  }
+                />
+              </View>
             </View>
-          </View>
-        )}
-        keyExtractor={(item, index) => `draggable-item-${item.key}`}
-        // @TODO: save order state when drag end!
-        onDragEnd={({ data }) => handleOrderedTasks(data)}
-      />
+          )}
+          keyExtractor={(item, index) => `draggable-item-${item.key}`}
+          onDragEnd={({ data }) => orderTasks(data)}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: "100%",
   },
-  flatList: {
+  flatList1: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    fontSize: 20,
+    padding: 3,
+    borderRadius: 5,
+    marginVertical: 2.5,
+  },
+  flatList2: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -126,5 +242,34 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flexShrink: 1,
+  },
+  checkListDividerContainer: {
+    width: "100%",
+    marginTop: 7,
+    marginBottom: 3,
+  },
+  listDivider: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: colors.lightSkyBlue,
+    marginBottom: 1,
+  },
+  listDividerText: {
+    color: colors.checkedItemText,
+    fontSize: 13,
+  },
+  noItemsContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: colors.uncheckedItem,
+    borderWidth: 1,
+    margin: 30,
+    padding: 11,
+  },
+  noItemsText: {
+    color: colors.light,
+    fontSize: 17,
+    textAlign: "center",
   },
 });

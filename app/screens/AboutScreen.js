@@ -8,12 +8,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function AboutScreen(props) {
+export default function AboutScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={require("../assets/nademi.png")} />
       <Text style={styles.title}>nademi-tasklist</Text>
-      <Text style={styles.versionText}>Version 2.0.8</Text>
+      <Text style={styles.versionText}>Version 2.0.9</Text>
       <TouchableOpacity
         onPress={async () => await Linking.openURL("https://nademi.com")}
       >

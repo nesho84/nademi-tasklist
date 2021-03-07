@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Alert } from "react-native";
 import SimplePopupMenu from "react-native-simple-popup-menu";
 import { Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import { TasksContext } from "../context/TasksContext";
 
 export default function AppPopup(props) {
+  const { tasks, clearAllTasks } = useContext(TasksContext);
+
+  const navigation = useNavigation();
+
   const items = [
     { screen: "clearAllTasks", label: "Delete All", visible: true },
     // { screen: "SettingsScreen", label: "Settings", visible: true },
@@ -12,7 +18,7 @@ export default function AppPopup(props) {
 
   const handleOnSelect = (item) => {
     if (item.screen === "clearAllTasks") {
-      if (props.itemsList.length === 0) {
+      if (tasks.length === 0) {
         Alert.alert(
           "",
           "Nothing to delete.",
@@ -32,7 +38,7 @@ export default function AppPopup(props) {
         [
           {
             text: "Yes",
-            onPress: () => props.clearAllTasks(),
+            onPress: () => clearAllTasks(),
           },
           {
             text: "No",
@@ -41,7 +47,7 @@ export default function AppPopup(props) {
         { cancelable: false }
       );
     } else {
-      props.navigation.navigate(item.screen, {
+      navigation.navigate(item.screen, {
         itemId: item.screen,
         otherParam: item.label,
       });

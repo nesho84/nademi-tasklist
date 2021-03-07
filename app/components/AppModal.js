@@ -8,17 +8,12 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export default function AppModal({
-  children,
-  modalVisible,
-  setModalVisible,
-  inputRef,
-}) {
+export default function AppModal(props) {
   return (
     <Modal
-      onShow={() => inputRef.current.focus()}
+      onShow={() => props.inputRef.current.focus()}
       animationType="slide"
-      visible={modalVisible}
+      visible={props.modalVisible}
     >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.modalContainer}>
@@ -27,9 +22,9 @@ export default function AppModal({
             name="close"
             size={45}
             color="#A93238"
-            onPress={() => setModalVisible(false)}
+            onPress={() => props.setModalVisible(false)}
           />
-          {children}
+          {props.children}
         </View>
       </TouchableWithoutFeedback>
     </Modal>
