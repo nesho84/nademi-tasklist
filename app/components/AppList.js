@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { ThemeContext } from "../context/ThemeContext";
 import { TasksContext } from "../context/TasksContext";
 import { MaterialIcons } from "@expo/vector-icons";
 import CheckBox from "@react-native-community/checkbox";
@@ -7,6 +8,8 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 import colors from "../config/colors";
 
 export default function AppList(props) {
+  // Contexts
+  const { isLightTheme } = useContext(ThemeContext);
   const { tasks, checkUncheckTask, orderTasks, deleteTask } = useContext(
     TasksContext
   );
@@ -33,11 +36,10 @@ export default function AppList(props) {
               <View
                 style={[
                   styles.flatList1,
-                  {
-                    backgroundColor: item.checked
-                      ? colors.checkedItem
-                      : colors.uncheckedItem,
-                  },
+                  isLightTheme
+                    ? { backgroundColor: colors.uncheckedItem }
+                    : { borderColor: colors.uncheckedItemDark, borderWidth: 1 },
+                  isActive && { backgroundColor: colors.muted },
                 ]}
               >
                 {/* -----Items checkbox----- */}
@@ -63,10 +65,7 @@ export default function AppList(props) {
                   <View>
                     <Text
                       style={{
-                        textDecorationLine: item.checked
-                          ? "line-through"
-                          : "none",
-                        color: item.checked ? colors.checkedItemText : "white",
+                        color: "white",
                         fontWeight: "bold",
                         fontSize: 17,
                       }}
@@ -118,8 +117,20 @@ export default function AppList(props) {
       {/* -----List Divider----- */}
       {checkedTasks.length > 0 && (
         <View style={styles.checkListDividerContainer}>
-          <View style={styles.listDivider}></View>
-          <Text style={styles.listDividerText}>
+          <View
+            style={[
+              styles.listDivider,
+              {
+                borderColor: isLightTheme ? colors.lightSkyBlue : colors.muted,
+              },
+            ]}
+          ></View>
+          <Text
+            style={[
+              styles.listDividerText,
+              { color: isLightTheme ? colors.checkedItemText : colors.muted },
+            ]}
+          >
             {checkedTasks.length} Checked Items
           </Text>
         </View>
@@ -133,12 +144,10 @@ export default function AppList(props) {
             <View
               style={[
                 styles.flatList2,
-                {
-                  // flex: 1,
-                  backgroundColor: item.checked
-                    ? colors.checkedItem
-                    : colors.uncheckedItem,
-                },
+                isLightTheme
+                  ? { backgroundColor: colors.checkedItem }
+                  : { borderColor: colors.checkedItemDark, borderWidth: 1 },
+                isActive && { backgroundColor: colors.muted },
               ]}
             >
               {/* -----Items checkbox----- */}
@@ -164,10 +173,10 @@ export default function AppList(props) {
                 <View>
                   <Text
                     style={{
-                      textDecorationLine: item.checked
-                        ? "line-through"
-                        : "none",
-                      color: item.checked ? colors.checkedItemText : "white",
+                      textDecorationLine: "line-through",
+                      color: isLightTheme
+                        ? colors.checkedItemText
+                        : colors.checkedItemTextDark,
                       fontWeight: "bold",
                       fontSize: 17,
                     }}
@@ -251,18 +260,16 @@ const styles = StyleSheet.create({
   listDivider: {
     width: "100%",
     borderWidth: 1,
-    borderColor: colors.lightSkyBlue,
     marginBottom: 1,
   },
   listDividerText: {
-    color: colors.checkedItemText,
     fontSize: 13,
   },
   noItemsContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    borderColor: colors.uncheckedItem,
+    borderColor: colors.light,
     borderWidth: 1,
     margin: 30,
     padding: 11,

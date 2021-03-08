@@ -12,18 +12,7 @@ import {
 } from "@react-navigation/drawer";
 import MainNavigator from "./MainNavigator";
 
-// Contexts
-
 function CustomDrawerContent(props) {
-  const { isLightTheme, themes, toggleTheme } = useContext(ThemeContext);
-
-  const handleThemeToggle = () => {
-    toggleTheme();
-    setTimeout(() => {
-      props.navigation.closeDrawer();
-    }, 1000);
-  };
-
   // confirm Exit application
   const exitApp = () => {
     Alert.alert("Hold on!", "Are you sure you want to go exit?", [
@@ -64,21 +53,6 @@ function CustomDrawerContent(props) {
         onPress={() => props.navigation.navigate("About")}
       />
       <DrawerItem
-        label="Theme"
-        labelStyle={{ color: colors.light, fontSize: 17, fontWeight: "bold" }}
-        onPress={handleThemeToggle}
-        icon={({ focused, color, size }) => (
-          <Icon
-            color={
-              isLightTheme ? themes.light.foreground : themes.light.foreground
-            }
-            type="FontAwesome5"
-            size={size}
-            name={isLightTheme ? "toggle-off" : "toggle-on"}
-          />
-        )}
-      />
-      <DrawerItem
         label="Exit"
         labelStyle={{ color: colors.light, fontSize: 17, fontWeight: "bold" }}
         onPress={() => exitApp()}
@@ -98,7 +72,7 @@ function CustomDrawerContent(props) {
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
-  const { isLightTheme, themes, toggleTheme } = useContext(ThemeContext);
+  const { isLightTheme, themes } = useContext(ThemeContext);
 
   return (
     <Drawer.Navigator

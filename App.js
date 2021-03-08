@@ -34,6 +34,7 @@ export default function App() {
       console.log(e);
     }
   };
+
   // notify te User for an Update
   const notifyUpdate = async () => {
     let item = [];
@@ -65,7 +66,6 @@ export default function App() {
     }
   };
 
-  // Ask for permission when component renders for the first time
   useEffect(() => {
     runUpdate();
     notifyUpdate();
@@ -73,14 +73,13 @@ export default function App() {
   }, []);
 
   return (
-    // Context Providers
-    // DrawerNavigator -> MainNavigator
-    <ThemeContextProvider>
-      <NavigationContainer>
-        <TasksContextProvider>
+    // Context Providers -> DrawerNavigator -> MainNavigator
+    <TasksContextProvider>
+      <ThemeContextProvider>
+        <NavigationContainer>
           <DrawerNavigator />
-        </TasksContextProvider>
-      </NavigationContainer>
-    </ThemeContextProvider>
+        </NavigationContainer>
+      </ThemeContextProvider>
+    </TasksContextProvider>
   );
 }

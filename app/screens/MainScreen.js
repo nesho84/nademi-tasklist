@@ -20,7 +20,7 @@ export default function MainScreen(props) {
   const [modalAction, setModalAction] = useState("");
   const [taskToEdit, setTaskToEdit] = useState(null);
   // Contexts
-  const { isLightTheme, themes, toggleTheme } = useContext(ThemeContext);
+  const { isLightTheme, themes } = useContext(ThemeContext);
   const { loading, inputRef, addTask, editTask } = useContext(TasksContext);
 
   // Open modal for add or edit Task
@@ -54,8 +54,22 @@ export default function MainScreen(props) {
 
       {/* -----Loading state START----- */}
       {loading ? (
-        <View style={styles.loadingContainer}>
-          <Text style={styles.loadingContainerText}>Loading...</Text>
+        <View
+          style={[
+            styles.loadingContainer,
+            {
+              backgroundColor: isLightTheme ? colors.light : colors.dark,
+            },
+          ]}
+        >
+          <Text
+            style={{
+              fontSize: 30,
+              color: isLightTheme ? colors.muted : colors.light,
+            }}
+          >
+            Loading...
+          </Text>
         </View>
       ) : (
         // -----Main View START-----
@@ -100,10 +114,17 @@ export default function MainScreen(props) {
 
           <TouchableOpacity
             // Add Button
-            style={styles.addButtonContainer}
+            style={[
+              styles.addButtonContainer,
+              {
+                backgroundColor: isLightTheme
+                  ? colors.successLight
+                  : colors.addButtonDark,
+              },
+            ]}
             onPress={() => handleModalAction(null, "add")}
           >
-            <View style={styles.addButton}>
+            <View>
               <MaterialIcons name="add-circle" size={45} color="white" />
             </View>
           </TouchableOpacity>
@@ -121,10 +142,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  loadingContainerText: {
-    color: "dodgerblue",
-    fontSize: 25,
-  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -135,9 +152,7 @@ const styles = StyleSheet.create({
   },
   addButtonContainer: {
     width: "70%",
-    // marginTop: 5,
     alignItems: "center",
-    backgroundColor: colors.successLight,
     borderRadius: 20,
   },
   listContainer: {

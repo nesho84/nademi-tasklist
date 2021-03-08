@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
+import colors from "../config/colors";
 import {
   StyleSheet,
   View,
@@ -9,6 +11,9 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 
 export default function AppModal(props) {
+  // Contexts
+  const { isLightTheme } = useContext(ThemeContext);
+
   return (
     <Modal
       onShow={() => props.inputRef.current.focus()}
@@ -16,7 +21,12 @@ export default function AppModal(props) {
       visible={props.modalVisible}
     >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.modalContainer}>
+        <View
+          style={[
+            styles.modalContainer,
+            { backgroundColor: isLightTheme ? "#F3F3F3" : colors.dark },
+          ]}
+        >
           <MaterialIcons
             style={styles.closeIcon}
             name="close"
@@ -36,7 +46,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#F3F3F3",
   },
   closeIcon: {
     position: "absolute",

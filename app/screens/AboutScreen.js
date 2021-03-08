@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,10 +7,21 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function AboutScreen({ route, navigation }) {
+  // Contexts
+  const { isLightTheme, themes } = useContext(ThemeContext);
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: isLightTheme ? "#fff" : themes.dark.background,
+        },
+      ]}
+    >
       <Image style={styles.logo} source={require("../assets/nademi.png")} />
       <Text style={styles.title}>nademi-tasklist</Text>
       <Text style={styles.versionText}>Version 2.0.9</Text>

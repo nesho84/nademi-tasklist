@@ -41,7 +41,6 @@ export default function ThemeContextProvider(props) {
     try {
       let storageisLightTheme = await AsyncStorage.getItem(themeKey);
       storageisLightTheme = JSON.parse(storageisLightTheme);
-      console.log(storageisLightTheme);
 
       if (storageisLightTheme !== null) {
         setIsLightTheme(storageisLightTheme);
