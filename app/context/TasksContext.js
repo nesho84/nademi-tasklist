@@ -34,6 +34,7 @@ export default function TasksContextProvider(props) {
         },
         ...tasks,
       ];
+
       // Update Storage
       writeToStorage(tasksKey, newTask);
       // Then set the new state

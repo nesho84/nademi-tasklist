@@ -66,7 +66,7 @@ export default function SettingsScreen(props) {
           <Icon
             color={isLightTheme ? colors.dark : colors.lightDodgerBlue}
             type="FontAwesome5"
-            size={35}
+            size={40}
             name={isLightTheme ? "toggle-off" : "toggle-on"}
             onPress={toggleTheme}
           />

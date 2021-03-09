@@ -8,24 +8,25 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 
-export default function AddInput(props) {
-  const [text, setText] = useState("");
+export default function TaskEdit(props) {
+  const [text, setText] = useState(props.taskToEdit.name.toString());
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add new Task</Text>
+      <Text style={styles.title}>Edit Task</Text>
       <TextInput
         ref={props.inputRef}
         onChangeText={(text) => setText(text)}
         style={styles.input}
         multiline
         placeholder="Enter text..."
+        value={text.toString()}
       />
       <TouchableOpacity
-        style={styles.btnAdd}
-        onPress={() => props.handleAdd(text)}
+        style={styles.btnEdit}
+        onPress={() => props.handleEdit(props.taskToEdit.key, text)}
       >
-        <Text style={styles.btnAddInput}>SAVE</Text>
+        <Text style={styles.btnEditInput}>SAVE</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btnCancel}
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 25,
-    color: "#A93238",
+    color: colors.danger,
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
@@ -61,11 +62,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
   },
-  btnAdd: {
+  btnEdit: {
     backgroundColor: colors.success,
     padding: 11,
   },
-  btnAddInput: {
+  btnEditInput: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 18,

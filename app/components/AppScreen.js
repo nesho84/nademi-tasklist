@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { StyleSheet, View, StatusBar } from "react-native";
-import { ThemeContext } from "../context/ThemeContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ThemeContext } from "../context/ThemeContext";
+import colors from "../config/colors";
 
 function Screen({ children }) {
   // Contexts
-  const { isLightTheme, themes, toggleTheme } = useContext(ThemeContext);
+  const { isLightTheme } = useContext(ThemeContext);
 
   return (
     <SafeAreaProvider>
@@ -13,9 +14,7 @@ function Screen({ children }) {
         <View style={styles.view}>{children}</View>
       </View>
       <StatusBar
-        backgroundColor={
-          isLightTheme ? themes.light.background : themes.dark.background
-        }
+        backgroundColor={isLightTheme ? colors.dodgerblue : colors.dark}
       />
     </SafeAreaProvider>
   );

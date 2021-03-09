@@ -7,10 +7,10 @@ export const ThemeContext = createContext();
 const themes = {
   light: {
     foreground: colors.light,
-    background: "dodgerblue",
+    background: colors.dodgerblue,
   },
   dark: {
-    foreground: colors.dark,
+    foreground: colors.light,
     background: colors.dark,
   },
 };
@@ -18,7 +18,6 @@ const themes = {
 export default function ThemeContextProvider(props) {
   const [isLightTheme, setIsLightTheme] = useState(true);
 
-  // @TODO: save theme in storage and load with useEffect
   let themeKey = "@Theme_Key";
 
   // Toggle theme
@@ -52,7 +51,7 @@ export default function ThemeContextProvider(props) {
     }
   };
 
-  // Clear stoage or Remove all items from storage
+  // Clear theme from the Storage
   const clearTheme = async () => {
     try {
       await AsyncStorage.removeItem(themeKey);
@@ -64,13 +63,13 @@ export default function ThemeContextProvider(props) {
   useEffect(() => {
     // clearTheme();
 
-    let mounted = true;
+    // let mounted = true;
 
     loadTheme();
 
-    return function cleanup() {
-      mounted = false;
-    };
+    // return function cleanup() {
+    //   mounted = false;
+    // };
   }, []);
 
   return (

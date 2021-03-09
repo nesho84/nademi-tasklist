@@ -26,7 +26,7 @@ export default function App() {
     }
   };
 
-  // Save updated in the storage
+  // Save updated notification in the storage
   const registerUpdate = async () => {
     try {
       await AsyncStorage.setItem("@Update_Key", "yes");
@@ -74,12 +74,12 @@ export default function App() {
 
   return (
     // Context Providers -> DrawerNavigator -> MainNavigator
-    <TasksContextProvider>
-      <ThemeContextProvider>
-        <NavigationContainer>
+    <NavigationContainer>
+      <TasksContextProvider>
+        <ThemeContextProvider>
           <DrawerNavigator />
-        </NavigationContainer>
-      </ThemeContextProvider>
-    </TasksContextProvider>
+        </ThemeContextProvider>
+      </TasksContextProvider>
+    </NavigationContainer>
   );
 }

@@ -16,7 +16,7 @@ export default function AppModal(props) {
 
   return (
     <Modal
-      onShow={() => props.inputRef.current.focus()}
+      onShow={() => props.inputRef && props.inputRef.current.focus()}
       animationType="slide"
       visible={props.modalVisible}
     >
@@ -51,5 +51,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 25,
     right: 25,
+    color: colors.danger,
+    zIndex: 2,
   },
 });

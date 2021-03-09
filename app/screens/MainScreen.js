@@ -1,50 +1,29 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { TasksContext } from "../context/TasksContext";
 import { ThemeContext } from "../context/ThemeContext";
-// header Elements
-import { Divider } from "react-native-elements";
 import { MaterialIcons } from "@expo/vector-icons";
 // Custom colos Object
 import colors from "../config/colors";
 // Custom Components
 import AppScreen from "../components/AppScreen";
-import AppList from "../components/AppList";
-import AppModal from "../components/AppModal";
-import AddInput from "../components/AddInput";
-import EditInput from "../components/EditInput";
 import AppNavbar from "../components/AppNavbar";
+import AppLoading from "../components/AppLoading";
+import AppModal from "../components/AppModal";
+import TasksLabel from "../components/TasksLabel";
+import TasksList from "../components/AppList";
+import TaskAdd from "../components/TaskAdd";
 
 export default function MainScreen(props) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalAction, setModalAction] = useState("");
-  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [addModalVisible, setAddModalVisible] = useState(false);
   // Contexts
   const { isLightTheme, themes } = useContext(ThemeContext);
-  const { loading, inputRef, addTask, editTask } = useContext(TasksContext);
-
-  // Open modal for add or edit Task
-  const handleModalAction = (task, action) => {
-    if (action === "add") {
-      setModalAction("add");
-    } else {
-      setModalAction("edit");
-      setTaskToEdit(task);
-    }
-    setModalVisible(true);
-  };
+  const { loading, inputRef, addTask } = useContext(TasksContext);
 
   // Handle Add Task
   const handleAdd = (text) => {
     if (addTask(text)) {
-      setModalVisible(false);
-    }
-  };
-
-  // Handle Edit Task
-  const handleEdit = (key, text) => {
-    if (editTask(key, text)) {
-      setModalVisible(false);
+      setAddModalVisible(false);
     }
   };
 
@@ -52,25 +31,9 @@ export default function MainScreen(props) {
     <AppScreen>
       <AppNavbar />
 
-      {/* -----Loading state START----- */}
       {loading ? (
-        <View
-          style={[
-            styles.loadingContainer,
-            {
-              backgroundColor: isLightTheme ? colors.light : colors.dark,
-            },
-          ]}
-        >
-          <Text
-            style={{
-              fontSize: 30,
-              color: isLightTheme ? colors.muted : colors.light,
-            }}
-          >
-            Loading...
-          </Text>
-        </View>
+        // -----Loading state-----
+        <AppLoading />
       ) : (
         // -----Main View START-----
         <View
@@ -83,35 +46,14 @@ export default function MainScreen(props) {
             },
           ]}
         >
-          <AppModal
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            inputRef={inputRef}
-          >
-            {modalAction === "add" ? (
-              <AddInput
-                handleAdd={handleAdd}
-                inputRef={inputRef}
-                setModalVisible={setModalVisible}
-              />
-            ) : (
-              <EditInput
-                taskToEdit={taskToEdit}
-                handleEdit={handleEdit}
-                inputRef={inputRef}
-                setModalVisible={setModalVisible}
-              />
-            )}
-          </AppModal>
-
           {/* -----Tasks List START----- */}
           <View style={styles.listContainer}>
-            <AppList handleModalAction={handleModalAction} />
+            <TasksList />
+            {/* <TasksLabel /> */}
           </View>
           {/* -----Tasks List END----- */}
 
-          <Divider style={styles.nativeDivider} />
-
+          <View style={styles.divider}></View>
           <TouchableOpacity
             // Add Button
             style={[
@@ -119,19 +61,29 @@ export default function MainScreen(props) {
               {
                 backgroundColor: isLightTheme
                   ? colors.successLight
-                  : colors.addButtonDark,
+                  : colors.darkGrey,
               },
             ]}
-            onPress={() => handleModalAction(null, "add")}
+            onPress={() => setAddModalVisible(true)}
           >
-            <View>
-              <MaterialIcons name="add-circle" size={45} color="white" />
-            </View>
+            <MaterialIcons name="add-circle" size={40} color="white" />
           </TouchableOpacity>
         </View>
         // -----Main View END-----
       )}
-      {/* -----Loading state END----- */}
+
+      {/* Add Task Modal */}
+      <AppModal
+        modalVisible={addModalVisible}
+        setModalVisible={setAddModalVisible}
+        inputRef={inputRef}
+      >
+        <TaskAdd
+          handleAdd={handleAdd}
+          inputRef={inputRef}
+          setModalVisible={setAddModalVisible}
+        />
+      </AppModal>
     </AppScreen>
   );
 }
@@ -144,26 +96,25 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "dodgerblue",
+    justifyContent: "center",
     paddingTop: 10,
     paddingBottom: 5,
+  },
+  listContainer: {
+    flex: 1,
+    marginHorizontal: 11,
+    alignItems: "center",
   },
   addButtonContainer: {
     width: "70%",
     alignItems: "center",
     borderRadius: 20,
   },
-  listContainer: {
-    flex: 1,
-    width: "90%",
-    alignItems: "center",
-  },
-  nativeDivider: {
+  divider: {
     width: "100%",
-    height: 0.2,
-    backgroundColor: colors.light,
-    marginVertical: 5,
+    borderTopColor: colors.light,
+    borderTopWidth: 0.2,
+    paddingBottom: 5,
   },
 });

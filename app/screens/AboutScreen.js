@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { ThemeContext } from "../context/ThemeContext";
 
-export default function AboutScreen({ route, navigation }) {
+export default function AboutScreen(props) {
   // Contexts
   const { isLightTheme, themes } = useContext(ThemeContext);
 
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
   },
   logo: {
     marginBottom: 10,

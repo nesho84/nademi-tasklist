@@ -6,11 +6,6 @@ import { useNavigation } from "@react-navigation/native";
 export default function AppPopup(props) {
   const navigation = useNavigation();
 
-  const items = [
-    { screen: "Settings", label: "Settings", visible: true },
-    // { screen: "About", label: "About", visible: true },
-  ];
-
   const handleOnSelect = (item) => {
     navigation.navigate(item.screen, {
       itemId: item.screen,
@@ -20,7 +15,10 @@ export default function AppPopup(props) {
 
   return (
     <SimplePopupMenu
-      items={items}
+      items={[
+        { screen: "Settings", label: "Settings", visible: true },
+        // { screen: "About", label: "About", visible: true },
+      ]}
       onSelect={handleOnSelect}
       onCancel={() => {}}
     >
@@ -29,6 +27,7 @@ export default function AppPopup(props) {
         type="material-community"
         color="#fff"
         size={30}
+        containerStyle={{ marginRight: -1 }}
       />
     </SimplePopupMenu>
   );

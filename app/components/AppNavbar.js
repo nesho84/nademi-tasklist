@@ -7,7 +7,7 @@ import AppPopup from "./AppPopup";
 
 export default function AppNavbar() {
   // Contexts
-  const { isLightTheme, themes, toggleTheme } = useContext(ThemeContext);
+  const { isLightTheme, themes } = useContext(ThemeContext);
 
   const navigation = useNavigation();
   return (

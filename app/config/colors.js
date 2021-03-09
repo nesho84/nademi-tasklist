@@ -19,6 +19,7 @@ export default {
   checkedItemText: "#A9CDF9",
   checkedItemTextDark: "#5B697B",
   lightSkyBlue: "#82CAFA",
+  dodgerblue: "dodgerblue",
   lightDodgerBlue: "#47A3FF",
-  addButtonDark: "#575E66",
+  darkGrey: "#575E66",
 };
