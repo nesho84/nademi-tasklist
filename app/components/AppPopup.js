@@ -1,6 +1,6 @@
 import React from "react";
 import SimplePopupMenu from "react-native-simple-popup-menu";
-import { Icon } from "react-native-elements";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 export default function AppPopup(props) {
@@ -19,15 +19,15 @@ export default function AppPopup(props) {
         { screen: "Settings", label: "Settings", visible: true },
         // { screen: "About", label: "About", visible: true },
       ]}
-      onSelect={handleOnSelect}
+      onSelect={(item) => handleOnSelect(item)}
       onCancel={() => {}}
     >
-      <Icon
+      <MaterialCommunityIcons
         name="dots-vertical"
         type="material-community"
         color="#fff"
         size={30}
-        containerStyle={{ marginRight: -1 }}
+        style={{ marginRight: -5 }}
       />
     </SimplePopupMenu>
   );

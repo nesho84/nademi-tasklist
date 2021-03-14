@@ -1,115 +1,170 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
 import { v4 as uuidv4 } from "uuid";
 
 export const TasksContext = createContext();
 
 export default function TasksContextProvider(props) {
   const [loading, setloading] = useState(true);
-  const [tasks, setTasks] = useState([]);
+  const [labels, setLabels] = useState([]);
 
-  // Trick to show Keyboard on input focus
+  // Show Keyboard on TextInput focus
   const inputRef = useRef();
 
-  const tasksKey = "@TaskList_Key";
+  const storageKey = "@TaskList_Key";
 
-  // Handling Add item function
-  const addTask = (text) => {
-    if (text.length < 3) {
-      Alert.alert(
-        "Required field",
-        "Please insert at least 3 charachters.",
-        [{ text: "OK" }],
-        { cancelable: false }
-      );
-      return false;
-    } else {
-      const newTask = [
-        {
-          key: uuidv4(),
-          name: text,
-          date: new Date(),
-          checked: false,
-        },
-        ...tasks,
-      ];
-
-      // Update Storage
-      writeToStorage(tasksKey, newTask);
-      // Then set the new state
-      setTasks(newTask);
-
-      return true;
-    }
+  // Add Label
+  const addLabel = (text, color) => {
+    const newLabel = [
+      {
+        key: uuidv4(),
+        title: text,
+        color: color,
+        category: "",
+        tasks: [],
+      },
+      ...labels,
+    ];
+    // Update Storage
+    writeToStorage(storageKey, newLabel);
+    // Then set the new state
+    setLabels(newLabel);
   };
 
-  // Edit item from the state and update the storage
-  const editTask = (taskKey, taskName) => {
-    if (taskName.length < 3) {
-      Alert.alert(
-        "Required field",
-        "Please insert at least 3 charachters.",
-        [{ text: "OK" }],
-        { cancelable: false }
-      );
-      return false;
-    } else {
-      // Update tasks array of objects using 'map' / edit name
-      let updatedTasks = tasks.map((task) =>
-        task.key === taskKey ? { ...task, name: taskName } : task
-      );
-      // Update Storage
-      writeToStorage(tasksKey, updatedTasks);
-      // Then set the new state
-      setTasks(updatedTasks);
+  // Add Task
+  const addTask = (labelKey, taskName) => {
+    let newTask = {
+      key: uuidv4(),
+      name: taskName,
+      date: new Date(),
+      checked: false,
+    };
 
-      return true;
-    }
-  };
-
-  // Change to checked or unchecked item from the state and update the storage
-  const checkUncheckTask = (taskKey) => {
-    // Update tasks array of objects using 'map' / toggle value 'checked'
-    let updatedTasks = tasks.map((task) =>
-      task.key === taskKey ? { ...task, checked: !task.checked } : task
+    const updatedLabel = labels.map((label) =>
+      label.key === labelKey
+        ? { ...label, tasks: [newTask, ...label.tasks] }
+        : label
     );
     // Update Storage
-    writeToStorage(tasksKey, updatedTasks);
+    writeToStorage(storageKey, updatedLabel);
     // Then set the new state
-    setTasks(updatedTasks);
+    setLabels(updatedLabel);
+  };
+
+  // Edit Task
+  const editTask = (taskKey, input) => {
+    // const updatedLabels = [];
+    // for (let label of labels) {
+    //   for (let task of label.tasks) {
+    //     if (taskKey === task.key) {
+    //       task.name = input;
+    //     }
+    //   }
+    //   updatedLabels.push(label);
+    // }
+    const updatedLabels = labels.map((label) => {
+      label.tasks.map((task) => task.key === taskKey && (task.name = input));
+      return label;
+    });
+
+    // Update Storage
+    writeToStorage(storageKey, updatedLabels);
+    // Then set the new state
+    setLabels(updatedLabels);
+  };
+
+  // Edit label
+  const editLabel = (labelKey, input, color) => {
+    const updatedLabel = labels.map((label) =>
+      label.key === labelKey ? { ...label, title: input, color: color } : label
+    );
+    // Update Storage
+    writeToStorage(storageKey, updatedLabel);
+    // Then set the new state
+    setLabels(updatedLabel);
+  };
+
+  // Delete a single Label from the Storage
+  const deleteLabel = (labelKey) => {
+    const updatedLabels = labels.filter((label) => label.key !== labelKey);
+
+    // // Update Storage
+    // writeToStorage(storageKey, updatedLabels);
+    // Then set the new state
+    setLabels(updatedLabels);
+  };
+
+  // Delete a single task from the Storage
+  const deleteTask = (taskKey) => {
+    // const updatedLabels = [];
+    // for (let label of labels) {
+    //   label.tasks = label.tasks.filter((task) => taskKey !== task.key);
+    //   updatedLabels.push(label);
+    // }
+
+    let updatedLabels = labels.map((lab) => {
+      lab.tasks = lab.tasks.filter((task) => taskKey !== task.key);
+      return lab;
+    });
+    // Update Storage
+    writeToStorage(storageKey, updatedLabels);
+    // Then set the new state
+    setLabels(updatedLabels);
+  };
+
+  // Change to checked or unchecked
+  const checkUncheckTask = (taskKey) => {
+    let updatedLabels = labels.map((lab) => {
+      lab.tasks.map(
+        (task) => taskKey === task.key && (task.checked = !task.checked)
+      );
+      return lab;
+    });
+
+    // Update Storage
+    writeToStorage(storageKey, updatedLabels);
+    // Then set the new state
+    setLabels(updatedLabels);
+  };
+
+  // Ordering Labels with drag and drop
+  const orderLabels = (orderedTasks) => {
+    // Update Storage
+    writeToStorage(storageKey, orderedTasks);
+    // Then set the new state
+    setLabels(orderedTasks);
   };
 
   // Ordering Tasks with drag and drop
-  const orderTasks = (orderedTasks) => {
-    let unCheckedTasks = tasks.filter((task) => task.checked === false);
-    let checkedTasks = tasks.filter((task) => task.checked === true);
+  const orderTasks = (labelKey, orderedTasks) => {
+    const updatedLabel = [];
 
-    orderedTasks.map((task) => {
-      // If the order of unchecked tasks was changed
-      if (task.checked === false) {
-        // Update Storage
-        writeToStorage(tasksKey, [...orderedTasks, ...checkedTasks]);
-        // Then set the new state
-        setTasks([...orderedTasks, ...checkedTasks]);
-      }
-      // If the order of checked tasks was changed
-      else if (task.checked === true) {
-        // Update Storage
-        writeToStorage(tasksKey, [...orderedTasks, ...unCheckedTasks]);
-        // Then set the new state
-        setTasks([...orderedTasks, ...unCheckedTasks]);
-      }
-    });
-  };
+    for (let label of labels) {
+      if (labelKey === label.key) {
+        // Filter uncheched
+        let unCheckedTasks = label.tasks.filter(
+          (task) => task.checked === false
+        );
+        // Filter checked
+        let checkedTasks = label.tasks.filter((task) => task.checked === true);
 
-  // Delete item from the state and update the storage
-  const deleteTask = (taskKey) => {
-    const filteredTasks = tasks.filter((task) => task.key !== taskKey);
+        orderedTasks.map((task) => {
+          // If the order of unchecked tasks was changed
+          if (task.checked === false) {
+            label.tasks = [...orderedTasks, ...checkedTasks];
+          }
+          // If the order of checked tasks was changed
+          else if (task.checked === true) {
+            label.tasks = [...orderedTasks, ...unCheckedTasks];
+          }
+        });
+      }
+      updatedLabel.push(label);
+    }
     // Update Storage
-    writeToStorage(tasksKey, filteredTasks);
+    writeToStorage(storageKey, updatedLabel);
     // Then set the new state
-    setTasks(filteredTasks);
+    setLabels(updatedLabel);
   };
 
   // Write to the storage
@@ -117,43 +172,43 @@ export default function TasksContextProvider(props) {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(item));
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
 
   // Clear stoage or Remove all items from storage
   const clearAllTasks = async () => {
     try {
-      await AsyncStorage.removeItem(tasksKey);
+      await AsyncStorage.removeItem(storageKey);
       // set state
-      setTasks([]);
+      setLabels([]);
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
 
-  // Read from storage
-  const loadTasks = async () => {
+  // Get Labels from Storage
+  const loadLabels = async () => {
     try {
-      let storageTasks = await AsyncStorage.getItem(tasksKey);
+      let storageTasks = await AsyncStorage.getItem(storageKey);
       storageTasks = JSON.parse(storageTasks);
 
       if (storageTasks !== null) {
-        setTasks(storageTasks);
+        setLabels(storageTasks);
       }
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
 
   useEffect(() => {
+    // addLabel(1);
+
     let mounted = true;
 
-    loadTasks().then(() => {
-      if (mounted) {
-        setloading(false);
-      }
-    });
+    if (mounted) {
+      loadLabels().then(() => setloading(false));
+    }
 
     return function cleanup() {
       mounted = false;
@@ -164,13 +219,17 @@ export default function TasksContextProvider(props) {
     <TasksContext.Provider
       value={{
         loading,
-        tasks,
         inputRef,
+        labels,
+        addLabel,
+        editLabel,
+        deleteLabel,
+        orderLabels,
         addTask,
         editTask,
+        deleteTask,
         checkUncheckTask,
         orderTasks,
-        deleteTask,
         clearAllTasks,
       }}
     >

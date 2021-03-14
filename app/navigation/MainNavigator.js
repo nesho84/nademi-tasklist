@@ -5,7 +5,8 @@ import {
   HeaderStyleInterpolators,
 } from "@react-navigation/stack";
 
-import MainScreen from "../screens/MainScreen";
+import LabelsScreen from "../screens/LabelsScreen";
+import LabelDetailsScreen from "../screens/LabelDetails";
 import AboutScreen from "../screens/AboutScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 
@@ -17,19 +18,34 @@ export default function MainStackNavigator() {
 
   return (
     <Stack.Navigator
-      initialRouteName="Main"
-      mode="card"
+      initialRouteName="Labels"
+      mode="modal"
       screenOptions={{
-        headerStyle: { backgroundColor: "dodgerblue" },
         headerTintColor: "white",
       }}
     >
       <Stack.Screen
-        name="Main"
-        component={MainScreen}
+        name="Labels"
+        component={LabelsScreen}
         options={{
           headerShown: false,
         }}
+      />
+      <Stack.Screen
+        name="Label-Details"
+        component={LabelDetailsScreen}
+        options={({ route }) => ({
+          // title: route.params.label.title,
+          title: "",
+          headerTitleContainerStyle: { paddingVertical: 5 },
+          headerStyle: {
+            backgroundColor: isLightTheme
+              ? themes.light.background
+              : themes.dark.background,
+          },
+          gestureDirection: "horizontal",
+          headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
+        })}
       />
       <Stack.Screen
         name="About"

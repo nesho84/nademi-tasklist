@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { StyleSheet, View, Text, Button, Alert } from "react-native";
-import { Icon } from "react-native-elements";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import { ThemeContext } from "../context/ThemeContext";
 import { TasksContext } from "../context/TasksContext";
@@ -8,10 +8,10 @@ import { TasksContext } from "../context/TasksContext";
 export default function SettingsScreen(props) {
   // Contexts
   const { isLightTheme, toggleTheme } = useContext(ThemeContext);
-  const { tasks, clearAllTasks } = useContext(TasksContext);
+  const { labels, clearAllTasks } = useContext(TasksContext);
 
   const handleDeleteAll = () => {
-    if (tasks.length === 0) {
+    if (labels.length === 0) {
       Alert.alert(
         "",
         "Nothing to delete.",
@@ -63,11 +63,11 @@ export default function SettingsScreen(props) {
         <Text style={styles.title}>DISPLAY OPTIONS</Text>
         <View style={styles.actionContainer}>
           <Text style={styles.action}>Theme</Text>
-          <Icon
+          <MaterialCommunityIcons
             color={isLightTheme ? colors.dark : colors.lightDodgerBlue}
             type="FontAwesome5"
             size={40}
-            name={isLightTheme ? "toggle-off" : "toggle-on"}
+            name={isLightTheme ? "toggle-switch-off" : "toggle-switch"}
             onPress={toggleTheme}
           />
         </View>

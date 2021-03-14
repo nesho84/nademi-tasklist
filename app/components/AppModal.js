@@ -16,7 +16,7 @@ export default function AppModal(props) {
 
   return (
     <Modal
-      onShow={() => props.inputRef && props.inputRef.current.focus()}
+      onShow={() => (props.inputRef ? props.inputRef.current.focus() : {})}
       animationType="slide"
       visible={props.modalVisible}
     >
@@ -24,14 +24,14 @@ export default function AppModal(props) {
         <View
           style={[
             styles.modalContainer,
-            { backgroundColor: isLightTheme ? "#F3F3F3" : colors.dark },
+            { backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark },
           ]}
         >
           <MaterialIcons
             style={styles.closeIcon}
             name="close"
-            size={45}
-            color="#A93238"
+            size={35}
+            color={colors.light}
             onPress={() => props.setModalVisible(false)}
           />
           {props.children}
@@ -49,9 +49,8 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     position: "absolute",
-    top: 25,
-    right: 25,
-    color: colors.danger,
+    top: 10,
+    right: 10,
     zIndex: 2,
   },
 });

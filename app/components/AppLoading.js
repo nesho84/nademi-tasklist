@@ -1,13 +1,9 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { ThemeContext } from "../context/ThemeContext";
 // Custom colos Object
 import colors from "../config/colors";
 
-export default function AppLoading() {
-  // Contexts
-  const { isLightTheme } = useContext(ThemeContext);
-
+export default function AppLoading({ isLightTheme }) {
   return (
     <View
       style={[

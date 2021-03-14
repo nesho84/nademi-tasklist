@@ -5,27 +5,40 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
-import colors from "../config/colors";
+import colors from "../../config/colors";
 
-export default function TaskAdd(props) {
-  const [text, setText] = useState("");
+export default function EditTask(props) {
+  const [input, setInput] = useState(props.taskToEdit.name.toString());
+
+  const handleEdit = () => {
+    if (input.length < 1) {
+      Alert.alert(
+        "Required field",
+        "Please insert at least 3 charachters.",
+        [{ text: "OK" }],
+        { cancelable: false }
+      );
+      return false;
+    } else {
+      props.handleEditTask(props.taskToEdit.key, input);
+      setInput("");
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add new Task</Text>
+      <Text style={styles.title}>Edit Task</Text>
       <TextInput
-        ref={props.inputRef}
-        onChangeText={(text) => setText(text)}
+        onChangeText={(text) => setInput(text)}
         style={styles.input}
         multiline
         placeholder="Enter text..."
+        value={input}
       />
-      <TouchableOpacity
-        style={styles.btnAdd}
-        onPress={() => props.handleAdd(text)}
-      >
-        <Text style={styles.btnAddInput}>SAVE</Text>
+      <TouchableOpacity style={styles.btnEdit} onPress={handleEdit}>
+        <Text style={styles.btnEditInput}>SAVE</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btnCancel}
@@ -61,11 +74,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 5,
   },
-  btnAdd: {
+  btnEdit: {
     backgroundColor: colors.success,
     padding: 11,
   },
-  btnAddInput: {
+  btnEditInput: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 18,

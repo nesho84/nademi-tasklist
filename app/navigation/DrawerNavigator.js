@@ -1,8 +1,8 @@
-import React, { useEffect, useContext } from "react";
-import { BackHandler, Alert, Text, View } from "react-native";
+import React, { useContext } from "react";
+import { Text, View } from "react-native";
 import Constants from "expo-constants";
 import { ThemeContext } from "../context/ThemeContext";
-import { Icon } from "react-native-elements";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import {
   createDrawerNavigator,
@@ -12,34 +12,16 @@ import {
 } from "@react-navigation/drawer";
 import { DrawerActions } from "@react-navigation/routers";
 import MainNavigator from "./MainNavigator";
+import useAppExit from "../hooks/useAppExit";
 
 function CustomDrawerContent(props) {
+  // Custom Theme Context
   const { isLightTheme, themes } = useContext(ThemeContext);
+  // confirm Exit application custom Hook
+  const { exitApp } = useAppExit();
 
-  // confirm Exit application
-  const exitApp = () => {
-    Alert.alert("Hold on!", "Are you sure you want to go exit?", [
-      { text: "Yes", onPress: () => BackHandler.exitApp() },
-      {
-        text: "Cancel",
-        onPress: () => null,
-        style: "cancel",
-      },
-    ]);
-    return true;
-  };
-
-  useEffect(() => {
-    // Exit app Handler
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      exitApp
-    );
-    return () => backHandler.remove();
-  }, []);
-
-  // Drawer links or items
   return (
+    // Drawer links or items
     <>
       {/* Navigation Header */}
       <View
@@ -59,7 +41,7 @@ function CustomDrawerContent(props) {
         <Text style={{ fontSize: 18, fontWeight: "bold", color: colors.light }}>
           Simple Tasklist
         </Text>
-        <Icon
+        <MaterialCommunityIcons
           name="arrow-left"
           type="material-community"
           color={colors.light}
@@ -84,7 +66,7 @@ function CustomDrawerContent(props) {
             fontWeight: "bold",
           }}
           icon={({ focused, color, size }) => (
-            <Icon
+            <MaterialCommunityIcons
               color={colors.light}
               type="material-community"
               size={size}
@@ -98,7 +80,7 @@ function CustomDrawerContent(props) {
           labelStyle={{ color: colors.light, fontSize: 17, fontWeight: "bold" }}
           onPress={() => exitApp()}
           icon={({ focused, color, size }) => (
-            <Icon
+            <MaterialCommunityIcons
               color={colors.light}
               type="material-community"
               size={size}
@@ -117,6 +99,7 @@ export default function DrawerNavigator() {
   const { isLightTheme, themes } = useContext(ThemeContext);
 
   return (
+    // Drawer Screens
     <Drawer.Navigator
       drawerContentOptions={{
         style: {
@@ -133,7 +116,7 @@ export default function DrawerNavigator() {
         component={MainNavigator}
         options={{
           drawerIcon: ({ focused, color, size }) => (
-            <Icon
+            <MaterialCommunityIcons
               color={colors.light}
               type="material-community"
               size={size}

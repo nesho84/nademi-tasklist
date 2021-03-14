@@ -10,6 +10,7 @@ export default function AppNavbar() {
   const { isLightTheme, themes } = useContext(ThemeContext);
 
   const navigation = useNavigation();
+
   return (
     <View>
       <Header

@@ -63,13 +63,13 @@ export default function ThemeContextProvider(props) {
   useEffect(() => {
     // clearTheme();
 
-    // let mounted = true;
+    let mounted = true;
 
     loadTheme();
 
-    // return function cleanup() {
-    //   mounted = false;
-    // };
+    return function cleanup() {
+      mounted = false;
+    };
   }, []);
 
   return (
