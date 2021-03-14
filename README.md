@@ -1,1 +1,1 @@
-# Simple-TaskList with React-Native
+# Task Manager App with React-Native
