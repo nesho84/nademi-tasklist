@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   divider: {
     alignSelf: "stretch",
     borderTopColor: colors.light,
-    borderTopWidth: 0.2,
+    borderTopWidth: 1,
   },
   addButtonContainer: {
     alignItems: "center",

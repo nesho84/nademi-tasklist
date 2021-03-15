@@ -38,7 +38,7 @@ export default function useAppUpdate() {
     if (item !== null) {
       Alert.alert(
         "Update Success",
-        "Update was successful. You can now use your updated nademi-tasklist.",
+        "Update was successful. Notice: Because this is the new Release, if your app does not load, please clear the cache and data (old data will be removed!) and reload!",
         [
           {
             text: "OK",

@@ -50,7 +50,7 @@ export default function LabelsList({
             {/* EditLabel Icon */}
             <MaterialCommunityIcons
               name="playlist-edit"
-              size={25}
+              size={32}
               color={colors.light}
               onPress={() => handleEditModal(item)}
             />
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   labelBoxTitle: {
     flexShrink: 1,
     paddingVertical: 5,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "600",
     color: colors.light,
   },

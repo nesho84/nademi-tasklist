@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { ThemeContext } from "../context/ThemeContext";
 import { Header, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import colors from "../config/colors";
 import AppPopup from "./AppPopup";
 
 export default function AppNavbar() {
@@ -29,9 +30,9 @@ export default function AppNavbar() {
         }}
         rightComponent={<AppPopup />}
         containerStyle={{
-          backgroundColor: isLightTheme
-            ? themes.light.background
-            : themes.dark.background,
+          backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark,
+          borderBottomColor: colors.light,
+          borderBottomWidth: 1,
         }}
       />
     </View>
