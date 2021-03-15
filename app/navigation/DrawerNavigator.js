@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Text, View } from "react-native";
+import { View, Image } from "react-native";
 import Constants from "expo-constants";
 import { ThemeContext } from "../context/ThemeContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -16,41 +16,36 @@ import useAppExit from "../hooks/useAppExit";
 
 function CustomDrawerContent(props) {
   // Custom Theme Context
-  const { isLightTheme, themes } = useContext(ThemeContext);
+  const { isLightTheme } = useContext(ThemeContext);
   // confirm Exit application custom Hook
   const { exitApp } = useAppExit();
 
   return (
-    // Drawer links or items
     <>
-      {/* Navigation Header */}
+      {/* -----Navigation Header START----- */}
       <View
         style={{
           backgroundColor: isLightTheme
-            ? themes.light.background
-            : themes.dark.background,
+            ? colors.lightDodgerBlue
+            : colors.lightDodgerBlue,
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "center",
           marginTop: Constants.statusBarHeight,
+          minHeight: 160,
           padding: 10,
           borderBottomWidth: 1,
-          borderBottomColor: colors.muted,
+          borderBottomColor: colors.light,
         }}
       >
-        <Text style={{ fontSize: 18, fontWeight: "bold", color: colors.light }}>
-          Simple Tasklist
-        </Text>
-        <MaterialCommunityIcons
-          name="arrow-left"
-          type="material-community"
-          color={colors.light}
-          size={30}
-          onPress={() => props.navigation.dispatch(DrawerActions.closeDrawer())}
+        <Image
+          style={{ marginBottom: 10, width: 80, height: 80 }}
+          source={require("../assets/nademi.png")}
         />
       </View>
+      {/* -----Navigation Header END----- */}
 
-      {/* Navigation Links */}
+      {/* -----Navigation Links START----- */}
       <DrawerContentScrollView
         contentContainerStyle={{
           paddingTop: 10,
@@ -58,12 +53,13 @@ function CustomDrawerContent(props) {
         {...props}
       >
         <DrawerItemList {...props} />
+        {/* About Screen */}
         <DrawerItem
           label="About"
           labelStyle={{
             color: colors.light,
             fontSize: 17,
-            fontWeight: "bold",
+            fontWeight: "600",
           }}
           icon={({ focused, color, size }) => (
             <MaterialCommunityIcons
@@ -75,9 +71,28 @@ function CustomDrawerContent(props) {
           )}
           onPress={() => props.navigation.navigate("About")}
         />
+        {/* Setting Screen */}
+        <DrawerItem
+          label="Settings"
+          labelStyle={{
+            color: colors.light,
+            fontSize: 17,
+            fontWeight: "600",
+          }}
+          icon={({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              color={colors.light}
+              type="material-community"
+              size={size}
+              name={focused ? "information" : "information-outline"}
+            />
+          )}
+          onPress={() => props.navigation.navigate("Settings")}
+        />
+        {/* Exit app Link */}
         <DrawerItem
           label="Exit"
-          labelStyle={{ color: colors.light, fontSize: 17, fontWeight: "bold" }}
+          labelStyle={{ color: colors.light, fontSize: 17, fontWeight: "600" }}
           onPress={() => exitApp()}
           icon={({ focused, color, size }) => (
             <MaterialCommunityIcons
@@ -89,6 +104,7 @@ function CustomDrawerContent(props) {
           )}
         />
       </DrawerContentScrollView>
+      {/* -----Navigation Links END----- */}
     </>
   );
 }
@@ -99,15 +115,13 @@ export default function DrawerNavigator() {
   const { isLightTheme, themes } = useContext(ThemeContext);
 
   return (
-    // Drawer Screens
+    // -----Drawer Screens (stack navigators)-----
     <Drawer.Navigator
       drawerContentOptions={{
         style: {
-          backgroundColor: isLightTheme
-            ? themes.light.background
-            : themes.dark.background,
+          backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark,
         },
-        labelStyle: { color: colors.light, fontSize: 17, fontWeight: "bold" },
+        labelStyle: { color: colors.light, fontSize: 17, fontWeight: "600" },
       }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >

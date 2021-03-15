@@ -81,10 +81,10 @@ export default function EditLabel(props) {
       </View>
 
       <TouchableOpacity
-        style={[styles.btnAdd, { backgroundColor: labelColor }]}
+        style={[styles.btnEdit, { backgroundColor: labelColor }]}
         onPress={handleAdd}
       >
-        <Text style={styles.btnAddText}>SAVE</Text>
+        <Text style={styles.btnEditText}>SAVE</Text>
       </TouchableOpacity>
     </View>
   );
@@ -122,13 +122,14 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 5,
   },
-  btnAdd: {
+  btnEdit: {
     height: 50,
+    justifyContent: "center",
     marginTop: 20,
     padding: 11,
     borderRadius: 5,
   },
-  btnAddText: {
+  btnEditText: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 17,

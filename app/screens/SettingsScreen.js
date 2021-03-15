@@ -31,7 +31,8 @@ export default function SettingsScreen(props) {
         [
           {
             text: "Yes",
-            onPress: () => clearAllTasks(),
+            // onPress: () => clearAllTasks(),
+			onPress: () => alert("working..."),
           },
           {
             text: "No",

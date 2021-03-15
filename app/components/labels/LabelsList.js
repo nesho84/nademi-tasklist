@@ -28,31 +28,32 @@ export default function LabelsList({
         <View
           style={[
             styles.labelBox,
-            isLightTheme
-              ? {
-                  backgroundColor: item.color,
-                  borderColor: colors.primary,
-                  borderWidth: 1,
-                }
-              : {
-                  backgroundColor: item.color,
-                  borderColor: colors.muted,
-                  borderWidth: 1,
-                },
+            {
+              backgroundColor: item.color,
+              borderColor: colors.muted,
+              borderWidth: 1,
+            },
             isActive && { backgroundColor: colors.muted },
           ]}
         >
-          {/* EditLabel Icon */}
-          <MaterialCommunityIcons
-            style={styles.deleteIcon}
-            name="playlist-edit"
-            size={24}
-            color={colors.light}
-            onPress={() => handleEditModal(item)}
-          />
-
-          {/* -----Item title or text----- */}
-          <Text style={styles.labelBoxTitle}>{item.title}</Text>
+          {/* -----Item title and edit icon Container----- */}
+          <View
+            style={[
+              styles.labelBoxTitleContainer,
+              {
+                backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark,
+              },
+            ]}
+          >
+            <Text style={styles.labelBoxTitle}>{item.title}</Text>
+            {/* EditLabel Icon */}
+            <MaterialCommunityIcons
+              name="playlist-edit"
+              size={24}
+              color={colors.light}
+              onPress={() => handleEditModal(item)}
+            />
+          </View>
 
           <View style={{ alignItems: "center" }}>
             <Text style={styles.count}>{unCheckedTasksCount}</Text>
@@ -72,6 +73,7 @@ export default function LabelsList({
       {/* -----Tasks Label List START----- */}
       {labels.length > 0 ? (
         <DraggableFlatList
+          containerStyle={styles.draggableFlatListContainer}
           data={labels}
           renderItem={({ item, index, drag, isActive }) => (
             <RenderLabel
@@ -101,30 +103,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    marginTop: 7,
-    paddingHorizontal: 6,
+  },
+  draggableFlatListContainer: {
+    paddingHorizontal: 5,
+    paddingTop: 6,
   },
   labelBox: {
     alignItems: "center",
     justifyContent: "center",
-    minHeight: 200,
-    padding: 15,
+    paddingBottom: 10,
     borderRadius: 5,
     marginBottom: 7,
+  },
+  labelBoxTitleContainer: {
+    alignSelf: "stretch",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    paddingBottom: 2,
+    marginBottom: 5,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
   },
   labelBoxTitle: {
     fontSize: 24,
     fontWeight: "600",
     color: colors.light,
-    marginBottom: 5,
-  },
-  deleteIcon: {
-    position: "absolute",
-    top: 10,
-    right: 10,
   },
   count: {
-    fontSize: 48,
+    fontSize: 24,
     color: colors.light,
   },
   subtitle: {

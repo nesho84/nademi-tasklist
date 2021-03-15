@@ -38,7 +38,7 @@ export default function EditTask(props) {
         value={input}
       />
       <TouchableOpacity style={styles.btnEdit} onPress={handleEdit}>
-        <Text style={styles.btnEditInput}>SAVE</Text>
+        <Text style={styles.btnEditText}>SAVE</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btnCancel}
@@ -53,7 +53,6 @@ export default function EditTask(props) {
 const styles = StyleSheet.create({
   container: {
     width: "80%",
-    paddingTop: "20%",
   },
   title: {
     marginBottom: 25,
@@ -63,31 +62,38 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    marginBottom: 100,
-    backgroundColor: "#fff",
-    color: colors.dark,
     minHeight: 50,
-    fontSize: 16,
+    marginBottom: 1,
+    backgroundColor: colors.white,
+    color: colors.dark,
+    fontSize: 20,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.light,
     borderBottomColor: "#DEE9F3",
-    borderWidth: 1,
-    marginBottom: 15,
-    padding: 5,
+    borderRadius: 5,
+    paddingHorizontal: 15,
   },
   btnEdit: {
+    height: 50,
     backgroundColor: colors.success,
+    justifyContent: "center",
     padding: 11,
+    borderRadius: 5,
+    marginTop: 7,
   },
-  btnEditInput: {
+  btnEditText: {
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 17,
     color: "white",
   },
   btnCancel: {
+    height: 50,
     backgroundColor: colors.danger,
+    justifyContent: "center",
     padding: 11,
-    marginVertical: 8,
+    borderRadius: 5,
+    marginVertical: 5,
   },
   btnCancelText: {
     textAlign: "center",

@@ -106,7 +106,7 @@ export default function LabelDetails({ route, navigation }) {
           name="filter-variant-remove"
           size={25}
           color={colors.light}
-          style={{ marginRight: 13 }}
+          style={{ marginRight: 15 }}
           onPress={() => handleDeleteLabel(currentLabel.key)}
         />
       ),

@@ -112,21 +112,13 @@ export default function LabelsScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   divider: {
     alignSelf: "stretch",
     borderTopColor: colors.light,
     borderTopWidth: 0.2,
-    paddingBottom: 5,
   },
   addButtonContainer: {
     alignItems: "center",

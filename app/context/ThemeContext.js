@@ -16,7 +16,7 @@ const themes = {
 };
 
 export default function ThemeContextProvider(props) {
-  const [isLightTheme, setIsLightTheme] = useState(true);
+  const [isLightTheme, setIsLightTheme] = useState(false);
 
   let themeKey = "@Theme_Key";
 
