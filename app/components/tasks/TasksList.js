@@ -12,6 +12,7 @@ import CheckBox from "@react-native-community/checkbox";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { MaterialIcons } from "@expo/vector-icons";
 import TasksDivider from "./TasksDivider";
+import AppBox from "../AppBox";
 
 export default function TasksList(props) {
   // Single Task template
@@ -131,12 +132,7 @@ export default function TasksList(props) {
         </TouchableWithoutFeedback>
       ) : (
         // -----No Tasks to show-----
-        <View style={styles.noItemsContainer}>
-          <Text style={styles.noItemsText}>
-            No Tasks to show.{"\n\n"}
-            <Text>You can use the plus button (+) to create new tasks.</Text>
-          </Text>
-        </View>
+        <AppBox isLightTheme={props.isLightTheme} />
       )}
       {/* -----Unchecked Tasks END----- */}
 
@@ -191,18 +187,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     flexShrink: 1,
-  },
-  noItemsContainer: {
-    flex: 1,
-    justifyContent: "center",
-    borderColor: colors.light,
-    borderWidth: 1,
-    margin: 30,
-    padding: 30,
-  },
-  noItemsText: {
-    color: colors.light,
-    fontSize: 17,
-    textAlign: "center",
   },
 });

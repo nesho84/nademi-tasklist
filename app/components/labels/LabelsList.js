@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import colors from "../../config/colors";
+import AppBox from "../AppBox";
 
 export default function LabelsList({
   labels,
@@ -49,19 +50,27 @@ export default function LabelsList({
             {/* EditLabel Icon */}
             <MaterialCommunityIcons
               name="playlist-edit"
-              size={24}
+              size={25}
               color={colors.light}
               onPress={() => handleEditModal(item)}
             />
           </View>
 
-          <View style={{ alignItems: "center" }}>
-            <Text style={styles.count}>{unCheckedTasksCount}</Text>
-            <Text style={styles.subtitle}>Remaining</Text>
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <Text style={styles.count}>{checkedTasksCount}</Text>
-            <Text style={styles.subtitle}>Completed</Text>
+          <View
+            style={{
+              alignSelf: "stretch",
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.count}>{unCheckedTasksCount}</Text>
+              <Text style={styles.subtitle}>Remaining</Text>
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.count}>{checkedTasksCount}</Text>
+              <Text style={styles.subtitle}>Completed</Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
@@ -87,12 +96,8 @@ export default function LabelsList({
           onDragEnd={({ data }) => orderLabels(data)}
         />
       ) : (
-        <View style={styles.noItemsContainer}>
-          <Text style={styles.noItemsText}>
-            No Tasks to show.{"\n\n"}
-            <Text>You can use the plus button (+) to create new tasks.</Text>
-          </Text>
-        </View>
+        // -----No Labels to show-----
+        <AppBox isLightTheme={isLightTheme} />
       )}
       {/* -----Tasks Label List END----- */}
     </View>
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
   },
   draggableFlatListContainer: {
     paddingHorizontal: 5,
-    paddingTop: 6,
+    paddingTop: 7,
   },
   labelBox: {
     alignItems: "center",
@@ -127,7 +132,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 5,
   },
   labelBoxTitle: {
-    fontSize: 24,
+    flexShrink: 1,
+    paddingVertical: 5,
+    fontSize: 20,
     fontWeight: "600",
     color: colors.light,
   },
@@ -139,19 +146,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
     color: colors.light,
-  },
-  noItemsContainer: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: colors.light,
-    borderWidth: 1,
-    margin: 30,
-    padding: 30,
-  },
-  noItemsText: {
-    color: colors.light,
-    fontSize: 17,
-    textAlign: "center",
   },
 });

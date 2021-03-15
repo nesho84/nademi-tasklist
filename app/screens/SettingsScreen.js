@@ -8,7 +8,7 @@ import { TasksContext } from "../context/TasksContext";
 export default function SettingsScreen(props) {
   // Contexts
   const { isLightTheme, toggleTheme } = useContext(ThemeContext);
-  const { labels, clearAllTasks } = useContext(TasksContext);
+  const { labels, clearStorage } = useContext(TasksContext);
 
   const handleDeleteAll = () => {
     if (labels.length === 0) {
@@ -31,8 +31,7 @@ export default function SettingsScreen(props) {
         [
           {
             text: "Yes",
-            // onPress: () => clearAllTasks(),
-			onPress: () => alert("working..."),
+            onPress: () => clearStorage(),
           },
           {
             text: "No",
@@ -76,7 +75,7 @@ export default function SettingsScreen(props) {
       <View style={styles.menu}>
         <Text style={styles.title}>TASKS</Text>
         <View style={styles.actionContainer}>
-          <Text style={styles.action}>Delete All</Text>
+          <Text style={styles.action}>Clear Storage</Text>
           <View style={styles.deleteButton}>
             <Button
               color={colors.danger}

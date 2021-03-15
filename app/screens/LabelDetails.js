@@ -103,10 +103,10 @@ export default function LabelDetails({ route, navigation }) {
     navigation.setOptions({
       headerRight: () => (
         <MaterialCommunityIcons
-          name="filter-variant-remove"
+          name="playlist-remove"
           size={25}
           color={colors.light}
-          style={{ marginRight: 15 }}
+          style={{ marginRight: 12 }}
           onPress={() => handleDeleteLabel(currentLabel.key)}
         />
       ),

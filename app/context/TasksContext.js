@@ -177,9 +177,9 @@ export default function TasksContextProvider(props) {
   };
 
   // Clear stoage or Remove all items from storage
-  const clearAllTasks = async () => {
+  const clearStorage = async () => {
     try {
-      await AsyncStorage.removeItem(storageKey);
+      await AsyncStorage.multiRemove(["@Theme_Key", storageKey]);
       // set state
       setLabels([]);
     } catch (err) {
@@ -230,7 +230,7 @@ export default function TasksContextProvider(props) {
         deleteTask,
         checkUncheckTask,
         orderTasks,
-        clearAllTasks,
+        clearStorage,
       }}
     >
       {props.children}
