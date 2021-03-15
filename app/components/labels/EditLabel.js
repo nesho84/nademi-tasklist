@@ -7,6 +7,7 @@ import {
   View,
   Alert,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
 
 export default function EditLabel(props) {
@@ -19,20 +20,6 @@ export default function EditLabel(props) {
     "#D85963",
     "#D88559",
   ];
-
-  //   const bgColors = [
-  //     "#5c2b29",
-  //     "#60461b",
-  //     "#62561b",
-  //     "#3a5221",
-  //     "#214b46",
-  //     "#344f56",
-  //     "#273856",
-  //     "#462856",
-  //     "#5b2440",
-  //     "#482f1b",
-  //     "#413c3f",
-  //   ];
 
   const [input, setInput] = useState(props.labelToEdit.title);
   const [labelColor, setLabelColor] = useState(props.labelToEdit.color);
@@ -59,7 +46,11 @@ export default function EditLabel(props) {
           key={color}
           style={[styles.selectColor, { backgroundColor: color }]}
           onPress={() => setLabelColor(color)}
-        ></TouchableOpacity>
+        >
+          {labelColor === color && (
+            <MaterialIcons name="check" size={30} color="white" />
+          )}
+        </TouchableOpacity>
       );
     });
   };

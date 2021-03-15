@@ -7,6 +7,7 @@ import {
   View,
   Alert,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
 
 export default function AddLabel(props) {
@@ -45,7 +46,11 @@ export default function AddLabel(props) {
           key={color}
           style={[styles.selectColor, { backgroundColor: color }]}
           onPress={() => setLabelColor(color)}
-        ></TouchableOpacity>
+        >
+          {labelColor === color && (
+            <MaterialIcons name="check" size={30} color="white" />
+          )}
+        </TouchableOpacity>
       );
     });
   };
