@@ -1,31 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { Alert, BackHandler } from "react-native";
+import { LanguageContext } from "../context/LanguageContext";
 
 export default function useAppExit() {
-  const handleBackhandler = () => {
-    BackHandler.exitApp();
-  };
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
   // confirm Exit application
-  const exitApp = () => {
-    Alert.alert("Hold on!", "Are you sure you want to exit?", [
-      {
-        text: "Cancel",
-        onPress: () => null,
-        style: "cancel",
-      },
-      { text: "YES", onPress: handleBackhandler },
-    ]);
+  const backAction = () => {
+    Alert.alert(
+      `${languages.alerts.appExit.title[currentLanguage]}`,
+      `${languages.alerts.appExit.message[currentLanguage]}`,
+      [
+        {
+          text: `${languages.alerts.appExit.cancel[currentLanguage]}`,
+          onPress: () => null,
+          style: "cancel",
+        },
+        {
+          text: `${languages.alerts.appExit.yes[currentLanguage]}`,
+          onPress: () => BackHandler.exitApp(),
+        },
+      ]
+    );
     return true;
   };
 
-  useEffect(() => {
-    // Exit app Handler
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      exitApp
-    );
-    return () => backHandler.remove();
-  }, []);
-
-  return { exitApp };
+  return { backAction };
 }

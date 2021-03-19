@@ -5,33 +5,28 @@ import {
   StatusBar,
   TouchableWithoutFeedback,
   Keyboard,
+  SafeAreaView,
 } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeContext } from "../context/ThemeContext";
-import colors from "../config/colors";
 
 function Screen({ children }) {
   // Contexts
-  const { isLightTheme } = useContext(ThemeContext);
+  const { themes, currentTheme } = useContext(ThemeContext);
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaView style={styles.screen}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View
-          style={[
-            styles.screen,
-            {
-              backgroundColor: isLightTheme ? colors.white : colors.dark,
-            },
-          ]}
+          style={{
+            flex: 1,
+            backgroundColor: themes.appScreen.screen[currentTheme],
+          }}
         >
           {children}
         </View>
       </TouchableWithoutFeedback>
-      <StatusBar
-        backgroundColor={isLightTheme ? colors.dodgerblue : colors.dark}
-      />
-    </SafeAreaProvider>
+      <StatusBar backgroundColor={themes.appScreen.statusBar[currentTheme]} />
+    </SafeAreaView>
   );
 }
 

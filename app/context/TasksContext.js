@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 export const TasksContext = createContext();
 
 export default function TasksContextProvider(props) {
-  const [loading, setloading] = useState(true);
-  const [labels, setLabels] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [labels, setLabels] = useState(null);
 
   // Show Keyboard on TextInput focus
   const inputRef = useRef();
@@ -25,6 +25,7 @@ export default function TasksContextProvider(props) {
       },
       ...labels,
     ];
+
     // Update Storage
     writeToStorage(storageKey, newLabel);
     // Then set the new state
@@ -88,8 +89,8 @@ export default function TasksContextProvider(props) {
   const deleteLabel = (labelKey) => {
     const updatedLabels = labels.filter((label) => label.key !== labelKey);
 
-    // // Update Storage
-    // writeToStorage(storageKey, updatedLabels);
+    // Update Storage
+    writeToStorage(storageKey, updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
   };
@@ -179,9 +180,9 @@ export default function TasksContextProvider(props) {
   // Clear stoage or Remove all items from storage
   const clearStorage = async () => {
     try {
-      await AsyncStorage.multiRemove(["@Theme_Key", storageKey]);
+      await AsyncStorage.removeItem(storageKey);
       // set state
-      setLabels([]);
+      setLabels(null);
     } catch (err) {
       alert(err);
     }
@@ -207,7 +208,12 @@ export default function TasksContextProvider(props) {
     let mounted = true;
 
     if (mounted) {
-      loadLabels().then(() => setloading(false));
+      loadLabels().then(() => {
+        // Timeout for loading...
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      });
     }
 
     return function cleanup() {
@@ -218,7 +224,7 @@ export default function TasksContextProvider(props) {
   return (
     <TasksContext.Provider
       value={{
-        loading,
+        isLoading,
         inputRef,
         labels,
         addLabel,

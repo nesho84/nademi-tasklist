@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -8,15 +8,18 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
+import { LanguageContext } from "../../context/LanguageContext";
 
 export default function AddTask(props) {
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
   const [task, setTask] = useState("");
 
   const handleAdd = () => {
     if (task.length < 1) {
       Alert.alert(
-        "Required field",
-        "Please insert at least one or more charachters.",
+        `${languages.alerts.requiredField.title[currentLanguage]}`,
+        `${languages.alerts.requiredField.message[currentLanguage]}`,
         [{ task: "OK" }],
         { cancelable: false }
       );
@@ -34,7 +37,7 @@ export default function AddTask(props) {
         onChangeText={(text) => setTask(text)}
         style={styles.addTaskInput}
         multiline
-        placeholder="Enter text..."
+        placeholder={props.placeholder}
       />
       <TouchableOpacity
         style={{ backgroundColor: props.currentLabelColor }}
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderTopColor: colors.muted,
+    borderTopColor: "#616161",
     borderTopWidth: 0.2,
     padding: 10,
   },

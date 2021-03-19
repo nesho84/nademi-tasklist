@@ -12,7 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 export default function AppModal(props) {
   // Contexts
-  const { isLightTheme } = useContext(ThemeContext);
+  const { themes, currentTheme } = useContext(ThemeContext);
 
   return (
     <Modal
@@ -24,7 +24,7 @@ export default function AppModal(props) {
         <View
           style={[
             styles.modalContainer,
-            { backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark },
+            { backgroundColor: themes.appModal.modalContainer[currentTheme] },
           ]}
         >
           <MaterialIcons

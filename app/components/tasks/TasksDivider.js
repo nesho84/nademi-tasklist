@@ -1,25 +1,31 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import colors from "../../config/colors";
+import React, { useContext } from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { ThemeContext } from "../../context/ThemeContext";
+import { LanguageContext } from "../../context/LanguageContext";
 
-export default function TasksDivider({ checkedTasks, isLightTheme }) {
+export default function TasksDivider({ checkedTasks }) {
+  // Contexts
+  const { themes, currentTheme } = useContext(ThemeContext);
+
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
   return (
     <View style={styles.checkedTasksDividerContainer}>
       <View
         style={[
           styles.listDivider,
           {
-            borderColor: isLightTheme ? colors.lightSkyBlue : colors.muted,
+            borderColor: themes.tasksDivider.borderColor[currentTheme],
           },
         ]}
       ></View>
       <Text
         style={[
           styles.listDividerText,
-          { color: isLightTheme ? colors.checkedItemText : colors.muted },
+          { color: themes.tasksDivider.textColor[currentTheme] },
         ]}
       >
-        {checkedTasks} Checked Items
+        {`${checkedTasks} ${languages.tasks.tasksDivider[currentLanguage]}`}
       </Text>
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,15 +8,18 @@ import {
   Alert,
 } from "react-native";
 import colors from "../../config/colors";
+import { LanguageContext } from "../../context/LanguageContext";
 
 export default function EditTask(props) {
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
   const [input, setInput] = useState(props.taskToEdit.name.toString());
 
   const handleEdit = () => {
     if (input.length < 1) {
       Alert.alert(
-        "Required field",
-        "Please insert at least 3 charachters.",
+        `${languages.alerts.requiredField.title[currentLanguage]}`,
+        `${languages.alerts.requiredField.message[currentLanguage]}`,
         [{ text: "OK" }],
         { cancelable: false }
       );
@@ -29,22 +32,28 @@ export default function EditTask(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Edit Task</Text>
+      <Text style={styles.title}>
+        {languages.tasks.editTask[currentLanguage]}
+      </Text>
       <TextInput
         onChangeText={(text) => setInput(text)}
         style={styles.input}
         multiline
-        placeholder="Enter text..."
+        placeholder={languages.inputPlaceholder[currentLanguage]}
         value={input}
       />
       <TouchableOpacity style={styles.btnEdit} onPress={handleEdit}>
-        <Text style={styles.btnEditText}>SAVE</Text>
+        <Text style={styles.btnEditText}>
+          {languages.saveButton[currentLanguage]}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.btnCancel}
         onPress={() => props.setModalVisible(false)}
       >
-        <Text style={styles.btnCancelText}>CANCEL</Text>
+        <Text style={styles.btnCancelText}>
+          {languages.cancelButton[currentLanguage]}
+        </Text>
       </TouchableOpacity>
     </View>
   );

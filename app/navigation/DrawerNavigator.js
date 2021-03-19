@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { View, Image } from "react-native";
 import Constants from "expo-constants";
-import { ThemeContext } from "../context/ThemeContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import {
@@ -10,32 +9,29 @@ import {
   DrawerItemList,
   DrawerItem,
 } from "@react-navigation/drawer";
-import { DrawerActions } from "@react-navigation/routers";
-import MainNavigator from "./MainNavigator";
+import MainStackNavigator from "./MainStackNavigator";
 import useAppExit from "../hooks/useAppExit";
+import { ThemeContext } from "../context/ThemeContext";
+import { LanguageContext } from "../context/LanguageContext";
 
 function CustomDrawerContent(props) {
-  // Custom Theme Context
-  const { isLightTheme } = useContext(ThemeContext);
-  // confirm Exit application custom Hook
-  const { exitApp } = useAppExit();
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
+  // Exit application custom Hook
+  const { backAction } = useAppExit();
 
   return (
     <>
       {/* -----Navigation Header START----- */}
       <View
         style={{
-          backgroundColor: isLightTheme
-            ? colors.lightDodgerBlue
-            : colors.lightDodgerBlue,
+          backgroundColor: colors.lightDodgerBlue,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
           marginTop: Constants.statusBarHeight,
           minHeight: 160,
           padding: 10,
-          borderBottomWidth: 1,
-          borderBottomColor: colors.light,
         }}
       >
         <Image
@@ -55,7 +51,8 @@ function CustomDrawerContent(props) {
         <DrawerItemList {...props} />
         {/* About Screen */}
         <DrawerItem
-          label="About"
+          label={currentLanguage ? languages.about[currentLanguage] : "About"}
+          // label="About"
           labelStyle={{
             color: colors.light,
             fontSize: 17,
@@ -73,7 +70,9 @@ function CustomDrawerContent(props) {
         />
         {/* Setting Screen */}
         <DrawerItem
-          label="Settings"
+          label={
+            currentLanguage ? languages.settings[currentLanguage] : "Settings"
+          }
           labelStyle={{
             color: colors.light,
             fontSize: 17,
@@ -91,9 +90,9 @@ function CustomDrawerContent(props) {
         />
         {/* Exit app Link */}
         <DrawerItem
-          label="Exit"
+          label={currentLanguage ? languages.exit[currentLanguage] : "Exit"}
           labelStyle={{ color: colors.light, fontSize: 17, fontWeight: "600" }}
-          onPress={() => exitApp()}
+          onPress={() => backAction()}
           icon={({ focused, color, size }) => (
             <MaterialCommunityIcons
               color={colors.light}
@@ -112,14 +111,15 @@ function CustomDrawerContent(props) {
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
-  const { isLightTheme, themes } = useContext(ThemeContext);
+  const { themes, currentTheme } = useContext(ThemeContext);
 
   return (
     // -----Drawer Screens (stack navigators)-----
     <Drawer.Navigator
       drawerContentOptions={{
         style: {
-          backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark,
+          backgroundColor:
+            themes.drawerNavigator.drawerContentOptions[currentTheme],
         },
         labelStyle: { color: colors.light, fontSize: 17, fontWeight: "600" },
       }}
@@ -127,7 +127,7 @@ export default function DrawerNavigator() {
     >
       <Drawer.Screen
         name="Home"
-        component={MainNavigator}
+        component={MainStackNavigator}
         options={{
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons

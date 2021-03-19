@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { LanguageContext } from "../../context/LanguageContext";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import colors from "../../config/colors";
-import AppBox from "../AppBox";
+import AppNoItems from "../AppNoItems";
 
-export default function LabelsList({
-  labels,
-  orderLabels,
-  isLightTheme,
-  handleEditModal,
-}) {
+export default function LabelsList({ labels, orderLabels, handleEditModal }) {
+  // Contexts
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
   const navigation = useNavigation();
 
   // Render Single Task template
@@ -31,8 +30,8 @@ export default function LabelsList({
             styles.labelBox,
             {
               backgroundColor: item.color,
-              borderColor: colors.muted,
-              borderWidth: 1,
+              borderColor: colors.lightMuted,
+              borderWidth: 0.3,
             },
             isActive && { backgroundColor: colors.muted },
           ]}
@@ -40,17 +39,27 @@ export default function LabelsList({
           {/* -----Item title and edit icon Container----- */}
           <View
             style={[
-              styles.labelBoxTitleContainer,
+              styles.labelBoxHeaderContainer,
               {
-                backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark,
+                // backgroundColor: themes.labelsList.labelBoxHeaderContainer[currentTheme],
               },
             ]}
           >
-            <Text style={styles.labelBoxTitle}>{item.title}</Text>
+            <View style={styles.iconBeforeTitle}>
+              <MaterialCommunityIcons
+                style={{ marginRight: 5 }}
+                name="label-outline"
+                size={26}
+                color={colors.light}
+                onPress={() => {}}
+              />
+              <Text style={styles.labelBoxTitle}>{item.title}</Text>
+            </View>
             {/* EditLabel Icon */}
             <MaterialCommunityIcons
+              style={{ marginRight: -1 }}
               name="playlist-edit"
-              size={32}
+              size={31}
               color={colors.light}
               onPress={() => handleEditModal(item)}
             />
@@ -65,11 +74,15 @@ export default function LabelsList({
           >
             <View style={{ alignItems: "center" }}>
               <Text style={styles.count}>{unCheckedTasksCount}</Text>
-              <Text style={styles.subtitle}>Remaining</Text>
+              <Text style={styles.subtitle}>
+                {languages.labels.remaining[currentLanguage]}
+              </Text>
             </View>
             <View style={{ alignItems: "center" }}>
               <Text style={styles.count}>{checkedTasksCount}</Text>
-              <Text style={styles.subtitle}>Completed</Text>
+              <Text style={styles.subtitle}>
+                {languages.labels.completed[currentLanguage]}
+              </Text>
             </View>
           </View>
         </View>
@@ -80,7 +93,7 @@ export default function LabelsList({
   return (
     <View style={styles.container}>
       {/* -----Tasks Label List START----- */}
-      {labels.length > 0 ? (
+      {labels && labels.length > 0 ? (
         <DraggableFlatList
           containerStyle={styles.draggableFlatListContainer}
           data={labels}
@@ -97,7 +110,7 @@ export default function LabelsList({
         />
       ) : (
         // -----No Labels to show-----
-        <AppBox isLightTheme={isLightTheme} />
+        <AppNoItems />
       )}
       {/* -----Tasks Label List END----- */}
     </View>
@@ -119,8 +132,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderRadius: 5,
     marginBottom: 7,
+    elevation: 2,
   },
-  labelBoxTitleContainer: {
+  labelBoxHeaderContainer: {
     alignSelf: "stretch",
     flexDirection: "row",
     alignItems: "center",
@@ -131,12 +145,17 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
   },
+  iconBeforeTitle: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   labelBoxTitle: {
     flexShrink: 1,
     paddingVertical: 5,
-    fontSize: 22,
-    fontWeight: "600",
     color: colors.light,
+    fontSize: 21,
+    fontWeight: "bold",
+    marginBottom: 1,
   },
   count: {
     fontSize: 24,

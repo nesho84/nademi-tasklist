@@ -1,35 +1,30 @@
 import React, { createContext, useState, useEffect } from "react";
-import colors from "../config/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import themes from "../config/themes";
 
 export const ThemeContext = createContext();
 
-const themes = {
-  light: {
-    foreground: colors.light,
-    background: colors.dodgerblue,
-  },
-  dark: {
-    foreground: colors.light,
-    background: colors.dark,
-  },
-};
-
 export default function ThemeContextProvider(props) {
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState("dark");
 
   let themeKey = "@Theme_Key";
 
   // Toggle theme
-  const toggleTheme = () => {
-    setIsLightTheme(!isLightTheme);
-    saveInStorage(!isLightTheme);
+  const changeTheme = async () => {
+    let theme = currentTheme;
+    if (currentTheme === "dark") {
+      theme = "light";
+    } else {
+      theme = "dark";
+    }
+    setCurrentTheme(theme);
+    saveInStorage(theme);
   };
 
   // Save in Storage
-  const saveInStorage = async (newIsLightTheme) => {
+  const saveInStorage = async (newTheme) => {
     try {
-      await AsyncStorage.setItem(themeKey, JSON.stringify(newIsLightTheme));
+      await AsyncStorage.setItem(themeKey, JSON.stringify(newTheme));
     } catch (err) {
       console.log(err);
     }
@@ -38,13 +33,13 @@ export default function ThemeContextProvider(props) {
   // Read from storage
   const loadTheme = async () => {
     try {
-      let storageisLightTheme = await AsyncStorage.getItem(themeKey);
-      storageisLightTheme = JSON.parse(storageisLightTheme);
+      let storageTheme = await AsyncStorage.getItem(themeKey);
+      storageTheme = JSON.parse(storageTheme);
 
-      if (storageisLightTheme !== null) {
-        setIsLightTheme(storageisLightTheme);
+      if (storageTheme !== null) {
+        setCurrentTheme(storageTheme);
       } else {
-        saveInStorage(isLightTheme);
+        saveInStorage(currentTheme);
       }
     } catch (err) {
       console.log(err);
@@ -65,7 +60,9 @@ export default function ThemeContextProvider(props) {
 
     let mounted = true;
 
-    loadTheme();
+    if (mounted) {
+      loadTheme();
+    }
 
     return function cleanup() {
       mounted = false;
@@ -73,7 +70,7 @@ export default function ThemeContextProvider(props) {
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ isLightTheme, themes, toggleTheme }}>
+    <ThemeContext.Provider value={{ themes, currentTheme, changeTheme }}>
       {props.children}
     </ThemeContext.Provider>
   );

@@ -1,10 +1,7 @@
 import React, { useContext, useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { TasksContext } from "../context/TasksContext";
-import { ThemeContext } from "../context/ThemeContext";
-import { MaterialIcons } from "@expo/vector-icons";
-// Custom colos Object
-import colors from "../config/colors";
+import { LanguageContext } from "../context/LanguageContext";
 // Custom Components
 import AppScreen from "../components/AppScreen";
 import AppNavbar from "../components/AppNavbar";
@@ -13,16 +10,28 @@ import AppModal from "../components/AppModal";
 import LabelsList from "../components/labels/LabelsList";
 import AddLabel from "../components/labels/AddLabel";
 import EditLabel from "../components/labels/EditLabel";
+import AddLabelButton from "../components/labels/AddLabelButton";
+import useAppUpdate from "../hooks/useAppUpdate";
 
 export default function LabelsScreen(props) {
+  // Contexts
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
+  const { labels, isLoading, addLabel, editLabel, orderLabels } = useContext(
+    TasksContext
+  );
+
+  // Custom Hooks
+  const { runUpdate, notifyUpdate } = useAppUpdate(languages, currentLanguage);
+
+  // Initialize App Update
+  runUpdate();
+  // Notify if the app is Updated
+  !isLoading && notifyUpdate();
+
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [labelToEdit, setLabelToEdit] = useState(null);
-  // Contexts
-  const { isLightTheme, themes } = useContext(ThemeContext);
-  const { labels, loading, addLabel, editLabel, orderLabels } = useContext(
-    TasksContext
-  );
 
   // Handle Add Label
   const handleAddLabel = (text, color) => {
@@ -46,9 +55,8 @@ export default function LabelsScreen(props) {
     <AppScreen>
       <AppNavbar />
 
-      {loading ? (
-        // -----Loading state-----
-        <AppLoading isLightTheme={isLightTheme} />
+      {isLoading ? (
+        <AppLoading />
       ) : (
         // -----Main View START-----
         <View style={styles.container}>
@@ -56,35 +64,11 @@ export default function LabelsScreen(props) {
           <LabelsList
             labels={labels}
             orderLabels={orderLabels}
-            isLightTheme={isLightTheme}
             handleEditModal={handleEditModal}
           />
 
-          {/* Add Label Button START */}
-          <View style={styles.divider}></View>
-          <View
-            style={[
-              styles.addButtonContainer,
-              {
-                backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark,
-              },
-            ]}
-          >
-            <TouchableOpacity
-              style={[
-                styles.addButton,
-                {
-                  backgroundColor: isLightTheme
-                    ? colors.successLight
-                    : colors.darkGrey,
-                },
-              ]}
-              onPress={() => setAddModalVisible(true)}
-            >
-              <MaterialIcons name="add-circle" size={40} color="white" />
-            </TouchableOpacity>
-          </View>
-          {/* Add Label Button END */}
+          {/* Add Label Button */}
+          <AddLabelButton setModalVisible={setAddModalVisible} />
         </View>
         // -----Main View END-----
       )}
@@ -114,20 +98,5 @@ export default function LabelsScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  divider: {
-    alignSelf: "stretch",
-    borderTopColor: colors.light,
-    borderTopWidth: 1,
-  },
-  addButtonContainer: {
-    alignItems: "center",
-    alignSelf: "stretch",
-    paddingVertical: 5,
-  },
-  addButton: {
-    width: "70%",
-    alignItems: "center",
-    borderRadius: 20,
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
+import { LanguageContext } from "../../context/LanguageContext";
 
 export default function AddLabel(props) {
-  const bgColors = [
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
+  const labelColors = [
     "#5CD859",
     "#24A6D9",
     "#595BD9",
@@ -22,13 +25,13 @@ export default function AddLabel(props) {
   ];
 
   const [label, setLabel] = useState("");
-  const [labelColor, setLabelColor] = useState(bgColors[0]);
+  const [labelColor, setLabelColor] = useState(labelColors[0]);
 
   const handleAdd = () => {
     if (label.length < 1) {
       Alert.alert(
-        "Required field",
-        "Please insert at least one or more charachters.",
+        `${languages.alerts.requiredField.title[currentLanguage]}`,
+        `${languages.alerts.requiredField.message[currentLanguage]}`,
         [{ text: "OK" }],
         { cancelable: false }
       );
@@ -40,7 +43,7 @@ export default function AddLabel(props) {
   };
 
   const RenderColors = () => {
-    return bgColors.map((color) => {
+    return labelColors.map((color) => {
       return (
         <TouchableOpacity
           key={color}
@@ -58,14 +61,14 @@ export default function AddLabel(props) {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: labelColor }]}>
-        Create New Label
+        {languages.labels.newLabel[currentLanguage]}
       </Text>
 
       <TextInput
         onChangeText={(text) => setLabel(text)}
         style={styles.input}
         multiline
-        placeholder="Enter text..."
+        placeholder={languages.inputPlaceholder[currentLanguage]}
       />
 
       <View style={styles.selectColorContainer}>
@@ -76,7 +79,9 @@ export default function AddLabel(props) {
         style={[styles.btnAdd, { backgroundColor: labelColor }]}
         onPress={handleAdd}
       >
-        <Text style={styles.btnAddText}>SAVE</Text>
+        <Text style={styles.btnAddText}>
+          {languages.saveButton[currentLanguage]}
+        </Text>
       </TouchableOpacity>
     </View>
   );

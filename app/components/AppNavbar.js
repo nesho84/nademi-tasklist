@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
-import { ThemeContext } from "../context/ThemeContext";
 import { Header, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-import colors from "../config/colors";
-import AppPopup from "./AppPopup";
+import SimplePopupMenu from "react-native-simple-popup-menu";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ThemeContext } from "../context/ThemeContext";
+import { LanguageContext } from "../context/LanguageContext";
 
 export default function AppNavbar() {
   // Contexts
-  const { isLightTheme, themes } = useContext(ThemeContext);
+  const { themes, currentTheme } = useContext(ThemeContext);
+  const { languages, currentLanguage } = useContext(LanguageContext);
 
   const navigation = useNavigation();
 
@@ -25,14 +27,38 @@ export default function AppNavbar() {
           />
         }
         centerComponent={{
-          text: "Simple TaskList",
+          text: "SIMPLE TASKLIST",
           style: styles.title,
         }}
-        rightComponent={<AppPopup />}
+        rightComponent={
+          <SimplePopupMenu
+            items={[
+              {
+                screen: "Settings",
+                label: languages.settings[currentLanguage],
+                visible: true,
+              },
+            ]}
+            onSelect={(item) =>
+              // navigation.navigate(item.screen, { itemId: item.screen })
+              navigation.navigate(item.screen)
+            }
+            onCancel={() => {}}
+          >
+            <MaterialCommunityIcons
+              name="dots-vertical"
+              type="material-community"
+              color="#fff"
+              size={30}
+              style={{ marginRight: -5 }}
+            />
+          </SimplePopupMenu>
+        }
         containerStyle={{
-          backgroundColor: isLightTheme ? colors.dodgerblue : colors.dark,
-          borderBottomColor: colors.light,
+          backgroundColor: themes.appNavbar.header[currentTheme],
+          borderBottomColor: "#616161",
           borderBottomWidth: 1,
+          elevation: 10,
         }}
       />
     </View>
@@ -43,6 +69,6 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
 });

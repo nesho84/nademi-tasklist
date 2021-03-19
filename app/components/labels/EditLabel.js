@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,8 +9,11 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
+import { LanguageContext } from "../../context/LanguageContext";
 
 export default function EditLabel(props) {
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
   const bgColors = [
     "#5CD859",
     "#24A6D9",
@@ -27,8 +30,8 @@ export default function EditLabel(props) {
   const handleAdd = () => {
     if (input.length < 1) {
       Alert.alert(
-        "Required field",
-        "Please insert at least one or more charachters.",
+        `${languages.alerts.requiredField.title[currentLanguage]}`,
+        `${languages.alerts.requiredField.message[currentLanguage]}`,
         [{ text: "OK" }],
         { cancelable: false }
       );
@@ -57,13 +60,15 @@ export default function EditLabel(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, { color: labelColor }]}>Edit Label</Text>
+      <Text style={[styles.title, { color: labelColor }]}>
+        {languages.labels.editLabel[currentLanguage]}
+      </Text>
 
       <TextInput
         onChangeText={(text) => setInput(text)}
         style={styles.input}
         multiline
-        placeholder="Enter text..."
+        placeholder={languages.inputPlaceholder[currentLanguage]}
         value={input}
       />
 
@@ -75,7 +80,9 @@ export default function EditLabel(props) {
         style={[styles.btnEdit, { backgroundColor: labelColor }]}
         onPress={handleAdd}
       >
-        <Text style={styles.btnEditText}>SAVE</Text>
+        <Text style={styles.btnEditText}>
+          {languages.saveButton[currentLanguage]}
+        </Text>
       </TouchableOpacity>
     </View>
   );

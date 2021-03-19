@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
-import { ThemeContext } from "../context/ThemeContext";
 import {
   createStackNavigator,
   HeaderStyleInterpolators,
 } from "@react-navigation/stack";
+
+import { ThemeContext } from "../context/ThemeContext";
+import { LanguageContext } from "../context/LanguageContext";
 
 import LabelsScreen from "../screens/LabelsScreen";
 import LabelDetailsScreen from "../screens/LabelDetails";
@@ -14,7 +16,8 @@ const Stack = createStackNavigator();
 
 export default function MainStackNavigator() {
   // Contexts
-  const { isLightTheme, themes } = useContext(ThemeContext);
+  const { languages, currentLanguage } = useContext(LanguageContext);
+  const { themes, currentTheme } = useContext(ThemeContext);
 
   return (
     <Stack.Navigator
@@ -39,9 +42,7 @@ export default function MainStackNavigator() {
           title: "",
           headerTitleContainerStyle: { paddingVertical: 5 },
           headerStyle: {
-            backgroundColor: isLightTheme
-              ? themes.light.background
-              : themes.dark.background,
+            backgroundColor: themes.mainNavHeaderStyle.background[currentTheme],
           },
           gestureDirection: "horizontal",
           headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
@@ -51,11 +52,12 @@ export default function MainStackNavigator() {
         name="About"
         component={AboutScreen}
         options={{
-          title: "About",
+          title: languages.about[currentLanguage],
           headerStyle: {
-            backgroundColor: isLightTheme
-              ? themes.light.background
-              : themes.dark.background,
+            backgroundColor: themes.mainNavHeaderStyle.background[currentTheme],
+            borderBottomColor: "#616161",
+            borderBottomWidth: 1,
+            elevation: 10,
           },
           gestureDirection: "horizontal",
           headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
@@ -65,11 +67,12 @@ export default function MainStackNavigator() {
         name="Settings"
         component={SettingsScreen}
         options={{
-          title: "Settings",
+          title: languages.settings[currentLanguage],
           headerStyle: {
-            backgroundColor: isLightTheme
-              ? themes.light.background
-              : themes.dark.background,
+            backgroundColor: themes.mainNavHeaderStyle.background[currentTheme],
+            borderBottomColor: "#616161",
+            borderBottomWidth: 1,
+            elevation: 10,
           },
           headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
         }}

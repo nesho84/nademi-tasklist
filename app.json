@@ -2,7 +2,7 @@
   "expo": {
     "name": "nademi-tasklist",
     "slug": "nademi-tasklist",
-    "version": "3.0.1",
+    "version": "3.0.6",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
@@ -26,12 +26,16 @@
       },
       "userInterfaceStyle": "dark",
       "package": "nademi.task.list",
-      "versionCode": 39
+      "versionCode": 43
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
     },
     "description": "A simple App for storing Tasks",
-    "githubUrl": "https://github.com/nesho84/nademi-tasklist"
+    "githubUrl": "https://github.com/nesho84/nademi-tasklist",
+    "androidNavigationBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#343a40"
+    }
   }
 }

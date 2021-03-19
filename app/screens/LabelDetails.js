@@ -1,7 +1,7 @@
 import React, { useContext, useState, useLayoutEffect } from "react";
 import { StyleSheet, Text, View, Keyboard, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { ThemeContext } from "../context/ThemeContext";
+import { LanguageContext } from "../context/LanguageContext";
 import { TasksContext } from "../context/TasksContext";
 import colors from "../config/colors";
 import AppScreen from "../components/AppScreen";
@@ -11,8 +11,8 @@ import TasksList from "../components/tasks/TasksList";
 import AddTask from "../components/tasks/AddTask";
 
 export default function LabelDetails({ route, navigation }) {
-  // Contexts
-  const { isLightTheme } = useContext(ThemeContext);
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
   const {
     labels,
     deleteLabel,
@@ -70,18 +70,18 @@ export default function LabelDetails({ route, navigation }) {
   // Delete the entire label from the Storage
   const handleDeleteLabel = (labelKey) => {
     Alert.alert(
-      "Delete Label and all of its tasks!",
-      "Are you sure?",
+      `${languages.alerts.deleteLabel.title[currentLanguage]}`,
+      `${languages.alerts.deleteLabel.message[currentLanguage]}`,
       [
         {
-          text: "Yes",
+          text: `${languages.alerts.yes[currentLanguage]}`,
           onPress: () => {
             deleteLabel(labelKey);
             navigation.goBack();
           },
         },
         {
-          text: "No",
+          text: `${languages.alerts.no[currentLanguage]}`,
         },
       ],
       { cancelable: false }
@@ -128,7 +128,6 @@ export default function LabelDetails({ route, navigation }) {
             <Text
               style={{
                 fontSize: 30,
-                // color: isLightTheme ? colors.dark : colors.light,
                 color: currentLabel.color,
                 paddingHorizontal: 10,
               }}
@@ -143,15 +142,16 @@ export default function LabelDetails({ route, navigation }) {
                 paddingHorizontal: 10,
               }}
             >
-              {`${checkedTasks.length} of ${
-                currentLabel.tasks ? currentLabel.tasks.length : "0"
-              } tasks`}
+              {`${checkedTasks.length} ${
+                languages.labels.of[currentLanguage]
+              } ${currentLabel.tasks ? currentLabel.tasks.length : "0"} ${
+                languages.labels.tasks[currentLanguage]
+              }`}
             </Text>
           </View>
 
           {/* -----Tasks List----- */}
           <TasksList
-            isLightTheme={isLightTheme}
             unCheckedTasks={unCheckedTasks}
             checkedTasks={checkedTasks}
             handleEditModal={handleEditModal}
@@ -178,6 +178,7 @@ export default function LabelDetails({ route, navigation }) {
             inputRef={inputRef}
             handleAddTask={handleAddTask}
             currentLabelColor={currentLabel.color}
+            placeholder={languages.inputPlaceholder[currentLanguage]}
           />
         </View>
       )}

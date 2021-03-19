@@ -1,20 +1,32 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, View, Text, Button, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
 import colors from "../config/colors";
 import { ThemeContext } from "../context/ThemeContext";
+import { LanguageContext } from "../context/LanguageContext";
 import { TasksContext } from "../context/TasksContext";
 
 export default function SettingsScreen(props) {
   // Contexts
-  const { isLightTheme, toggleTheme } = useContext(ThemeContext);
   const { labels, clearStorage } = useContext(TasksContext);
+  const { themes, currentTheme, changeTheme } = useContext(ThemeContext);
+  const { languages, currentLanguage, changeLanguage } = useContext(
+    LanguageContext
+  );
+
+  const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
+
+  const handleLanguage = (lang) => {
+    setSelectedLanguage(lang);
+    changeLanguage(lang);
+  };
 
   const handleDeleteAll = () => {
-    if (labels.length === 0) {
+    if (labels === null) {
       Alert.alert(
         "",
-        "Nothing to delete.",
+        `${languages.alerts.deleteAll.nothingToDelete[currentLanguage]}`,
         [
           {
             text: "OK",
@@ -26,15 +38,15 @@ export default function SettingsScreen(props) {
       return;
     } else {
       Alert.alert(
-        "Delete all items in the Storage!",
-        "Are you sure?",
+        `${languages.alerts.deleteAll.title[currentLanguage]}`,
+        `${languages.alerts.deleteAll.message[currentLanguage]}`,
         [
           {
-            text: "Yes",
+            text: `${languages.alerts.yes[currentLanguage]}`,
             onPress: () => clearStorage(),
           },
           {
-            text: "No",
+            text: `${languages.alerts.no[currentLanguage]}`,
           },
         ],
         { cancelable: false }
@@ -47,7 +59,7 @@ export default function SettingsScreen(props) {
       style={[
         styles.container,
         {
-          backgroundColor: isLightTheme ? colors.white : colors.dark,
+          backgroundColor: themes.settingsScreen.container[currentTheme],
         },
       ]}
     >
@@ -55,31 +67,65 @@ export default function SettingsScreen(props) {
         style={[
           styles.menu,
           {
-            borderColor: isLightTheme ? colors.lightSkyBlue : colors.muted,
+            borderColor: themes.settingsScreen.menuBorder[currentTheme],
             borderBottomWidth: 1,
           },
         ]}
       >
-        <Text style={styles.title}>DISPLAY OPTIONS</Text>
+        {/* Theme */}
+        <Text style={styles.title}>
+          {languages.settings.displayOptions[currentLanguage]}
+        </Text>
         <View style={styles.actionContainer}>
           <Text style={styles.action}>Theme</Text>
           <MaterialCommunityIcons
-            color={isLightTheme ? colors.dark : colors.lightDodgerBlue}
+            color={themes.settingsScreen.switchColor[currentTheme]}
             type="FontAwesome5"
             size={40}
-            name={isLightTheme ? "toggle-switch-off" : "toggle-switch"}
-            onPress={toggleTheme}
+            name={
+              currentTheme === "light" ? "toggle-switch-off" : "toggle-switch"
+            }
+            onPress={changeTheme}
           />
         </View>
       </View>
+
+      {/* Language */}
+      <View
+        style={[
+          styles.menu,
+          {
+            borderColor: themes.settingsScreen.menuBorder[currentTheme],
+            borderBottomWidth: 1,
+          },
+        ]}
+      >
+        <Text style={styles.title}>{languages.language[currentLanguage]}</Text>
+        <Picker
+          style={styles.languagePicker}
+          dropdownIconColor={colors.muted}
+          selectedValue={selectedLanguage}
+          onValueChange={(itemValue, itemIndex) => handleLanguage(itemValue)}
+        >
+          <Picker.Item label="English" value="english" />
+          <Picker.Item label="Deutsch" value="deutsch" />
+          <Picker.Item label="Shqip" value="shqip" />
+        </Picker>
+      </View>
+
+      {/* TASKS Delete */}
       <View style={styles.menu}>
-        <Text style={styles.title}>TASKS</Text>
+        <Text style={styles.title}>
+          {languages.settings.tasks[currentLanguage]}
+        </Text>
         <View style={styles.actionContainer}>
-          <Text style={styles.action}>Clear Storage</Text>
+          <Text style={styles.action}>
+            {languages.settings.clearStorage[currentLanguage]}
+          </Text>
           <View style={styles.deleteButton}>
             <Button
               color={colors.danger}
-              title="DELETE"
+              title={languages.settings.deleteButton[currentLanguage]}
               onPress={handleDeleteAll}
             ></Button>
           </View>
@@ -113,6 +159,10 @@ const styles = StyleSheet.create({
   action: {
     fontSize: 17,
     color: colors.muted,
+  },
+  languagePicker: {
+    color: colors.muted,
+    marginLeft: -8,
   },
   deleteButton: {
     backgroundColor: colors.danger,

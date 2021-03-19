@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,14 +7,20 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from "react-native";
-import colors from "../../config/colors";
 import CheckBox from "@react-native-community/checkbox";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { MaterialIcons } from "@expo/vector-icons";
 import TasksDivider from "./TasksDivider";
-import AppBox from "../AppBox";
+import AppNoItems from "../AppNoItems";
+import colors from "../../config/colors";
+import { ThemeContext } from "../../context/ThemeContext";
+import { LanguageContext } from "../../context/LanguageContext";
 
 export default function TasksList(props) {
+  // Contexts
+  const { themes, currentTheme } = useContext(ThemeContext);
+  const { languages, currentLanguage } = useContext(LanguageContext);
+
   // Single Task template
   const RenderTask = ({ item, index, drag, isActive }) => {
     return (
@@ -25,7 +31,7 @@ export default function TasksList(props) {
         <View
           style={[
             styles.tasksListContainer,
-            props.isLightTheme
+            currentTheme === "light"
               ? {
                   backgroundColor: item.checked
                     ? colors.checkedItem
@@ -45,9 +51,10 @@ export default function TasksList(props) {
             <CheckBox
               disabled={false}
               tintColors={{
-                true: props.isLightTheme
-                  ? colors.successLight
-                  : colors.darkGrey,
+                true:
+                  currentTheme === "light"
+                    ? colors.successLight
+                    : colors.darkGrey,
                 false: colors.light,
               }}
               value={item.checked}
@@ -63,7 +70,7 @@ export default function TasksList(props) {
                 {
                   textDecorationLine: item.checked ? "line-through" : "none",
                 },
-                props.isLightTheme
+                currentTheme === "light"
                   ? {
                       color: item.checked
                         ? colors.checkedItemText
@@ -88,15 +95,15 @@ export default function TasksList(props) {
               color="white"
               onPress={() =>
                 Alert.alert(
-                  "Delete",
-                  "Are you sure?",
+                  `${languages.alerts.deleteTask.title[currentLanguage]}`,
+                  `${languages.alerts.deleteTask.message[currentLanguage]}`,
                   [
                     {
-                      text: "Yes",
+                      text: `${languages.alerts.yes[currentLanguage]}`,
                       onPress: () => props.handleDeleteTask(item.key),
                     },
                     {
-                      text: "No",
+                      text: `${languages.alerts.no[currentLanguage]}`,
                     },
                   ],
                   { cancelable: false }
@@ -132,17 +139,14 @@ export default function TasksList(props) {
         </TouchableWithoutFeedback>
       ) : (
         // -----No Tasks to show-----
-        <AppBox isLightTheme={props.isLightTheme} />
+        <AppNoItems />
       )}
       {/* -----Unchecked Tasks END----- */}
 
       {props.checkedTasks.length > 0 && (
         <>
           {/* -----Tasks Divider----- */}
-          <TasksDivider
-            checkedTaks={props.checkedTasks.length}
-            isLightTheme={props.isLightTheme}
-          />
+          <TasksDivider checkedTasks={props.checkedTasks.length} />
 
           {/* -----Checked Tasks START----- */}
           <TouchableWithoutFeedback
