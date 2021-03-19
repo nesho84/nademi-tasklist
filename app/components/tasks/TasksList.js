@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from "react-native";
-import CheckBox from "@react-native-community/checkbox";
+import Checkbox from "expo-checkbox";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { MaterialIcons } from "@expo/vector-icons";
 import TasksDivider from "./TasksDivider";
@@ -48,15 +48,14 @@ export default function TasksList(props) {
         >
           {/* -----Task checkbox----- */}
           <View style={styles.checkboxAndTitleContainer}>
-            <CheckBox
-              disabled={false}
-              tintColors={{
-                true:
-                  currentTheme === "light"
+            <Checkbox
+              color={
+                item.checked
+                  ? currentTheme === "light"
                     ? colors.successLight
-                    : colors.darkGrey,
-                false: colors.light,
-              }}
+                    : colors.darkGrey
+                  : colors.light
+              }
               value={item.checked}
               onValueChange={(newValue) =>
                 props.handleCheckbox(newValue, item.key)
