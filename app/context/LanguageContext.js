@@ -5,7 +5,7 @@ import languages from "../config/languages";
 export const LanguageContext = createContext();
 
 export default function LanguageContextProvider(props) {
-  const [currentLanguage, setCurrentLanguage] = useState(null);
+  const [currentLanguage, setCurrentLanguage] = useState("english");
 
   let languageKey = "@Language_Key";
 

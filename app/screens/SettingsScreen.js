@@ -74,7 +74,9 @@ export default function SettingsScreen(props) {
       >
         {/* Theme */}
         <Text style={styles.title}>
-          {languages.settings.displayOptions[currentLanguage]}
+          {currentLanguage
+            ? languages.settings.displayOptions[currentLanguage]
+            : "DISPLAY OPTIONS"}
         </Text>
         <View style={styles.actionContainer}>
           <Text style={styles.action}>Theme</Text>
@@ -100,7 +102,9 @@ export default function SettingsScreen(props) {
           },
         ]}
       >
-        <Text style={styles.title}>{languages.language[currentLanguage]}</Text>
+        <Text style={styles.title}>
+          {currentLanguage ? languages.language[currentLanguage] : "LANGUAGE"}
+        </Text>
         <Picker
           style={styles.languagePicker}
           dropdownIconColor={colors.muted}
@@ -116,16 +120,24 @@ export default function SettingsScreen(props) {
       {/* TASKS Delete */}
       <View style={styles.menu}>
         <Text style={styles.title}>
-          {languages.settings.tasks[currentLanguage]}
+          {currentLanguage
+            ? languages.settings.tasks[currentLanguage]
+            : "TASKS"}
         </Text>
         <View style={styles.actionContainer}>
           <Text style={styles.action}>
-            {languages.settings.clearStorage[currentLanguage]}
+            {currentLanguage
+              ? languages.settings.clearStorage[currentLanguage]
+              : "Clear Storage"}
           </Text>
           <View style={styles.deleteButton}>
             <Button
               color={colors.danger}
-              title={languages.settings.deleteButton[currentLanguage]}
+              title={
+                currentLanguage
+                  ? languages.settings.deleteButton[currentLanguage]
+                  : "DELETE"
+              }
               onPress={handleDeleteAll}
             ></Button>
           </View>

@@ -24,7 +24,7 @@ export default function AboutScreen(props) {
     >
       <Image style={styles.logo} source={require("../assets/nademi.png")} />
       <Text style={styles.title}>nademi-tasklist</Text>
-      <Text style={styles.versionText}>Version 3.0.7</Text>
+      <Text style={styles.versionText}>Version 3.0.8</Text>
       <TouchableOpacity
         onPress={async () => await Linking.openURL("https://nademi.com")}
       >

@@ -56,7 +56,7 @@ export default function ThemeContextProvider(props) {
   };
 
   useEffect(() => {
-    // clearTheme();
+    clearTheme();
 
     let mounted = true;
 

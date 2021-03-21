@@ -6,7 +6,7 @@ export const TasksContext = createContext();
 
 export default function TasksContextProvider(props) {
   const [isLoading, setIsLoading] = useState(true);
-  const [labels, setLabels] = useState(null);
+  const [labels, setLabels] = useState([]);
 
   // Show Keyboard on TextInput focus
   const inputRef = useRef();
