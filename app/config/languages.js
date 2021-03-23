@@ -1,10 +1,4 @@
 export default {
-  // Global language object
-  language: {
-    english: "LANGUAGE",
-    deutsch: "SPRACHE",
-    shqip: "GJUHA",
-  },
   // App First loads
   appLoading: {
     english: "Loading...",
@@ -50,6 +44,12 @@ export default {
       english: "DISPLAY OPTIONS",
       deutsch: "ANZEIGEOPTIONEN",
       shqip: "OPSIONET E SHFAQJES",
+    },
+    // Global language object
+    language: {
+      english: "LANGUAGE",
+      deutsch: "SPRACHE",
+      shqip: "GJUHA",
     },
     tasks: {
       english: "TASKS",

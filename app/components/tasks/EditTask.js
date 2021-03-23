@@ -47,14 +47,6 @@ export default function EditTask(props) {
           {languages.saveButton[currentLanguage]}
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.btnCancel}
-        onPress={() => props.setModalVisible(false)}
-      >
-        <Text style={styles.btnCancelText}>
-          {languages.cancelButton[currentLanguage]}
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -86,28 +78,14 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: colors.success,
     justifyContent: "center",
+    marginTop: 8,
     padding: 11,
     borderRadius: 5,
-    marginTop: 7,
   },
   btnEditText: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 17,
-    color: "white",
-  },
-  btnCancel: {
-    height: 50,
-    backgroundColor: colors.danger,
-    justifyContent: "center",
-    padding: 11,
-    borderRadius: 5,
-    marginVertical: 5,
-  },
-  btnCancelText: {
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 18,
     color: "white",
   },
 });

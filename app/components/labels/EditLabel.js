@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   btnEdit: {
     height: 50,
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 15,
     padding: 11,
     borderRadius: 5,
   },

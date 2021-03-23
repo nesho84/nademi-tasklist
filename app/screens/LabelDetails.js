@@ -169,7 +169,6 @@ export default function LabelDetails({ route, navigation }) {
               labels={labels}
               taskToEdit={taskToEdit}
               handleEditTask={handleEditTask}
-              setModalVisible={setEditModalVisible}
             />
           </AppModal>
 

@@ -56,6 +56,7 @@ export default function ThemeContextProvider(props) {
   };
 
   useEffect(() => {
+    // new update theme error!
     clearTheme();
 
     let mounted = true;

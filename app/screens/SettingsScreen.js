@@ -43,7 +43,10 @@ export default function SettingsScreen(props) {
         [
           {
             text: `${languages.alerts.yes[currentLanguage]}`,
-            onPress: () => clearStorage(),
+            onPress: () => {
+              clearStorage();
+              props.navigation.goBack();
+            },
           },
           {
             text: `${languages.alerts.no[currentLanguage]}`,
@@ -103,7 +106,9 @@ export default function SettingsScreen(props) {
         ]}
       >
         <Text style={styles.title}>
-          {currentLanguage ? languages.language[currentLanguage] : "LANGUAGE"}
+          {currentLanguage
+            ? languages.settings.language[currentLanguage]
+            : "LANGUAGE"}
         </Text>
         <Picker
           style={styles.languagePicker}

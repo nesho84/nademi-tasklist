@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
+// Contexts
 import { TasksContext } from "../context/TasksContext";
 import { LanguageContext } from "../context/LanguageContext";
 // Custom Components
@@ -67,30 +68,30 @@ export default function LabelsScreen(props) {
             handleEditModal={handleEditModal}
           />
 
-          {/* Add Label Button */}
+          {/* Footer - Add Label Button */}
           <AddLabelButton setModalVisible={setAddModalVisible} />
+
+          {/* Add Label Modal */}
+          <AppModal
+            modalVisible={addModalVisible}
+            setModalVisible={setAddModalVisible}
+          >
+            <AddLabel handleAddLabel={handleAddLabel} />
+          </AppModal>
+
+          {/* Edit Label Modal */}
+          <AppModal
+            modalVisible={editModalVisible}
+            setModalVisible={setEditModalVisible}
+          >
+            <EditLabel
+              labelToEdit={labelToEdit}
+              handleEditLabel={handleEditLabel}
+            />
+          </AppModal>
         </View>
         // -----Main View END-----
       )}
-
-      {/* Add Label Modal */}
-      <AppModal
-        modalVisible={addModalVisible}
-        setModalVisible={setAddModalVisible}
-      >
-        <AddLabel handleAddLabel={handleAddLabel} />
-      </AppModal>
-
-      {/* Edit Label Modal */}
-      <AppModal
-        modalVisible={editModalVisible}
-        setModalVisible={setEditModalVisible}
-      >
-        <EditLabel
-          labelToEdit={labelToEdit}
-          handleEditLabel={handleEditLabel}
-        />
-      </AppModal>
     </AppScreen>
   );
 }

@@ -182,7 +182,7 @@ export default function TasksContextProvider(props) {
     try {
       await AsyncStorage.removeItem(storageKey);
       // set state
-      setLabels(null);
+      setLabels([]);
     } catch (err) {
       alert(err);
     }
