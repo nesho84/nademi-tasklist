@@ -41,7 +41,7 @@ export default function LanguageContextProvider(props) {
   };
 
   // Clear language from the Storage
-  const clearlanguage = async () => {
+  const clearLanguage = async () => {
     try {
       await AsyncStorage.removeItem(languageKey);
     } catch (err) {
@@ -50,8 +50,6 @@ export default function LanguageContextProvider(props) {
   };
 
   useEffect(() => {
-    // clearlanguage();
-
     let mounted = true;
 
     if (mounted) {

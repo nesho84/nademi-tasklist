@@ -27,7 +27,7 @@ export default function TasksContextProvider(props) {
     ];
 
     // Update Storage
-    writeToStorage(storageKey, newLabel);
+    saveInStorage(storageKey, newLabel);
     // Then set the new state
     setLabels(newLabel);
   };
@@ -47,7 +47,7 @@ export default function TasksContextProvider(props) {
         : label
     );
     // Update Storage
-    writeToStorage(storageKey, updatedLabel);
+    saveInStorage(storageKey, updatedLabel);
     // Then set the new state
     setLabels(updatedLabel);
   };
@@ -69,7 +69,7 @@ export default function TasksContextProvider(props) {
     });
 
     // Update Storage
-    writeToStorage(storageKey, updatedLabels);
+    saveInStorage(storageKey, updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
   };
@@ -80,7 +80,7 @@ export default function TasksContextProvider(props) {
       label.key === labelKey ? { ...label, title: input, color: color } : label
     );
     // Update Storage
-    writeToStorage(storageKey, updatedLabel);
+    saveInStorage(storageKey, updatedLabel);
     // Then set the new state
     setLabels(updatedLabel);
   };
@@ -90,7 +90,7 @@ export default function TasksContextProvider(props) {
     const updatedLabels = labels.filter((label) => label.key !== labelKey);
 
     // Update Storage
-    writeToStorage(storageKey, updatedLabels);
+    saveInStorage(storageKey, updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
   };
@@ -102,13 +102,12 @@ export default function TasksContextProvider(props) {
     //   label.tasks = label.tasks.filter((task) => taskKey !== task.key);
     //   updatedLabels.push(label);
     // }
-
     let updatedLabels = labels.map((lab) => {
       lab.tasks = lab.tasks.filter((task) => taskKey !== task.key);
       return lab;
     });
     // Update Storage
-    writeToStorage(storageKey, updatedLabels);
+    saveInStorage(storageKey, updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
   };
@@ -123,7 +122,7 @@ export default function TasksContextProvider(props) {
     });
 
     // Update Storage
-    writeToStorage(storageKey, updatedLabels);
+    saveInStorage(storageKey, updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
   };
@@ -131,7 +130,7 @@ export default function TasksContextProvider(props) {
   // Ordering Labels with drag and drop
   const orderLabels = (orderedTasks) => {
     // Update Storage
-    writeToStorage(storageKey, orderedTasks);
+    saveInStorage(storageKey, orderedTasks);
     // Then set the new state
     setLabels(orderedTasks);
   };
@@ -163,13 +162,13 @@ export default function TasksContextProvider(props) {
       updatedLabel.push(label);
     }
     // Update Storage
-    writeToStorage(storageKey, updatedLabel);
+    saveInStorage(storageKey, updatedLabel);
     // Then set the new state
     setLabels(updatedLabel);
   };
 
   // Write to the storage
-  const writeToStorage = async (key, item) => {
+  const saveInStorage = async (key, item) => {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(item));
     } catch (err) {
@@ -203,8 +202,6 @@ export default function TasksContextProvider(props) {
   };
 
   useEffect(() => {
-    // addLabel(1);
-
     let mounted = true;
 
     if (mounted) {

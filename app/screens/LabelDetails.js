@@ -99,6 +99,7 @@ export default function LabelDetails({ route, navigation }) {
     orderTasks(currentLabel.key, orderedTasks);
   };
 
+  // Accessing Native navigation bar
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (

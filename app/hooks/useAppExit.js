@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { Alert, BackHandler } from "react-native";
 import { LanguageContext } from "../context/LanguageContext";
 
