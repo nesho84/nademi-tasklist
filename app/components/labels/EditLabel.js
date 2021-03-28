@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
     backgroundColor: "#fff",
     color: colors.dark,
-    fontSize: 20,
+    fontSize: 18,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.light,
     borderBottomColor: "#DEE9F3",

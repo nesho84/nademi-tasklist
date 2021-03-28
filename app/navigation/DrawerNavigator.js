@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { View, Image } from "react-native";
+import { View, Image, Text, Linking, TouchableOpacity } from "react-native";
 import Constants from "expo-constants";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import {
   createDrawerNavigator,
@@ -79,11 +79,11 @@ function CustomDrawerContent(props) {
             fontWeight: "600",
           }}
           icon={({ focused, color, size }) => (
-            <MaterialCommunityIcons
+            <Ionicons
               color={colors.light}
-              type="material-community"
+              type="Ionicons"
               size={size}
-              name={focused ? "information" : "information-outline"}
+              name={focused ? "settings" : "settings-outline"}
             />
           )}
           onPress={() => props.navigation.navigate("Settings")}
@@ -91,7 +91,11 @@ function CustomDrawerContent(props) {
         {/* Exit app Link */}
         <DrawerItem
           label={lang.current ? lang.languages.exit[lang.current] : "Exit"}
-          labelStyle={{ color: colors.light, fontSize: 17, fontWeight: "600" }}
+          labelStyle={{
+            color: colors.light,
+            fontSize: 17,
+            fontWeight: "600",
+          }}
           onPress={() => backAction()}
           icon={({ focused, color, size }) => (
             <MaterialCommunityIcons
@@ -104,6 +108,28 @@ function CustomDrawerContent(props) {
         />
       </DrawerContentScrollView>
       {/* -----Navigation Links END----- */}
+
+      {/* Footer */}
+      <View
+        style={{
+          position: "absolute",
+          width: "100%",
+          bottom: 0,
+          paddingVertical: 7,
+          borderColor: colors.muted,
+          borderTopWidth: 1,
+        }}
+      >
+        <View style={{ alignItems: "center" }}>
+          <TouchableOpacity
+            onPress={async () => await Linking.openURL("https://nademi.com")}
+          >
+            <Text style={{ color: colors.muted, fontSize: 15 }}>
+              www.nademi.com
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </>
   );
 }

@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     marginBottom: 1,
     backgroundColor: colors.white,
     color: colors.dark,
-    fontSize: 20,
+    fontSize: 18,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.light,
     borderBottomColor: "#DEE9F3",
