@@ -15,9 +15,8 @@ import SettingsScreen from "../screens/SettingsScreen";
 const Stack = createStackNavigator();
 
 export default function MainStackNavigator() {
-  // Contexts
-  const { languages, currentLanguage } = useContext(LanguageContext);
-  const { themes, currentTheme } = useContext(ThemeContext);
+  const { lang } = useContext(LanguageContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <Stack.Navigator
@@ -42,7 +41,8 @@ export default function MainStackNavigator() {
           title: "",
           headerTitleContainerStyle: { paddingVertical: 5 },
           headerStyle: {
-            backgroundColor: themes.mainNavHeaderStyle.background[currentTheme],
+            backgroundColor:
+              theme.themes.mainNavHeaderStyle.background[theme.current],
           },
           gestureDirection: "horizontal",
           headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
@@ -52,9 +52,10 @@ export default function MainStackNavigator() {
         name="About"
         component={AboutScreen}
         options={{
-          title: languages.about[currentLanguage],
+          title: lang.languages.about[lang.current],
           headerStyle: {
-            backgroundColor: themes.mainNavHeaderStyle.background[currentTheme],
+            backgroundColor:
+              theme.themes.mainNavHeaderStyle.background[theme.current],
             borderBottomColor: "#616161",
             borderBottomWidth: 1,
             elevation: 10,
@@ -67,9 +68,10 @@ export default function MainStackNavigator() {
         name="Settings"
         component={SettingsScreen}
         options={{
-          title: languages.settings[currentLanguage],
+          title: lang.languages.settings[lang.current],
           headerStyle: {
-            backgroundColor: themes.mainNavHeaderStyle.background[currentTheme],
+            backgroundColor:
+              theme.themes.mainNavHeaderStyle.background[theme.current],
             borderBottomColor: "#616161",
             borderBottomWidth: 1,
             elevation: 10,

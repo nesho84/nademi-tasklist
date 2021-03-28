@@ -15,7 +15,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext";
 
 function CustomDrawerContent(props) {
-  const { languages, currentLanguage } = useContext(LanguageContext);
+  const { lang } = useContext(LanguageContext);
 
   // Exit application custom Hook
   const { backAction } = useAppExit();
@@ -51,7 +51,7 @@ function CustomDrawerContent(props) {
         <DrawerItemList {...props} />
         {/* About Screen */}
         <DrawerItem
-          label={currentLanguage ? languages.about[currentLanguage] : "About"}
+          label={lang.current ? lang.languages.about[lang.current] : "About"}
           // label="About"
           labelStyle={{
             color: colors.light,
@@ -71,7 +71,7 @@ function CustomDrawerContent(props) {
         {/* Setting Screen */}
         <DrawerItem
           label={
-            currentLanguage ? languages.settings[currentLanguage] : "Settings"
+            lang.current ? lang.languages.settings[lang.current] : "Settings"
           }
           labelStyle={{
             color: colors.light,
@@ -90,7 +90,7 @@ function CustomDrawerContent(props) {
         />
         {/* Exit app Link */}
         <DrawerItem
-          label={currentLanguage ? languages.exit[currentLanguage] : "Exit"}
+          label={lang.current ? lang.languages.exit[lang.current] : "Exit"}
           labelStyle={{ color: colors.light, fontSize: 17, fontWeight: "600" }}
           onPress={() => backAction()}
           icon={({ focused, color, size }) => (
@@ -111,7 +111,7 @@ function CustomDrawerContent(props) {
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
-  const { themes, currentTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     // -----Drawer Screens (stack navigators)-----
@@ -119,7 +119,7 @@ export default function DrawerNavigator() {
       drawerContentOptions={{
         style: {
           backgroundColor:
-            themes.drawerNavigator.drawerContentOptions[currentTheme],
+            theme.themes.drawerNavigator.drawerContentOptions[theme.current],
         },
         labelStyle: { color: colors.light, fontSize: 17, fontWeight: "600" },
       }}

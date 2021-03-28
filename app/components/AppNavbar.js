@@ -8,9 +8,8 @@ import { ThemeContext } from "../context/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext";
 
 export default function AppNavbar() {
-  // Contexts
-  const { themes, currentTheme } = useContext(ThemeContext);
-  const { languages, currentLanguage } = useContext(LanguageContext);
+  const { theme } = useContext(ThemeContext);
+  const { lang } = useContext(LanguageContext);
 
   const navigation = useNavigation();
 
@@ -35,7 +34,7 @@ export default function AppNavbar() {
             items={[
               {
                 screen: "Settings",
-                label: languages.settings[currentLanguage],
+                label: lang.languages.settings[lang.current],
                 visible: true,
               },
             ]}
@@ -55,7 +54,7 @@ export default function AppNavbar() {
           </SimplePopupMenu>
         }
         containerStyle={{
-          backgroundColor: themes.appNavbar.header[currentTheme],
+          backgroundColor: theme.themes.appNavbar.header[theme.current],
           borderBottomColor: "#616161",
           borderBottomWidth: 1,
           elevation: 10,

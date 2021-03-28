@@ -8,14 +8,11 @@ import { LanguageContext } from "../context/LanguageContext";
 import { TasksContext } from "../context/TasksContext";
 
 export default function SettingsScreen(props) {
-  // Contexts
   const { labels, clearStorage } = useContext(TasksContext);
-  const { themes, currentTheme, changeTheme } = useContext(ThemeContext);
-  const { languages, currentLanguage, changeLanguage } = useContext(
-    LanguageContext
-  );
+  const { theme, changeTheme } = useContext(ThemeContext);
+  const { lang, changeLanguage } = useContext(LanguageContext);
 
-  const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
+  const [selectedLanguage, setSelectedLanguage] = useState(lang.current);
 
   const handleLanguage = (lang) => {
     setSelectedLanguage(lang);
@@ -26,7 +23,7 @@ export default function SettingsScreen(props) {
     if (labels === null) {
       Alert.alert(
         "",
-        `${languages.alerts.deleteAll.nothingToDelete[currentLanguage]}`,
+        `${lang.languages.alerts.deleteAll.nothingToDelete[lang.current]}`,
         [
           {
             text: "OK",
@@ -38,18 +35,18 @@ export default function SettingsScreen(props) {
       return;
     } else {
       Alert.alert(
-        `${languages.alerts.deleteAll.title[currentLanguage]}`,
-        `${languages.alerts.deleteAll.message[currentLanguage]}`,
+        `${lang.languages.alerts.deleteAll.title[lang.current]}`,
+        `${lang.languages.alerts.deleteAll.message[lang.current]}`,
         [
           {
-            text: `${languages.alerts.yes[currentLanguage]}`,
+            text: `${lang.languages.alerts.yes[lang.current]}`,
             onPress: () => {
               clearStorage();
               props.navigation.goBack();
             },
           },
           {
-            text: `${languages.alerts.no[currentLanguage]}`,
+            text: `${lang.languages.alerts.no[lang.current]}`,
           },
         ],
         { cancelable: false }
@@ -62,7 +59,7 @@ export default function SettingsScreen(props) {
       style={[
         styles.container,
         {
-          backgroundColor: themes.settingsScreen.container[currentTheme],
+          backgroundColor: theme.themes.settingsScreen.container[theme.current],
         },
       ]}
     >
@@ -70,25 +67,25 @@ export default function SettingsScreen(props) {
         style={[
           styles.menu,
           {
-            borderColor: themes.settingsScreen.menuBorder[currentTheme],
+            borderColor: theme.themes.settingsScreen.menuBorder[theme.current],
             borderBottomWidth: 1,
           },
         ]}
       >
         {/* Theme */}
         <Text style={styles.title}>
-          {currentLanguage
-            ? languages.settings.displayOptions[currentLanguage]
+          {lang.current
+            ? lang.languages.settings.displayOptions[lang.current]
             : "DISPLAY OPTIONS"}
         </Text>
         <View style={styles.actionContainer}>
           <Text style={styles.action}>Theme</Text>
           <MaterialCommunityIcons
-            color={themes.settingsScreen.switchColor[currentTheme]}
+            color={theme.themes.settingsScreen.switchColor[theme.current]}
             type="FontAwesome5"
             size={40}
             name={
-              currentTheme === "light" ? "toggle-switch-off" : "toggle-switch"
+              theme.current === "light" ? "toggle-switch-off" : "toggle-switch"
             }
             onPress={changeTheme}
           />
@@ -100,14 +97,14 @@ export default function SettingsScreen(props) {
         style={[
           styles.menu,
           {
-            borderColor: themes.settingsScreen.menuBorder[currentTheme],
+            borderColor: theme.themes.settingsScreen.menuBorder[theme.current],
             borderBottomWidth: 1,
           },
         ]}
       >
         <Text style={styles.title}>
-          {currentLanguage
-            ? languages.settings.language[currentLanguage]
+          {lang.current
+            ? lang.languages.settings.language[lang.current]
             : "LANGUAGE"}
         </Text>
         <Picker
@@ -125,22 +122,20 @@ export default function SettingsScreen(props) {
       {/* TASKS Delete */}
       <View style={styles.menu}>
         <Text style={styles.title}>
-          {currentLanguage
-            ? languages.settings.tasks[currentLanguage]
-            : "TASKS"}
+          {lang.current ? lang.languages.settings.tasks[lang.current] : "TASKS"}
         </Text>
         <View style={styles.actionContainer}>
           <Text style={styles.action}>
-            {currentLanguage
-              ? languages.settings.clearStorage[currentLanguage]
+            {lang.current
+              ? lang.languages.settings.clearStorage[lang.current]
               : "Clear Storage"}
           </Text>
           <View style={styles.deleteButton}>
             <Button
               color={colors.danger}
               title={
-                currentLanguage
-                  ? languages.settings.deleteButton[currentLanguage]
+                lang.current
+                  ? lang.languages.settings.deleteButton[lang.current]
                   : "DELETE"
               }
               onPress={handleDeleteAll}

@@ -14,16 +14,14 @@ import EditLabel from "../components/labels/EditLabel";
 import AddLabelButton from "../components/labels/AddLabelButton";
 import useAppUpdate from "../hooks/useAppUpdate";
 
-export default function LabelsScreen(props) {
-  // Contexts
-  const { languages, currentLanguage } = useContext(LanguageContext);
-
+export default function LabelsScreen() {
+  const { lang } = useContext(LanguageContext);
   const { labels, isLoading, addLabel, editLabel, orderLabels } = useContext(
     TasksContext
   );
 
   // Custom Hooks
-  const { runUpdate, notifyUpdate } = useAppUpdate(languages, currentLanguage);
+  const { runUpdate, notifyUpdate } = useAppUpdate(lang);
 
   // Initialize App Update
   runUpdate();
@@ -66,9 +64,10 @@ export default function LabelsScreen(props) {
             labels={labels}
             orderLabels={orderLabels}
             handleEditModal={handleEditModal}
+            lang={lang}
           />
 
-          {/* Footer - Add Label Button */}
+          {/* Add Label Button -> Footer */}
           <AddLabelButton setModalVisible={setAddModalVisible} />
 
           {/* Add Label Modal */}
@@ -76,7 +75,7 @@ export default function LabelsScreen(props) {
             modalVisible={addModalVisible}
             setModalVisible={setAddModalVisible}
           >
-            <AddLabel handleAddLabel={handleAddLabel} />
+            <AddLabel handleAddLabel={handleAddLabel} lang={lang} />
           </AppModal>
 
           {/* Edit Label Modal */}
@@ -87,6 +86,7 @@ export default function LabelsScreen(props) {
             <EditLabel
               labelToEdit={labelToEdit}
               handleEditLabel={handleEditLabel}
+              lang={lang}
             />
           </AppModal>
         </View>

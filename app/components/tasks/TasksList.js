@@ -14,12 +14,12 @@ import TasksDivider from "./TasksDivider";
 import AppNoItems from "../AppNoItems";
 import colors from "../../config/colors";
 import { ThemeContext } from "../../context/ThemeContext";
-import { LanguageContext } from "../../context/LanguageContext";
 
 export default function TasksList(props) {
-  // Contexts
-  const { themes, currentTheme } = useContext(ThemeContext);
-  const { languages, currentLanguage } = useContext(LanguageContext);
+  const { theme } = useContext(ThemeContext);
+
+  const lastUnchecked = props.unCheckedTasks[props.unCheckedTasks.length - 1];
+  const lastChecked = props.checkedTasks[props.checkedTasks.length - 1];
 
   // Single Task template
   const RenderTask = ({ item, index, drag, isActive }) => {
@@ -31,7 +31,7 @@ export default function TasksList(props) {
         <View
           style={[
             styles.tasksListContainer,
-            currentTheme === "light"
+            theme.current === "light"
               ? {
                   backgroundColor: item.checked
                     ? colors.checkedItem
@@ -51,7 +51,7 @@ export default function TasksList(props) {
             <Checkbox
               color={
                 item.checked
-                  ? currentTheme === "light"
+                  ? theme.current === "light"
                     ? colors.successLight
                     : colors.darkGrey
                   : colors.light
@@ -69,7 +69,7 @@ export default function TasksList(props) {
                 {
                   textDecorationLine: item.checked ? "line-through" : "none",
                 },
-                currentTheme === "light"
+                theme.current === "light"
                   ? {
                       color: item.checked
                         ? colors.checkedItemText
@@ -88,27 +88,38 @@ export default function TasksList(props) {
           </View>
           {/* -----Task delete icon----- */}
           <View>
-            <MaterialIcons
-              name="delete"
-              size={23}
-              color="white"
+            <TouchableOpacity
               onPress={() =>
                 Alert.alert(
-                  `${languages.alerts.deleteTask.title[currentLanguage]}`,
-                  `${languages.alerts.deleteTask.message[currentLanguage]}`,
+                  `${
+                    props.lang.languages.alerts.deleteTask.title[
+                      props.lang.current
+                    ]
+                  }`,
+                  `${
+                    props.lang.languages.alerts.deleteTask.message[
+                      props.lang.current
+                    ]
+                  }`,
                   [
                     {
-                      text: `${languages.alerts.yes[currentLanguage]}`,
+                      text: `${
+                        props.lang.languages.alerts.yes[props.lang.current]
+                      }`,
                       onPress: () => props.handleDeleteTask(item.key),
                     },
                     {
-                      text: `${languages.alerts.no[currentLanguage]}`,
+                      text: `${
+                        props.lang.languages.alerts.no[props.lang.current]
+                      }`,
                     },
                   ],
                   { cancelable: false }
                 )
               }
-            />
+            >
+              <MaterialIcons name="delete" size={23} color="white" />
+            </TouchableOpacity>
           </View>
         </View>
       </TouchableOpacity>
@@ -124,12 +135,14 @@ export default function TasksList(props) {
             <DraggableFlatList
               data={props.unCheckedTasks}
               renderItem={({ item, index, drag, isActive }) => (
-                <RenderTask
-                  item={item}
-                  index={index}
-                  drag={drag}
-                  isActive={isActive}
-                />
+                <View style={{ marginBottom: lastUnchecked === item ? 3 : 0 }}>
+                  <RenderTask
+                    item={item}
+                    index={index}
+                    drag={drag}
+                    isActive={isActive}
+                  />
+                </View>
               )}
               keyExtractor={(item, index) => `draggable-item-${item.key}`}
               onDragEnd={({ data }) => props.handleOrderTasks(data)}
@@ -145,8 +158,10 @@ export default function TasksList(props) {
       {props.checkedTasks.length > 0 && (
         <>
           {/* -----Tasks Divider----- */}
-          <TasksDivider checkedTasks={props.checkedTasks.length} />
-
+          <TasksDivider
+            checkedTasks={props.checkedTasks.length}
+            lang={props.lang}
+          />
           {/* -----Checked Tasks START----- */}
           <TouchableWithoutFeedback
             style={props.checkedTasks.length > 0 ? { flex: 1 } : { flex: 0 }}
@@ -154,12 +169,14 @@ export default function TasksList(props) {
             <DraggableFlatList
               data={props.checkedTasks}
               renderItem={({ item, index, drag, isActive }) => (
-                <RenderTask
-                  item={item}
-                  index={index}
-                  drag={drag}
-                  isActive={isActive}
-                />
+                <View style={{ marginBottom: lastChecked === item ? 6 : 0 }}>
+                  <RenderTask
+                    item={item}
+                    index={index}
+                    drag={drag}
+                    isActive={isActive}
+                  />
+                </View>
               )}
               keyExtractor={(item, index) => `draggable-item-${item.key}`}
               onDragEnd={({ data }) => props.handleOrderTasks(data)}
@@ -178,8 +195,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 5,
     borderRadius: 5,
-    marginVertical: 3,
-    marginHorizontal: 8,
+    marginTop: 5,
+    marginHorizontal: 5,
   },
   itemText: {
     width: "100%",

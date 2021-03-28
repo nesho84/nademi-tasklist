@@ -29,7 +29,8 @@
     "react-native-simple-popup-menu": "^1.0.3",
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "@react-native-community/datetimepicker": "3.0.4"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

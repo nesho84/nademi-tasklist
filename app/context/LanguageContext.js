@@ -5,13 +5,13 @@ import languages from "../config/languages";
 export const LanguageContext = createContext();
 
 export default function LanguageContextProvider(props) {
-  const [currentLanguage, setCurrentLanguage] = useState("english");
+  const [current, setCurrent] = useState("english");
 
   let languageKey = "@Language_Key";
 
   // Toggle language
   const changeLanguage = async (language) => {
-    setCurrentLanguage(language);
+    setCurrent(language);
     saveInStorage(language);
   };
 
@@ -31,9 +31,9 @@ export default function LanguageContextProvider(props) {
       storageLanguage = JSON.parse(storageLanguage);
 
       if (storageLanguage !== null) {
-        setCurrentLanguage(storageLanguage);
+        setCurrent(storageLanguage);
       } else {
-        saveInStorage(currentLanguage);
+        saveInStorage(current);
       }
     } catch (err) {
       console.log(err);
@@ -64,8 +64,7 @@ export default function LanguageContextProvider(props) {
   return (
     <LanguageContext.Provider
       value={{
-        languages,
-        currentLanguage,
+        lang: { languages, current },
         changeLanguage,
       }}
     >

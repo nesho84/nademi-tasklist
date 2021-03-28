@@ -1,19 +1,22 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { LanguageContext } from "../../context/LanguageContext";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import colors from "../../config/colors";
 import AppNoItems from "../AppNoItems";
 
-export default function LabelsList({ labels, orderLabels, handleEditModal }) {
-  // Contexts
-  const { languages, currentLanguage } = useContext(LanguageContext);
-
+export default function LabelsList({
+  labels,
+  orderLabels,
+  handleEditModal,
+  lang,
+}) {
   const navigation = useNavigation();
 
-  // Render Single Task template
+  const lastItem = labels[labels.length - 1];
+
+  // Render Single Label template
   const RenderLabel = ({ item, index, drag, isActive }) => {
     const checkedTasksCount = item.tasks.filter((task) => task.checked).length;
     const unCheckedTasksCount = item.tasks.length - checkedTasksCount;
@@ -28,23 +31,12 @@ export default function LabelsList({ labels, orderLabels, handleEditModal }) {
         <View
           style={[
             styles.labelBox,
-            {
-              backgroundColor: item.color,
-              borderColor: colors.lightMuted,
-              borderWidth: 0.3,
-            },
-            isActive && { backgroundColor: colors.muted },
+            { backgroundColor: isActive ? colors.muted : item.color },
+            { marginBottom: lastItem === item ? 6 : 0 },
           ]}
         >
           {/* -----Item title and edit icon Container----- */}
-          <View
-            style={[
-              styles.labelBoxHeaderContainer,
-              {
-                // backgroundColor: themes.labelsList.labelBoxHeaderContainer[currentTheme],
-              },
-            ]}
-          >
+          <View style={styles.labelBoxHeaderContainer}>
             <View style={styles.iconBeforeTitle}>
               <MaterialCommunityIcons
                 style={{ marginRight: 5 }}
@@ -56,13 +48,14 @@ export default function LabelsList({ labels, orderLabels, handleEditModal }) {
               <Text style={styles.labelBoxTitle}>{item.title}</Text>
             </View>
             {/* EditLabel Icon */}
-            <MaterialCommunityIcons
-              style={{ marginRight: -1 }}
-              name="playlist-edit"
-              size={31}
-              color={colors.light}
-              onPress={() => handleEditModal(item)}
-            />
+            <TouchableOpacity onPress={() => handleEditModal(item)}>
+              <MaterialCommunityIcons
+                style={{ marginRight: -1 }}
+                name="playlist-edit"
+                size={31}
+                color={colors.light}
+              />
+            </TouchableOpacity>
           </View>
 
           <View
@@ -75,13 +68,13 @@ export default function LabelsList({ labels, orderLabels, handleEditModal }) {
             <View style={{ alignItems: "center" }}>
               <Text style={styles.count}>{unCheckedTasksCount}</Text>
               <Text style={styles.subtitle}>
-                {languages.labels.remaining[currentLanguage]}
+                {lang.languages.labels.remaining[lang.current]}
               </Text>
             </View>
             <View style={{ alignItems: "center" }}>
               <Text style={styles.count}>{checkedTasksCount}</Text>
               <Text style={styles.subtitle}>
-                {languages.labels.completed[currentLanguage]}
+                {lang.languages.labels.completed[lang.current]}
               </Text>
             </View>
           </View>
@@ -92,7 +85,7 @@ export default function LabelsList({ labels, orderLabels, handleEditModal }) {
 
   return (
     <View style={styles.container}>
-      {/* -----Tasks Label List START----- */}
+      {/* -----Label List START----- */}
       {labels && labels.length > 0 ? (
         <DraggableFlatList
           containerStyle={styles.draggableFlatListContainer}
@@ -112,7 +105,7 @@ export default function LabelsList({ labels, orderLabels, handleEditModal }) {
         // -----No Labels to show-----
         <AppNoItems />
       )}
-      {/* -----Tasks Label List END----- */}
+      {/* -----Label List END----- */}
     </View>
   );
 }
@@ -124,15 +117,16 @@ const styles = StyleSheet.create({
   },
   draggableFlatListContainer: {
     paddingHorizontal: 5,
-    paddingTop: 7,
   },
   labelBox: {
     alignItems: "center",
     justifyContent: "center",
     paddingBottom: 10,
     borderRadius: 5,
-    marginBottom: 7,
+    borderColor: colors.lightMuted,
+    borderWidth: 0.3,
     elevation: 2,
+    marginTop: 6,
   },
   labelBoxHeaderContainer: {
     alignSelf: "stretch",

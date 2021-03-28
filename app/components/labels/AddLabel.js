@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,11 +9,8 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
-import { LanguageContext } from "../../context/LanguageContext";
 
-export default function AddLabel(props) {
-  const { languages, currentLanguage } = useContext(LanguageContext);
-
+export default function AddLabel({ handleAddLabel, lang }) {
   const labelColors = [
     "#5CD859",
     "#24A6D9",
@@ -30,14 +27,14 @@ export default function AddLabel(props) {
   const handleAdd = () => {
     if (label.length < 1) {
       Alert.alert(
-        `${languages.alerts.requiredField.title[currentLanguage]}`,
-        `${languages.alerts.requiredField.message[currentLanguage]}`,
+        `${lang.languages.alerts.requiredField.title[lang.current]}`,
+        `${lang.languages.alerts.requiredField.message[lang.current]}`,
         [{ text: "OK" }],
         { cancelable: false }
       );
       return false;
     } else {
-      props.handleAddLabel(label, labelColor);
+      handleAddLabel(label, labelColor);
       setLabel("");
     }
   };
@@ -61,14 +58,16 @@ export default function AddLabel(props) {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: labelColor }]}>
-        {languages.labels.newLabel[currentLanguage]}
+        {lang.languages.labels.newLabel[lang.current]}
       </Text>
 
       <TextInput
+        multiline
+        autoCapitalize="none"
+        autoCorrect={false}
         onChangeText={(text) => setLabel(text)}
         style={styles.input}
-        multiline
-        placeholder={languages.inputPlaceholder[currentLanguage]}
+        placeholder={lang.languages.inputPlaceholder[lang.current]}
       />
 
       <View style={styles.selectColorContainer}>
@@ -80,7 +79,7 @@ export default function AddLabel(props) {
         onPress={handleAdd}
       >
         <Text style={styles.btnAddText}>
-          {languages.saveButton[currentLanguage]}
+          {lang.languages.saveButton[lang.current]}
         </Text>
       </TouchableOpacity>
     </View>

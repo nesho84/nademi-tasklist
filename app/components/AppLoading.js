@@ -4,31 +4,31 @@ import { ThemeContext } from "../context/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext";
 
 export default function AppLoading(props) {
-  // Contexts
-  const { themes, currentTheme } = useContext(ThemeContext);
-  const { languages, currentLanguage } = useContext(LanguageContext);
+  const { theme } = useContext(ThemeContext);
+  const { lang } = useContext(LanguageContext);
 
   return (
     <View
       style={[
         styles.loadingContainer,
         {
-          backgroundColor: themes.appLoading.loadingContainer[currentTheme],
+          backgroundColor:
+            theme.themes.appLoading.loadingContainer[theme.current],
         },
       ]}
     >
       <ActivityIndicator
         style={{ paddingBottom: 15 }}
         size={65}
-        color={themes.appLoading.indicator[currentTheme]}
+        color={theme.themes.appLoading.indicator[theme.current]}
       />
       <Text
         style={{
           fontSize: 23,
-          color: themes.appLoading.textColor[currentTheme],
+          color: theme.themes.appLoading.textColor[theme.current],
         }}
       >
-        {languages.appLoading[currentLanguage]}
+        {lang.languages.appLoading[lang.current]}
       </Text>
     </View>
   );

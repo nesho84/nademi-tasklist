@@ -3,7 +3,7 @@ import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Updates from "expo-updates";
 
-export default function useAppUpdate(languages, currentLanguage) {
+export default function useAppUpdate(lang) {
   let updateKey = "@Update_Key";
 
   const runUpdate = async () => {
@@ -41,13 +41,13 @@ export default function useAppUpdate(languages, currentLanguage) {
     if (item !== null) {
       Alert.alert(
         `${
-          currentLanguage
-            ? languages.alerts.appUpdate.title[currentLanguage]
+          lang.current
+            ? lang.languages.alerts.appUpdate.title[lang.current]
             : "Update Success"
         }`,
         `${
-          currentLanguage
-            ? languages.alerts.appUpdate.message[currentLanguage]
+          lang.current
+            ? lang.languages.alerts.appUpdate.message[lang.current]
             : "Update was successful."
         }`,
         [

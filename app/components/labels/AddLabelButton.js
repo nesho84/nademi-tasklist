@@ -4,15 +4,14 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ThemeContext } from "../../context/ThemeContext";
 
 export default function AddLabelButton(props) {
-  // Contexts
-  const { themes, currentTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <View
       style={[
         styles.container,
         {
-          backgroundColor: themes.addLabelButton.container[currentTheme],
+          backgroundColor: theme.themes.addLabelButton.container[theme.current],
         },
       ]}
     >
@@ -20,7 +19,8 @@ export default function AddLabelButton(props) {
         style={[
           styles.addButton,
           {
-            backgroundColor: themes.addLabelButton.addButton[currentTheme],
+            backgroundColor:
+              theme.themes.addLabelButton.addButton[theme.current],
           },
         ]}
         onPress={() => props.setModalVisible(true)}

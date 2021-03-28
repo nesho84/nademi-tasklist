@@ -4,24 +4,23 @@ import { ThemeContext } from "../context/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext";
 
 export default function AppBox(props) {
-  // Contexts
-  const { themes, currentTheme } = useContext(ThemeContext);
-  const { languages, currentLanguage } = useContext(LanguageContext);
+  const { theme } = useContext(ThemeContext);
+  const { lang } = useContext(LanguageContext);
 
   return (
     <View
       style={[
         styles.noItemsContainer,
-        { borderColor: themes.appBox.borderColor[currentTheme] },
+        { borderColor: theme.themes.appBox.borderColor[theme.current] },
       ]}
     >
       <Text
         style={[
           styles.noItemsText,
-          { color: themes.appBox.textColor[currentTheme] },
+          { color: theme.themes.appBox.textColor[theme.current] },
         ]}
       >
-        {languages.noItemsToShow.message[currentLanguage]}
+        {lang.languages.noItemsToShow.message[lang.current]}
       </Text>
     </View>
   );

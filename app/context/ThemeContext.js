@@ -5,19 +5,19 @@ import themes from "../config/themes";
 export const ThemeContext = createContext();
 
 export default function ThemeContextProvider(props) {
-  const [currentTheme, setCurrentTheme] = useState("dark");
+  const [current, setCurrent] = useState("dark");
 
   let themeKey = "@Theme_Key";
 
   // Toggle theme
   const changeTheme = async () => {
-    let theme = currentTheme;
-    if (currentTheme === "dark") {
+    let theme = current;
+    if (current === "dark") {
       theme = "light";
     } else {
       theme = "dark";
     }
-    setCurrentTheme(theme);
+    setCurrent(theme);
     saveInStorage(theme);
   };
 
@@ -37,9 +37,9 @@ export default function ThemeContextProvider(props) {
       storageTheme = JSON.parse(storageTheme);
 
       if (storageTheme !== null) {
-        setCurrentTheme(storageTheme);
+        setCurrent(storageTheme);
       } else {
-        saveInStorage(currentTheme);
+        saveInStorage(current);
       }
     } catch (err) {
       console.log(err);
@@ -57,7 +57,7 @@ export default function ThemeContextProvider(props) {
 
   useEffect(() => {
     // new update theme error!
-    clearTheme();
+    // clearTheme();
 
     let mounted = true;
 
@@ -71,7 +71,7 @@ export default function ThemeContextProvider(props) {
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ themes, currentTheme, changeTheme }}>
+    <ThemeContext.Provider value={{ theme: { themes, current }, changeTheme }}>
       {props.children}
     </ThemeContext.Provider>
   );

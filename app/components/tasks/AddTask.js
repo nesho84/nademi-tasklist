@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -8,18 +8,15 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
-import { LanguageContext } from "../../context/LanguageContext";
 
-export default function AddTask(props) {
-  const { languages, currentLanguage } = useContext(LanguageContext);
-
+export default function AddTask({ lang, ...props }) {
   const [task, setTask] = useState("");
 
   const handleAdd = () => {
     if (task.length < 1) {
       Alert.alert(
-        `${languages.alerts.requiredField.title[currentLanguage]}`,
-        `${languages.alerts.requiredField.message[currentLanguage]}`,
+        `${lang.languages.alerts.requiredField.title[lang.current]}`,
+        `${lang.languages.alerts.requiredField.message[lang.current]}`,
         [{ task: "OK" }],
         { cancelable: false }
       );
@@ -33,11 +30,13 @@ export default function AddTask(props) {
   return (
     <View style={styles.addTaskContainer}>
       <TextInput
-        ref={props.inputRef}
-        onChangeText={(text) => setTask(text)}
         style={styles.addTaskInput}
         multiline
+        autoCapitalize="none"
+        autoCorrect={false}
         placeholder={props.placeholder}
+        ref={props.inputRef}
+        onChangeText={(text) => setTask(text)}
       />
       <TouchableOpacity
         style={{ backgroundColor: props.currentLabelColor }}
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderTopColor: "#616161",
     borderTopWidth: 0.2,
-    padding: 10,
+    padding: 5,
   },
   addTaskInput: {
     flex: 1,
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: StyleSheet.hairlineWidth,
     paddingHorizontal: 15,
-    marginRight: 5,
+    marginRight: 3.5,
   },
   addTaskButton: {
     borderWidth: StyleSheet.hairlineWidth,

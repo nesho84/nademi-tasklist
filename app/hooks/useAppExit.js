@@ -3,21 +3,21 @@ import { Alert, BackHandler } from "react-native";
 import { LanguageContext } from "../context/LanguageContext";
 
 export default function useAppExit() {
-  const { languages, currentLanguage } = useContext(LanguageContext);
+  const { lang } = useContext(LanguageContext);
 
   // confirm Exit application
   const backAction = () => {
     Alert.alert(
-      `${languages.alerts.appExit.title[currentLanguage]}`,
-      `${languages.alerts.appExit.message[currentLanguage]}`,
+      `${lang.languages.alerts.appExit.title[lang.current]}`,
+      `${lang.languages.alerts.appExit.message[lang.current]}`,
       [
         {
-          text: `${languages.alerts.appExit.cancel[currentLanguage]}`,
+          text: `${lang.languages.alerts.appExit.cancel[lang.current]}`,
           onPress: () => null,
           style: "cancel",
         },
         {
-          text: `${languages.alerts.appExit.yes[currentLanguage]}`,
+          text: `${lang.languages.alerts.appExit.yes[lang.current]}`,
           onPress: () => BackHandler.exitApp(),
         },
       ]

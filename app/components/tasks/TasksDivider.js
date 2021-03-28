@@ -3,11 +3,8 @@ import { StyleSheet, View, Text } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext";
 import { LanguageContext } from "../../context/LanguageContext";
 
-export default function TasksDivider({ checkedTasks }) {
-  // Contexts
-  const { themes, currentTheme } = useContext(ThemeContext);
-
-  const { languages, currentLanguage } = useContext(LanguageContext);
+export default function TasksDivider({ checkedTasks, lang }) {
+  const { theme } = useContext(ThemeContext);
 
   return (
     <View style={styles.checkedTasksDividerContainer}>
@@ -15,17 +12,17 @@ export default function TasksDivider({ checkedTasks }) {
         style={[
           styles.listDivider,
           {
-            borderColor: themes.tasksDivider.borderColor[currentTheme],
+            borderColor: theme.themes.tasksDivider.borderColor[theme.current],
           },
         ]}
       ></View>
       <Text
         style={[
           styles.listDividerText,
-          { color: themes.tasksDivider.textColor[currentTheme] },
+          { color: theme.themes.tasksDivider.textColor[theme.current] },
         ]}
       >
-        {`${checkedTasks} ${languages.tasks.tasksDivider[currentLanguage]}`}
+        {`${checkedTasks} ${lang.languages.tasks.tasksDivider[lang.current]}`}
       </Text>
     </View>
   );
@@ -34,9 +31,8 @@ export default function TasksDivider({ checkedTasks }) {
 const styles = StyleSheet.create({
   checkedTasksDividerContainer: {
     width: "100%",
-    marginTop: 7,
-    marginBottom: 3,
-    paddingHorizontal: 10,
+    marginVertical: 2,
+    paddingHorizontal: 7,
   },
   listDivider: {
     width: "100%",

@@ -1,5 +1,12 @@
 import React, { useContext, useState, useLayoutEffect } from "react";
-import { StyleSheet, Text, View, Keyboard, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Keyboard,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LanguageContext } from "../context/LanguageContext";
 import { TasksContext } from "../context/TasksContext";
@@ -11,7 +18,7 @@ import TasksList from "../components/tasks/TasksList";
 import AddTask from "../components/tasks/AddTask";
 
 export default function LabelDetails({ route, navigation }) {
-  const { languages, currentLanguage } = useContext(LanguageContext);
+  const { lang } = useContext(LanguageContext);
 
   const {
     labels,
@@ -30,14 +37,11 @@ export default function LabelDetails({ route, navigation }) {
   );
 
   // Filter Tasks unchecked and checked
-  const unCheckedTasks =
-    currentLabel && currentLabel.tasks
-      ? currentLabel.tasks.filter((task) => task.checked === false)
+  const filterTasks = (isChecked) => {
+    return currentLabel && currentLabel.tasks
+      ? currentLabel.tasks.filter((task) => task.checked === isChecked)
       : [];
-  const checkedTasks =
-    currentLabel && currentLabel.tasks
-      ? currentLabel.tasks.filter((task) => task.checked === true)
-      : [];
+  };
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -70,18 +74,18 @@ export default function LabelDetails({ route, navigation }) {
   // Delete the entire label from the Storage
   const handleDeleteLabel = (labelKey) => {
     Alert.alert(
-      `${languages.alerts.deleteLabel.title[currentLanguage]}`,
-      `${languages.alerts.deleteLabel.message[currentLanguage]}`,
+      `${lang.languages.alerts.deleteLabel.title[lang.current]}`,
+      `${lang.languages.alerts.deleteLabel.message[lang.current]}`,
       [
         {
-          text: `${languages.alerts.yes[currentLanguage]}`,
+          text: `${lang.languages.alerts.yes[lang.current]}`,
           onPress: () => {
             deleteLabel(labelKey);
             navigation.goBack();
           },
         },
         {
-          text: `${languages.alerts.no[currentLanguage]}`,
+          text: `${lang.languages.alerts.no[lang.current]}`,
         },
       ],
       { cancelable: false }
@@ -103,13 +107,14 @@ export default function LabelDetails({ route, navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <MaterialCommunityIcons
-          name="playlist-remove"
-          size={25}
-          color={colors.light}
-          style={{ marginRight: 12 }}
-          onPress={() => handleDeleteLabel(currentLabel.key)}
-        />
+        <TouchableOpacity onPress={() => handleDeleteLabel(currentLabel.key)}>
+          <MaterialCommunityIcons
+            name="playlist-remove"
+            size={25}
+            color={colors.light}
+            style={{ marginRight: 12 }}
+          />
+        </TouchableOpacity>
       ),
     });
   }, [navigation]);
@@ -143,22 +148,32 @@ export default function LabelDetails({ route, navigation }) {
                 paddingHorizontal: 10,
               }}
             >
-              {`${checkedTasks.length} ${
-                languages.labels.of[currentLanguage]
+              {`${filterTasks(true).length} ${
+                lang.languages.labels.of[lang.current]
               } ${currentLabel.tasks ? currentLabel.tasks.length : "0"} ${
-                languages.labels.tasks[currentLanguage]
+                lang.languages.labels.tasks[lang.current]
               }`}
             </Text>
           </View>
 
           {/* -----Tasks List----- */}
           <TasksList
-            unCheckedTasks={unCheckedTasks}
-            checkedTasks={checkedTasks}
+            unCheckedTasks={filterTasks(false)}
+            checkedTasks={filterTasks(true)}
             handleEditModal={handleEditModal}
             handleCheckbox={handleCheckbox}
             handleOrderTasks={handleOrderTasks}
             handleDeleteTask={handleDeleteTask}
+            lang={lang}
+          />
+
+          {/* Add Task Input */}
+          <AddTask
+            inputRef={inputRef}
+            handleAddTask={handleAddTask}
+            currentLabelColor={currentLabel.color}
+            placeholder={lang.languages.inputPlaceholder[lang.current]}
+            lang={lang}
           />
 
           {/* -----Edit Task Modal----- */}
@@ -170,16 +185,9 @@ export default function LabelDetails({ route, navigation }) {
               labels={labels}
               taskToEdit={taskToEdit}
               handleEditTask={handleEditTask}
+              lang={lang}
             />
           </AppModal>
-
-          {/* Add Task Input */}
-          <AddTask
-            inputRef={inputRef}
-            handleAddTask={handleAddTask}
-            currentLabelColor={currentLabel.color}
-            placeholder={languages.inputPlaceholder[currentLanguage]}
-          />
         </View>
       )}
     </AppScreen>
@@ -194,7 +202,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   headerTitle: {
-    marginBottom: 10,
+    // marginBottom: 10,
     paddingTop: 10,
     paddingBottom: 6,
     borderBottomWidth: 1,

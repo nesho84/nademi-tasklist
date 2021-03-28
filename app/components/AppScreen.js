@@ -10,8 +10,7 @@ import {
 import { ThemeContext } from "../context/ThemeContext";
 
 function Screen({ children }) {
-  // Contexts
-  const { themes, currentTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -19,13 +18,15 @@ function Screen({ children }) {
         <View
           style={{
             flex: 1,
-            backgroundColor: themes.appScreen.screen[currentTheme],
+            backgroundColor: theme.themes.appScreen.screen[theme.current],
           }}
         >
           {children}
         </View>
       </TouchableWithoutFeedback>
-      <StatusBar backgroundColor={themes.appScreen.statusBar[currentTheme]} />
+      <StatusBar
+        backgroundColor={theme.themes.appScreen.statusBar[theme.current]}
+      />
     </SafeAreaView>
   );
 }

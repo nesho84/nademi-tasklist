@@ -9,11 +9,8 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
-import { LanguageContext } from "../../context/LanguageContext";
 
-export default function EditLabel(props) {
-  const { languages, currentLanguage } = useContext(LanguageContext);
-
+export default function EditLabel({ labelToEdit, handleEditLabel, lang }) {
   const bgColors = [
     "#5CD859",
     "#24A6D9",
@@ -24,20 +21,20 @@ export default function EditLabel(props) {
     "#D88559",
   ];
 
-  const [input, setInput] = useState(props.labelToEdit.title);
-  const [labelColor, setLabelColor] = useState(props.labelToEdit.color);
+  const [input, setInput] = useState(labelToEdit.title);
+  const [labelColor, setLabelColor] = useState(labelToEdit.color);
 
   const handleAdd = () => {
     if (input.length < 1) {
       Alert.alert(
-        `${languages.alerts.requiredField.title[currentLanguage]}`,
-        `${languages.alerts.requiredField.message[currentLanguage]}`,
+        `${lang.languages.alerts.requiredField.title[lang.current]}`,
+        `${lang.languages.alerts.requiredField.message[lang.current]}`,
         [{ text: "OK" }],
         { cancelable: false }
       );
       return false;
     } else {
-      props.handleEditLabel(props.labelToEdit.key, input, labelColor);
+      handleEditLabel(labelToEdit.key, input, labelColor);
       setInput("");
     }
   };
@@ -61,14 +58,16 @@ export default function EditLabel(props) {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { color: labelColor }]}>
-        {languages.labels.editLabel[currentLanguage]}
+        {lang.languages.labels.editLabel[lang.current]}
       </Text>
 
       <TextInput
+        multiline
+        autoCapitalize="none"
+        autoCorrect={false}
         onChangeText={(text) => setInput(text)}
         style={styles.input}
-        multiline
-        placeholder={languages.inputPlaceholder[currentLanguage]}
+        placeholder={lang.languages.inputPlaceholder[lang.current]}
         value={input}
       />
 
@@ -81,7 +80,7 @@ export default function EditLabel(props) {
         onPress={handleAdd}
       >
         <Text style={styles.btnEditText}>
-          {languages.saveButton[currentLanguage]}
+          {lang.languages.saveButton[lang.current]}
         </Text>
       </TouchableOpacity>
     </View>

@@ -8,24 +8,21 @@ import {
   Alert,
 } from "react-native";
 import colors from "../../config/colors";
-import { LanguageContext } from "../../context/LanguageContext";
 
-export default function EditTask(props) {
-  const { languages, currentLanguage } = useContext(LanguageContext);
-
-  const [input, setInput] = useState(props.taskToEdit.name.toString());
+export default function EditTask({ handleEditTask, taskToEdit, lang }) {
+  const [input, setInput] = useState(taskToEdit.name.toString());
 
   const handleEdit = () => {
     if (input.length < 1) {
       Alert.alert(
-        `${languages.alerts.requiredField.title[currentLanguage]}`,
-        `${languages.alerts.requiredField.message[currentLanguage]}`,
+        `${lang.languages.alerts.requiredField.title[lang.current]}`,
+        `${lang.languages.alerts.requiredField.message[lang.current]}`,
         [{ text: "OK" }],
         { cancelable: false }
       );
       return false;
     } else {
-      props.handleEditTask(props.taskToEdit.key, input);
+      handleEditTask(taskToEdit.key, input);
       setInput("");
     }
   };
@@ -33,18 +30,20 @@ export default function EditTask(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {languages.tasks.editTask[currentLanguage]}
+        {lang.languages.tasks.editTask[lang.current]}
       </Text>
       <TextInput
+        multiline
+        autoCapitalize="none"
+        autoCorrect={false}
         onChangeText={(text) => setInput(text)}
         style={styles.input}
-        multiline
-        placeholder={languages.inputPlaceholder[currentLanguage]}
+        placeholder={lang.languages.inputPlaceholder[lang.current]}
         value={input}
       />
       <TouchableOpacity style={styles.btnEdit} onPress={handleEdit}>
         <Text style={styles.btnEditText}>
-          {languages.saveButton[currentLanguage]}
+          {lang.languages.saveButton[lang.current]}
         </Text>
       </TouchableOpacity>
     </View>

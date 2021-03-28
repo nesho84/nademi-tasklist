@@ -10,21 +10,20 @@ import {
 import { ThemeContext } from "../context/ThemeContext";
 
 export default function AboutScreen(props) {
-  // Contexts
-  const { themes, currentTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <View
       style={[
         styles.container,
         {
-          backgroundColor: themes.aboutScreen.container[currentTheme],
+          backgroundColor: theme.themes.aboutScreen.container[theme.current],
         },
       ]}
     >
       <Image style={styles.logo} source={require("../assets/nademi.png")} />
       <Text style={styles.title}>nademi-tasklist</Text>
-      <Text style={styles.versionText}>Version 3.0.8</Text>
+      <Text style={styles.versionText}>Version 3.1.0</Text>
       <TouchableOpacity
         onPress={async () => await Linking.openURL("https://nademi.com")}
       >
