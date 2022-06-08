@@ -196,7 +196,7 @@ export default function TasksContextProvider(props) {
     try {
       let storageTasks = await AsyncStorage.getItem(storageKey);
       storageTasks = JSON.parse(storageTasks);
-      console.log(storageTasks);
+      // console.log(storageTasks);
 
       if (storageTasks !== null) {
         setLabels(storageTasks);

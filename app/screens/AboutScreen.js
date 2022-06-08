@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import Constants from 'expo-constants';
 import {
   StyleSheet,
   Text,
@@ -23,7 +24,7 @@ export default function AboutScreen(props) {
     >
       <Image style={styles.logo} source={require("../assets/nademi.png")} />
       <Text style={styles.title}>nademi-tasklist</Text>
-      <Text style={styles.versionText}>Version 3.1.3</Text>
+      <Text style={styles.versionText}>Version {Constants.manifest.version}</Text>
       <TouchableOpacity
         onPress={async () => await Linking.openURL("https://nademi.com")}
       >

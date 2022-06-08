@@ -85,10 +85,11 @@ export default function TasksList(props) {
             >
               {item.name}
             </Text>
+            {/* -----Task dateTime----- */}
             <Text
               style={[
                 {
-                  textDecorationLine: item.checked ? "line-through" : "none",
+                  // textDecorationLine: item.checked ? "line-through" : "none",
                 },
                 theme.current === "light"
                   ? {
@@ -98,10 +99,10 @@ export default function TasksList(props) {
                   }
                   : {
                     color: item.checked
-                      ? colors.checkedItemTextDark
-                      : colors.light,
+                      ? colors.darkGrey
+                      : colors.darkGrey,
                   },
-                { fontSize: 11 },
+                { fontSize: 10 },
               ]}
             >
               {item.date}
