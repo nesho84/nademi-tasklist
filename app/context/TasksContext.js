@@ -34,10 +34,14 @@ export default function TasksContextProvider(props) {
 
   // Add Task
   const addTask = (labelKey, taskName) => {
+    const today = new Date();
+    const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    const time = today.getHours() + ':' + today.getMinutes();
+
     let newTask = {
       key: uuidv4(),
       name: taskName,
-      date: new Date(),
+      date: date + ' ' + time,
       checked: false,
     };
 
@@ -192,6 +196,7 @@ export default function TasksContextProvider(props) {
     try {
       let storageTasks = await AsyncStorage.getItem(storageKey);
       storageTasks = JSON.parse(storageTasks);
+      console.log(storageTasks);
 
       if (storageTasks !== null) {
         setLabels(storageTasks);

@@ -5,37 +5,37 @@ export default {
     deutsch: "Wird geladen...",
     shqip: "Ngarkohet...",
   },
-  //   About screen and links
+  // About screen and links
   about: {
     english: "About",
     deutsch: "Über uns",
     shqip: "Rreth nesh",
   },
-  //   Exit Action
+  // Exit Action
   exit: {
     english: "Exit",
     deutsch: "Beenden",
     shqip: "Dalje",
   },
-  //   Input placeholders
+  // Input placeholders
   inputPlaceholder: {
     english: "Enter text...",
     deutsch: "Text eingeben...",
     shqip: "Shkruaj tekst...",
   },
-  //   Save buttons
+  // Save buttons
   saveButton: {
     english: "SAVE",
     deutsch: "SPEICHERN",
     shqip: "RUAJ",
   },
-  //   Cancel buttons
+  // Cancel buttons
   cancelButton: {
     english: "CANCEL",
     deutsch: "STORNIEREN",
     shqip: "ANULO",
   },
-  //   SettingsScreen
+  // SettingsScreen
   settings: {
     english: "Settings",
     deutsch: "Einstellungen",
@@ -67,7 +67,7 @@ export default {
       shqip: "FSHIJ",
     },
   },
-  //   Labels screen and its components
+  // Labels screen and its components
   labels: {
     newLabel: {
       english: "Create New Label",
@@ -100,7 +100,7 @@ export default {
       shqip: "detyra",
     },
   },
-  //   Tasks List and its components
+  // Tasks List and its components
   tasks: {
     editTask: {
       english: "Edit Task",
@@ -124,7 +124,7 @@ export default {
         "Asnjë detyrë për të shfaqur. \n\n Përdorni butonin plus (+) për të krijuar detyra të reja.",
     },
   },
-  //   Native Alerts
+  // Native Alerts
   alerts: {
     no: {
       english: "No",

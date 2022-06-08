@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 // Contexts
 import { TasksContext } from "../context/TasksContext";
 import { LanguageContext } from "../context/LanguageContext";
+// Custom Hooks
+import useAppUpdate from "../hooks/useAppUpdate";
 // Custom Components
 import AppScreen from "../components/AppScreen";
 import AppNavbar from "../components/AppNavbar";
@@ -12,7 +14,6 @@ import LabelsList from "../components/labels/LabelsList";
 import AddLabel from "../components/labels/AddLabel";
 import EditLabel from "../components/labels/EditLabel";
 import AddLabelButton from "../components/labels/AddLabelButton";
-import useAppUpdate from "../hooks/useAppUpdate";
 
 export default function LabelsScreen() {
   const { lang } = useContext(LanguageContext);
@@ -20,13 +21,10 @@ export default function LabelsScreen() {
     TasksContext
   );
 
-  // Custom Hooks
-  const { runUpdate, notifyUpdate } = useAppUpdate(lang);
-
-  // Initialize App Update
-  runUpdate();
+  // Update Hook
+  const { notifyUpdate } = useAppUpdate(lang);
   // Notify if the app is Updated
-  !isLoading && notifyUpdate();
+  if (!isLoading) notifyUpdate();
 
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -50,48 +48,49 @@ export default function LabelsScreen() {
     setEditModalVisible(false);
   };
 
+  // Show a loading spinner
+  if (isLoading) {
+    return <AppLoading lang={lang} />;
+  }
+
   return (
     <AppScreen>
       <AppNavbar />
 
-      {isLoading ? (
-        <AppLoading />
-      ) : (
-        // -----Main View START-----
-        <View style={styles.container}>
-          {/* -----Labels List----- */}
-          <LabelsList
-            labels={labels}
-            orderLabels={orderLabels}
-            handleEditModal={handleEditModal}
+      {/* // -----Main View START----- */}
+      <View style={styles.container}>
+        {/* -----Labels List----- */}
+        <LabelsList
+          labels={labels}
+          orderLabels={orderLabels}
+          handleEditModal={handleEditModal}
+          lang={lang}
+        />
+
+        {/* Add Label Button -> Footer */}
+        <AddLabelButton setModalVisible={setAddModalVisible} />
+
+        {/* Add Label Modal */}
+        <AppModal
+          modalVisible={addModalVisible}
+          setModalVisible={setAddModalVisible}
+        >
+          <AddLabel handleAddLabel={handleAddLabel} lang={lang} />
+        </AppModal>
+
+        {/* Edit Label Modal */}
+        <AppModal
+          modalVisible={editModalVisible}
+          setModalVisible={setEditModalVisible}
+        >
+          <EditLabel
+            labelToEdit={labelToEdit}
+            handleEditLabel={handleEditLabel}
             lang={lang}
           />
-
-          {/* Add Label Button -> Footer */}
-          <AddLabelButton setModalVisible={setAddModalVisible} />
-
-          {/* Add Label Modal */}
-          <AppModal
-            modalVisible={addModalVisible}
-            setModalVisible={setAddModalVisible}
-          >
-            <AddLabel handleAddLabel={handleAddLabel} lang={lang} />
-          </AppModal>
-
-          {/* Edit Label Modal */}
-          <AppModal
-            modalVisible={editModalVisible}
-            setModalVisible={setEditModalVisible}
-          >
-            <EditLabel
-              labelToEdit={labelToEdit}
-              handleEditLabel={handleEditLabel}
-              lang={lang}
-            />
-          </AppModal>
-        </View>
-        // -----Main View END-----
-      )}
+        </AppModal>
+      </View>
+      {/* // -----Main View END----- */}
     </AppScreen>
   );
 }

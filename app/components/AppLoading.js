@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { ThemeContext } from "../context/ThemeContext";
-import { LanguageContext } from "../context/LanguageContext";
 
-export default function AppLoading(props) {
+export default function AppLoading({ lang }) {
   const { theme } = useContext(ThemeContext);
-  const { lang } = useContext(LanguageContext);
 
   return (
     <View

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Updates from "expo-updates";
@@ -71,5 +71,5 @@ export default function useAppUpdate(lang) {
     return () => (mounted = false);
   }, []);
 
-  return { runUpdate, notifyUpdate };
+  return { notifyUpdate };
 }

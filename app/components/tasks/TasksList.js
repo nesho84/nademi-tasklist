@@ -33,16 +33,16 @@ export default function TasksList(props) {
             styles.tasksListContainer,
             theme.current === "light"
               ? {
-                  backgroundColor: item.checked
-                    ? colors.checkedItem
-                    : colors.uncheckedItem,
-                }
+                backgroundColor: item.checked
+                  ? colors.checkedItem
+                  : colors.uncheckedItem,
+              }
               : {
-                  borderColor: item.checked
-                    ? colors.checkedItemDark
-                    : colors.uncheckedItemDark,
-                  borderWidth: 1,
-                },
+                borderColor: item.checked
+                  ? colors.checkedItemDark
+                  : colors.uncheckedItemDark,
+                borderWidth: 1,
+              },
             isActive && { backgroundColor: colors.muted },
           ]}
         >
@@ -71,19 +71,40 @@ export default function TasksList(props) {
                 },
                 theme.current === "light"
                   ? {
-                      color: item.checked
-                        ? colors.checkedItemText
-                        : colors.light,
-                    }
+                    color: item.checked
+                      ? colors.checkedItemText
+                      : colors.light,
+                  }
                   : {
-                      color: item.checked
-                        ? colors.checkedItemTextDark
-                        : colors.light,
-                    },
+                    color: item.checked
+                      ? colors.checkedItemTextDark
+                      : colors.light,
+                  },
                 { fontSize: 17 },
               ]}
             >
               {item.name}
+            </Text>
+            <Text
+              style={[
+                {
+                  textDecorationLine: item.checked ? "line-through" : "none",
+                },
+                theme.current === "light"
+                  ? {
+                    color: item.checked
+                      ? colors.checkedItemText
+                      : colors.light,
+                  }
+                  : {
+                    color: item.checked
+                      ? colors.checkedItemTextDark
+                      : colors.light,
+                  },
+                { fontSize: 11 },
+              ]}
+            >
+              {item.date}
             </Text>
           </View>
           {/* -----Task delete icon----- */}
@@ -91,27 +112,23 @@ export default function TasksList(props) {
             <TouchableOpacity
               onPress={() =>
                 Alert.alert(
-                  `${
-                    props.lang.languages.alerts.deleteTask.title[
-                      props.lang.current
-                    ]
+                  `${props.lang.languages.alerts.deleteTask.title[
+                  props.lang.current
+                  ]
                   }`,
-                  `${
-                    props.lang.languages.alerts.deleteTask.message[
-                      props.lang.current
-                    ]
+                  `${props.lang.languages.alerts.deleteTask.message[
+                  props.lang.current
+                  ]
                   }`,
                   [
                     {
-                      text: `${
-                        props.lang.languages.alerts.yes[props.lang.current]
-                      }`,
+                      text: `${props.lang.languages.alerts.yes[props.lang.current]
+                        }`,
                       onPress: () => props.handleDeleteTask(item.key),
                     },
                     {
-                      text: `${
-                        props.lang.languages.alerts.no[props.lang.current]
-                      }`,
+                      text: `${props.lang.languages.alerts.no[props.lang.current]
+                        }`,
                     },
                   ],
                   { cancelable: false }
