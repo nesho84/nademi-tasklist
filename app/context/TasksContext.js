@@ -1,7 +1,9 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import 'react-native-get-random-values';
-import { v4 as uuid } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
+
+import tempLabels from "../../tempData";
 
 export const TasksContext = createContext();
 
@@ -18,7 +20,7 @@ export default function TasksContextProvider(props) {
   const addLabel = (text, color) => {
     const newLabel = [
       {
-        key: uuid(),
+        key: uuidv4(),
         title: text,
         color: color,
         category: "",
@@ -40,7 +42,7 @@ export default function TasksContextProvider(props) {
     const time = today.getHours() + ':' + today.getMinutes();
 
     let newTask = {
-      key: uuid(),
+      key: uuidv4(),
       name: taskName,
       date: date + ' ' + time,
       checked: false,
@@ -211,11 +213,13 @@ export default function TasksContextProvider(props) {
     let mounted = true;
 
     if (mounted) {
+      // // Temp Labels for testing...
+      // saveInStorage(storageKey, tempLabels);
       loadLabels().then(() => {
         // Timeout for loading...
         setTimeout(() => {
           setIsLoading(false);
-        }, 500);
+        }, 400);
       });
     }
 
