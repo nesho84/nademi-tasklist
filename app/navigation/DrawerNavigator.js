@@ -142,8 +142,8 @@ export default function DrawerNavigator() {
   return (
     // -----Drawer Screens (stack navigators)-----
     <Drawer.Navigator
-      drawerContentOptions={{
-        style: {
+      screenOptions={{
+        drawerStyle: {
           backgroundColor:
             theme.themes.drawerNavigator.drawerContentOptions[theme.current],
         },
@@ -155,6 +155,7 @@ export default function DrawerNavigator() {
         name="Home"
         component={MainStackNavigator}
         options={{
+          headerShown: false,
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               color={colors.light}

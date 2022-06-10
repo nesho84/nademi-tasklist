@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { v4 as uuidv4 } from "uuid";
+import 'react-native-get-random-values';
+import { v4 as uuid } from "uuid";
 
 export const TasksContext = createContext();
 
@@ -17,7 +18,7 @@ export default function TasksContextProvider(props) {
   const addLabel = (text, color) => {
     const newLabel = [
       {
-        key: uuidv4(),
+        key: uuid(),
         title: text,
         color: color,
         category: "",
@@ -39,7 +40,7 @@ export default function TasksContextProvider(props) {
     const time = today.getHours() + ':' + today.getMinutes();
 
     let newTask = {
-      key: uuidv4(),
+      key: uuid(),
       name: taskName,
       date: date + ' ' + time,
       checked: false,
