@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,20 +7,10 @@ import {
   View,
   Alert,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
+import AppColorPicker from "../AppColorPicker";
 
 export default function EditLabel({ labelToEdit, handleEditLabel, lang }) {
-  const bgColors = [
-    "#5CD859",
-    "#24A6D9",
-    "#595BD9",
-    "#8022D9",
-    "#D159D8",
-    "#D85963",
-    "#D88559",
-  ];
-
   const [input, setInput] = useState(labelToEdit.title);
   const [labelColor, setLabelColor] = useState(labelToEdit.color);
 
@@ -37,22 +27,6 @@ export default function EditLabel({ labelToEdit, handleEditLabel, lang }) {
       handleEditLabel(labelToEdit.key, input, labelColor);
       setInput("");
     }
-  };
-
-  const RenderColors = () => {
-    return bgColors.map((color) => {
-      return (
-        <TouchableOpacity
-          key={color}
-          style={[styles.selectColor, { backgroundColor: color }]}
-          onPress={() => setLabelColor(color)}
-        >
-          {labelColor === color && (
-            <MaterialIcons name="check" size={30} color="white" />
-          )}
-        </TouchableOpacity>
-      );
-    });
   };
 
   return (
@@ -72,7 +46,7 @@ export default function EditLabel({ labelToEdit, handleEditLabel, lang }) {
       />
 
       <View style={styles.selectColorContainer}>
-        <RenderColors />
+        <AppColorPicker labelColor={labelColor} handleLabelColor={setLabelColor} />
       </View>
 
       <TouchableOpacity
@@ -114,15 +88,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 12,
   },
-  selectColor: {
-    width: 30,
-    height: 30,
-    borderRadius: 5,
-  },
   btnEdit: {
     height: 50,
     justifyContent: "center",
-    marginTop: 15,
+    marginTop: 24,
     padding: 11,
     borderRadius: 5,
   },
@@ -131,5 +100,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 17,
     color: "white",
-  },
+  }
 });
