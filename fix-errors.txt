@@ -1,0 +1,10 @@
+to clone from git and publish changes for update: 
+--------------------------------------------------
+1. clone the project locally
+2. remove flatlist from the dependencies in package.json
+3. npm install
+4. install flatlist after
+
+
+
+"react-native-draggable-flatlist": "^2.5.4",
