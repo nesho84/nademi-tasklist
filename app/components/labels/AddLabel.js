@@ -7,22 +7,12 @@ import {
   View,
   Alert,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
+import AppColorPicker from "../AppColorPicker";
 
 export default function AddLabel({ handleAddLabel, lang }) {
-  const labelColors = [
-    "#5CD859",
-    "#24A6D9",
-    "#595BD9",
-    "#8022D9",
-    "#D159D8",
-    "#D85963",
-    "#D88559",
-  ];
-
   const [label, setLabel] = useState("");
-  const [labelColor, setLabelColor] = useState(labelColors[0]);
+  const [labelColor, setLabelColor] = useState(colors.labelBgColors[0]);
 
   const handleAdd = () => {
     if (label.length < 1) {
@@ -37,22 +27,6 @@ export default function AddLabel({ handleAddLabel, lang }) {
       handleAddLabel(label, labelColor);
       setLabel("");
     }
-  };
-
-  const RenderColors = () => {
-    return labelColors.map((color) => {
-      return (
-        <TouchableOpacity
-          key={color}
-          style={[styles.selectColor, { backgroundColor: color }]}
-          onPress={() => setLabelColor(color)}
-        >
-          {labelColor === color && (
-            <MaterialIcons name="check" size={30} color="white" />
-          )}
-        </TouchableOpacity>
-      );
-    });
   };
 
   return (
@@ -70,9 +44,7 @@ export default function AddLabel({ handleAddLabel, lang }) {
         placeholder={lang.languages.inputPlaceholder[lang.current]}
       />
 
-      <View style={styles.selectColorContainer}>
-        <RenderColors />
-      </View>
+      <AppColorPicker labelColor={labelColor} handleLabelColor={setLabelColor} />
 
       <TouchableOpacity
         style={[styles.btnAdd, { backgroundColor: labelColor }]}
@@ -107,20 +79,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 15,
   },
-  selectColorContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 12,
-  },
-  selectColor: {
-    width: 30,
-    height: 30,
-    borderRadius: 4,
-  },
   btnAdd: {
     height: 50,
     justifyContent: "center",
-    marginTop: 20,
     padding: 11,
     borderRadius: 5,
   },

@@ -13,6 +13,8 @@ import { ThemeContext } from "../context/ThemeContext";
 export default function AboutScreen(props) {
   const { theme } = useContext(ThemeContext);
 
+  const date = new Date();
+
   return (
     <View
       style={[
@@ -29,7 +31,7 @@ export default function AboutScreen(props) {
         onPress={async () => await Linking.openURL("https://nademi.com")}
       >
         <Text style={styles.yearText}>
-          ©2021 <Text style={styles.link}>nademi.com</Text>
+          ©{date.getFullYear()} <Text style={styles.link}>nademi.com</Text>
         </Text>
       </TouchableOpacity>
     </View>

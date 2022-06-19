@@ -1,5 +1,7 @@
+import { v4 as uuidv4 } from 'uuid';
+
 // Sample data for the new Tasks with labels
-const newLabel = [
+const tempLabels = [
   {
     key: uuidv4(),
     title: "Plan a Trip",
@@ -195,3 +197,5 @@ const newLabel = [
     ],
   },
 ];
+
+export default tempLabels;
