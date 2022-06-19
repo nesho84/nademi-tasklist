@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import moment from "moment";
 
 import tempLabels from "../../tempData";
 
@@ -37,14 +38,10 @@ export default function TasksContextProvider(props) {
 
   // Add Task
   const addTask = (labelKey, taskName) => {
-    const today = new Date();
-    const date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-    const time = today.getHours() + ':' + today.getMinutes();
-
     let newTask = {
       key: uuidv4(),
       name: taskName,
-      date: date + ' ' + time,
+      date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
       checked: false,
     };
 

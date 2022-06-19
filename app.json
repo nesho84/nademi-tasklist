@@ -2,7 +2,7 @@
   "expo": {
     "name": "nademi-tasklist",
     "slug": "nademi-tasklist",
-    "version": "3.1.7",
+    "version": "3.1.8",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
@@ -28,7 +28,7 @@
       },
       "userInterfaceStyle": "dark",
       "package": "nademi.task.list",
-      "versionCode": 53
+      "versionCode": 54
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
