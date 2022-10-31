@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   View,
   Alert,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
 import AppColorPicker from "../AppColorPicker";
 
@@ -96,5 +97,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 17,
     color: "white",
-  }
+  },
 });

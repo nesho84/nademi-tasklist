@@ -21,9 +21,9 @@ export default function MainStackNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="Labels"
+      mode="modal"
       screenOptions={{
         headerTintColor: "white",
-        presentation: "transparentModal"
       }}
     >
       <Stack.Screen

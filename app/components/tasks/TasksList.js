@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Alert,
-  Pressable,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import DraggableFlatList from "react-native-draggable-flatlist";
@@ -182,25 +181,25 @@ export default function TasksList(props) {
             lang={props.lang}
           />
           {/* -----Checked Tasks START----- */}
-          <View style={props.checkedTasks.length > 0 ? { flex: 1 } : { flex: 0 }}>
-            <TouchableWithoutFeedback>
-              <DraggableFlatList
-                data={props.checkedTasks}
-                renderItem={({ item, index, drag, isActive }) => (
-                  <View style={{ marginBottom: lastChecked === item ? 6 : 0 }}>
-                    <RenderTask
-                      item={item}
-                      index={index}
-                      drag={drag}
-                      isActive={isActive}
-                    />
-                  </View>
-                )}
-                keyExtractor={(item, index) => `draggable-item-${item.key}`}
-                onDragEnd={({ data }) => props.handleOrderTasks(data)}
-              />
-            </TouchableWithoutFeedback>
-          </View>
+          <TouchableWithoutFeedback
+            style={props.checkedTasks.length > 0 ? { flex: 1 } : { flex: 0 }}
+          >
+            <DraggableFlatList
+              data={props.checkedTasks}
+              renderItem={({ item, index, drag, isActive }) => (
+                <View style={{ marginBottom: lastChecked === item ? 6 : 0 }}>
+                  <RenderTask
+                    item={item}
+                    index={index}
+                    drag={drag}
+                    isActive={isActive}
+                  />
+                </View>
+              )}
+              keyExtractor={(item, index) => `draggable-item-${item.key}`}
+              onDragEnd={({ data }) => props.handleOrderTasks(data)}
+            />
+          </TouchableWithoutFeedback>
           {/* -----Checked Tasks END----- */}
         </>
       )}

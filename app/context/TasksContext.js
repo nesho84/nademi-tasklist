@@ -215,7 +215,7 @@ export default function TasksContextProvider(props) {
         // Timeout for loading...
         setTimeout(() => {
           setIsLoading(false);
-        }, 400);
+        }, 500);
       });
     }
 

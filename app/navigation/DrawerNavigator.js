@@ -142,10 +142,8 @@ export default function DrawerNavigator() {
   return (
     // -----Drawer Screens (stack navigators)-----
     <Drawer.Navigator
-      useLegacyImplementation={true}
-      screenOptions={{
-        drawerActiveTintColor: colors.light,
-        drawerStyle: {
+      drawerContentOptions={{
+        style: {
           backgroundColor:
             theme.themes.drawerNavigator.drawerContentOptions[theme.current],
         },
@@ -157,11 +155,6 @@ export default function DrawerNavigator() {
         name="Home"
         component={MainStackNavigator}
         options={{
-          headerShown: false,
-          drawerLabelStyle: {
-            fontSize: 17,
-            fontWeight: "600",
-          },
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               color={colors.light}

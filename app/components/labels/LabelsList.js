@@ -43,7 +43,7 @@ export default function LabelsList({
                 name="label-outline"
                 size={26}
                 color={colors.light}
-                onPress={() => { }}
+                onPress={() => {}}
               />
               <Text style={styles.labelBoxTitle}>{item.title}</Text>
             </View>
@@ -112,7 +112,8 @@ export default function LabelsList({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    flexDirection: "row",
   },
   draggableFlatListContainer: {
     paddingHorizontal: 5,
