@@ -42,14 +42,14 @@ export default function AppNavbar() {
               // navigation.navigate(item.screen, { itemId: item.screen })
               navigation.navigate(item.screen)
             }
-            onCancel={() => {}}
+            onCancel={() => { }}
           >
             <MaterialCommunityIcons
               name="dots-vertical"
               type="material-community"
               color="#fff"
               size={30}
-              style={{ marginRight: -5 }}
+              style={{ marginRight: -4 }}
             />
           </SimplePopupMenu>
         }

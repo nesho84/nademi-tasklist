@@ -14,7 +14,7 @@ export default function EditLabel({ labelToEdit, handleEditLabel, lang }) {
   const [input, setInput] = useState(labelToEdit.title);
   const [labelColor, setLabelColor] = useState(labelToEdit.color);
 
-  const handleAdd = () => {
+  const handleEdit = () => {
     if (input.length < 1) {
       Alert.alert(
         `${lang.languages.alerts.requiredField.title[lang.current]}`,
@@ -45,13 +45,11 @@ export default function EditLabel({ labelToEdit, handleEditLabel, lang }) {
         value={input}
       />
 
-      <View style={styles.selectColorContainer}>
-        <AppColorPicker labelColor={labelColor} handleLabelColor={setLabelColor} />
-      </View>
+      <AppColorPicker labelColor={labelColor} handleLabelColor={setLabelColor} />
 
       <TouchableOpacity
         style={[styles.btnEdit, { backgroundColor: labelColor }]}
-        onPress={handleAdd}
+        onPress={handleEdit}
       >
         <Text style={styles.btnEditText}>
           {lang.languages.saveButton[lang.current]}
@@ -82,16 +80,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 15,
   },
-  selectColorContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginTop: 12,
+  selectColor: {
+    width: 30,
+    height: 30,
+    borderRadius: 5,
   },
   btnEdit: {
     height: 50,
     justifyContent: "center",
-    marginTop: 24,
     padding: 11,
     borderRadius: 5,
   },

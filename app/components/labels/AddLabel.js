@@ -44,9 +44,7 @@ export default function AddLabel({ handleAddLabel, lang }) {
         placeholder={lang.languages.inputPlaceholder[lang.current]}
       />
 
-      <View style={styles.selectColorContainer}>
-        <AppColorPicker labelColor={labelColor} handleLabelColor={setLabelColor} />
-      </View>
+      <AppColorPicker labelColor={labelColor} handleLabelColor={setLabelColor} />
 
       <TouchableOpacity
         style={[styles.btnAdd, { backgroundColor: labelColor }]}
@@ -80,14 +78,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "#DEE9F3",
     borderRadius: 5,
     paddingHorizontal: 15,
-  },
-  selectColorContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-evenly",
-    marginVertical: 12,
-    borderColor: colors.inverse,
-    borderWidth: 3,
   },
   btnAdd: {
     height: 50,

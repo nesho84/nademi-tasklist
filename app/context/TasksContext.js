@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
 import tempLabels from "../../tempData";
