@@ -1,10 +1,26 @@
-to clone from git and publish changes for update: 
+to clone from git and publish changes for update:
 --------------------------------------------------
 1. clone the project locally
-2. remove flatlist from the dependencies in package.json
+2. remove the dependencies in package.json
+- remove "@react-native-picker/picker": "1.9.2",
+- remove "@react-navigation/drawer": "^5.12.4",
+- remove "react-native-draggable-flatlist": "^2.5.4",
 3. npm install
-4. install flatlist after
+4. install removed dependencies after
 
+-----------------------------------------------------------
 
+- Use the command to start:
+expo start
 
-"react-native-draggable-flatlist": "^2.5.4",
+- on emulator or device use:
+Expo Go version 2.18.8
+
+-----------------------------------------------------------
+
+To update(The last day to use expo publish is 2024-02-12):
+-change app.json -> version and versionCode
+
+-use the command:
+expo publish
+
