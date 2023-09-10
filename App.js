@@ -1,5 +1,7 @@
 import "react-native-gesture-handler";
 import React from "react";
+// App.tsx
+import { LogBox } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import DrawerNavigator from "./app/navigation/DrawerNavigator";
 // Custom Contexts
@@ -21,3 +23,8 @@ export default function App() {
     </LanguageContextProvider>
   );
 }
+
+// Ignoring Console Errors
+LogBox.ignoreLogs([
+  'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
+]);
