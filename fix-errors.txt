@@ -6,6 +6,7 @@ to clone from git and publish changes for update:
 - remove "@react-navigation/drawer": "^5.12.4",
 - remove "react-native-draggable-flatlist": "^2.5.4",
 3. npm install
+   * if dosent work use: npm install --legacy-peer-deps
 4. install removed dependencies after
 
 -----------------------------------------------------------
@@ -29,3 +30,6 @@ Error:
 Invariant Violation: Tried to register two views with the same name RNCSafeAreaProvider
 Run: npm dedupe
 -------------------------------------------------------------
+
+Sometimes if good idea to run, to clear duplicated dependencies:
+npm dedupe

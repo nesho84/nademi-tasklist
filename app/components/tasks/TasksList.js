@@ -173,6 +173,7 @@ export default function TasksList(props) {
       )}
       {/* -----Unchecked Tasks END----- */}
 
+      {/* -----Checked Tasks START----- */}
       {props.checkedTasks.length > 0 && (
         <>
           {/* -----Tasks Divider----- */}
@@ -180,29 +181,28 @@ export default function TasksList(props) {
             checkedTasks={props.checkedTasks.length}
             lang={props.lang}
           />
-          {/* -----Checked Tasks START----- */}
-          <TouchableWithoutFeedback
-            style={props.checkedTasks.length > 0 ? { flex: 1 } : { flex: 0 }}
-          >
-            <DraggableFlatList
-              data={props.checkedTasks}
-              renderItem={({ item, index, drag, isActive }) => (
-                <View style={{ marginBottom: lastChecked === item ? 6 : 0 }}>
-                  <RenderTask
-                    item={item}
-                    index={index}
-                    drag={drag}
-                    isActive={isActive}
-                  />
-                </View>
-              )}
-              keyExtractor={(item, index) => `draggable-item-${item.key}`}
-              onDragEnd={({ data }) => props.handleOrderTasks(data)}
-            />
+          <TouchableWithoutFeedback>
+            <View style={{ flex: 1 }}>
+              <DraggableFlatList
+                data={props.checkedTasks}
+                renderItem={({ item, index, drag, isActive }) => (
+                  <View style={{ marginBottom: lastChecked === item ? 6 : 0 }}>
+                    <RenderTask
+                      item={item}
+                      index={index}
+                      drag={drag}
+                      isActive={isActive}
+                    />
+                  </View>
+                )}
+                keyExtractor={(item, index) => `draggable-item-${item.key}`}
+                onDragEnd={({ data }) => props.handleOrderTasks(data)}
+              />
+            </View>
           </TouchableWithoutFeedback>
-          {/* -----Checked Tasks END----- */}
         </>
       )}
+      {/* -----Checked Tasks END----- */}
     </>
   );
 }

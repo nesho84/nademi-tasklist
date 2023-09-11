@@ -77,7 +77,6 @@ export const AppDateTime = (props) => {
           testID="dateTimePicker"
           value={date}
           mode={mode}
-          is24Hour={true}
           display="default"
           onChange={onChange}
         />
