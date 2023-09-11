@@ -6,21 +6,37 @@ to clone from git and publish changes for update:
 - remove "@react-navigation/drawer": "^5.12.4",
 - remove "react-native-draggable-flatlist": "^2.5.4",
 3. npm install
-4. install removed dependencies after
+   * if dosent work use: npm install --legacy-peer-deps
+4. install removed dependencies after (if you removed)
 
 -----------------------------------------------------------
 
 - Use the command to start:
 expo start
+or
+npx expo start
 
-- on emulator or device use:
+- on emulator or device use(expo sdk40):
 Expo Go version 2.18.8
 
 -----------------------------------------------------------
 
 To update(The last day to use expo publish is 2024-02-12):
 -change app.json -> version and versionCode
+-change package.json -> version
 
 -use the command:
 expo publish
+or
+expo-cli publish
 
+-------------------------------------------------------------
+Error:
+Invariant Violation: Tried to register two views with the same name RNCSafeAreaProvider
+Run: npm dedupe
+-------------------------------------------------------------
+
+Sometimes if good idea to run, to clear duplicated dependencies:
+npm dedupe
+or
+npm dedupe --legacy-peer-deps
