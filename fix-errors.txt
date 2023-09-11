@@ -13,6 +13,8 @@ to clone from git and publish changes for update:
 
 - Use the command to start:
 expo start
+or
+npx expo start
 
 - on emulator or device use(expo sdk40):
 Expo Go version 2.18.8
@@ -24,6 +26,8 @@ To update(The last day to use expo publish is 2024-02-12):
 
 -use the command:
 expo publish
+or
+expo-cli publish
 
 -------------------------------------------------------------
 Error:
@@ -33,3 +37,5 @@ Run: npm dedupe
 
 Sometimes if good idea to run, to clear duplicated dependencies:
 npm dedupe
+or
+npm dedupe --legacy-peer-deps
