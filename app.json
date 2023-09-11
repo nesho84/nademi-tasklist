@@ -2,7 +2,7 @@
   "expo": {
     "name": "nademi-tasklist",
     "slug": "nademi-tasklist",
-    "version": "3.3.0",
+    "version": "3.4.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
@@ -19,7 +19,8 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "userInterfaceStyle": "light"
+      "userInterfaceStyle": "light",
+      "bundleIdentifier": "nademi.task.list"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +29,7 @@
       },
       "userInterfaceStyle": "dark",
       "package": "nademi.task.list",
-      "versionCode": 56
+      "versionCode": 58
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
@@ -38,6 +39,11 @@
     "androidNavigationBar": {
       "barStyle": "light-content",
       "backgroundColor": "#343a40"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3688c8ff-83ef-4da3-94ab-680e4f254f38"
+      }
     }
   }
 }
