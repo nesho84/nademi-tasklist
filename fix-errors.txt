@@ -23,6 +23,7 @@ Expo Go version 2.18.8
 
 To update(The last day to use expo publish is 2024-02-12):
 -change app.json -> version and versionCode
+-change package.json -> version
 
 -use the command:
 expo publish
