@@ -150,8 +150,8 @@ export default function TasksList(props) {
             </TouchableOpacity>
           </View>
           {/* -----Action icons divider ----- */}
-          <View style={{ marginBottom: 3 }}>
-            <Text style={{ fontSize: 22, textAlignVertical: "bottom", color: colors.lightMuted, marginHorizontal: 1 }}> | </Text>
+          <View style={{ marginBottom: 2.1 }}>
+            <Text style={{ fontSize: 18, color: colors.lightMuted, marginHorizontal: 1 }}> | </Text>
           </View>
           {/* -----Task share icon----- */}
           <View>
