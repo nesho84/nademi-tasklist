@@ -16,12 +16,17 @@ import { LanguageContext } from "../context/LanguageContext";
 
 function CustomDrawerContent(props) {
   const { lang } = useContext(LanguageContext);
+  const { theme } = useContext(ThemeContext);
 
   // Exit application custom Hook
   const { backAction } = useAppExit();
 
   return (
-    <>
+    <View style={{
+      flex: 1,
+      backgroundColor:
+        theme.themes.drawerNavigator.drawerContentOptions[theme.current],
+    }}>
       {/* -----Navigation Header START----- */}
       <View
         style={{
@@ -130,7 +135,7 @@ function CustomDrawerContent(props) {
           </TouchableOpacity>
         </View>
       </View>
-    </>
+    </View>
   );
 }
 
@@ -142,19 +147,14 @@ export default function DrawerNavigator() {
   return (
     // -----Drawer Screens (stack navigators)-----
     <Drawer.Navigator
-      drawerContentOptions={{
-        style: {
-          backgroundColor:
-            theme.themes.drawerNavigator.drawerContentOptions[theme.current],
-        },
-        labelStyle: { color: colors.light, fontSize: 17, fontWeight: "600" },
-      }}
+      screenOptions={{ headerShown: false }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen
         name="Home"
         component={MainStackNavigator}
         options={{
+          drawerLabelStyle: { color: colors.light, fontSize: 17, fontWeight: "600" },
           drawerIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               color={colors.light}

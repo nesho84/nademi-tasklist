@@ -111,7 +111,7 @@ export default function LabelDetails({ route, navigation }) {
           <MaterialCommunityIcons
             name="playlist-remove"
             size={25}
-            color={colors.light}
+            color={colors.danger}
             style={{ marginRight: 12 }}
           />
         </TouchableOpacity>
@@ -148,11 +148,9 @@ export default function LabelDetails({ route, navigation }) {
                 paddingHorizontal: 10,
               }}
             >
-              {`${filterTasks(true).length} ${
-                lang.languages.labels.of[lang.current]
-              } ${currentLabel.tasks ? currentLabel.tasks.length : "0"} ${
-                lang.languages.labels.tasks[lang.current]
-              }`}
+              {`${filterTasks(true).length} ${lang.languages.labels.of[lang.current]
+                } ${currentLabel.tasks ? currentLabel.tasks.length : "0"} ${lang.languages.labels.tasks[lang.current]
+                }`}
             </Text>
           </View>
 

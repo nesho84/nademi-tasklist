@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Alert,
+  Share,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import DraggableFlatList from "react-native-draggable-flatlist";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import TasksDivider from "./TasksDivider";
 import AppNoItems from "../AppNoItems";
 import colors from "../../config/colors";
@@ -20,6 +21,15 @@ export default function TasksList(props) {
 
   const lastUnchecked = props.unCheckedTasks[props.unCheckedTasks.length - 1];
   const lastChecked = props.checkedTasks[props.checkedTasks.length - 1];
+
+  const shareTask = (text) => {
+    Share.share({
+      message: text.toString(),
+    })
+      //after successful share return result
+      .then((result) => console.log())
+      .catch((err) => console.log(err))
+  };
 
   // Single Task template
   const RenderTask = ({ item, index, drag, isActive }) => {
@@ -136,7 +146,20 @@ export default function TasksList(props) {
                 )
               }
             >
-              <MaterialIcons name="delete" size={23} color="white" />
+              <FontAwesome name="remove" size={23} color={colors.lightMuted} />
+            </TouchableOpacity>
+          </View>
+          {/* -----Action icons divider ----- */}
+          <View style={{ marginBottom: 2.1 }}>
+            <Text style={{ fontSize: 18, color: colors.lightMuted, marginHorizontal: 1 }}> | </Text>
+          </View>
+          {/* -----Task share icon----- */}
+          <View>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => shareTask(item.name)}
+            >
+              <FontAwesome name="share-alt" size={22} color={colors.lightMuted} style={{ marginRight: 3 }} />
             </TouchableOpacity>
           </View>
         </View>
@@ -218,12 +241,14 @@ const styles = StyleSheet.create({
   },
   itemText: {
     width: "100%",
-    marginHorizontal: 10,
+    marginLeft: 13,
+    marginRight: 8,
     flexShrink: 1,
   },
   checkboxAndTitleContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginLeft: 3,
     flexShrink: 1,
   },
 });

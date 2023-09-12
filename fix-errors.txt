@@ -9,6 +9,8 @@ to clone from git and publish changes for update:
    * if dosent work use: npm install --legacy-peer-deps
 4. install removed dependencies after
 
+* If none works, install dependencies one by one using ex. npm install "dependency" --force
+
 -----------------------------------------------------------
 
 - Use the command to start:
@@ -40,3 +42,5 @@ Sometimes if good idea to run, to clear duplicated dependencies:
 npm dedupe
 or
 npm dedupe --legacy-peer-deps
+or
+npm cache clean --force
