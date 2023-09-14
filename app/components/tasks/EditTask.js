@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   StyleSheet,
   Text,
@@ -7,13 +8,37 @@ import {
   View,
   Alert,
 } from "react-native";
+import moment from "moment";
 import colors from "../../config/colors";
 
 export default function EditTask({ handleEditTask, taskToEdit, lang }) {
-  const [input, setInput] = useState(taskToEdit.name.toString());
+  const [taskInput, setTaskInput] = useState(taskToEdit.name.toString());
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [formattedDate, setFormattedDate] = useState(
+    taskToEdit.reminderDate && moment(taskToEdit.reminderDate).format('DD.MM.YYYY HH:mm')
+  );
+  const inputRef = React.createRef();
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleDateConfirm = (dateTime) => {
+    // console.warn("A date has been picked: ", date);
+    hideDatePicker();
+    const formatted = moment(dateTime).format('DD.MM.YYYY HH:mm');
+    setFormattedDate(formatted);
+    setSelectedDate(dateTime);
+    inputRef.current.blur(); // This will hide the keyboard
+  };
 
   const handleEdit = () => {
-    if (input.length < 1) {
+    if (taskInput.length < 1) {
       Alert.alert(
         `${lang.languages.alerts.requiredField.title[lang.current]}`,
         `${lang.languages.alerts.requiredField.message[lang.current]}`,
@@ -22,8 +47,13 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
       );
       return false;
     } else {
-      handleEditTask(taskToEdit.key, input);
-      setInput("");
+      if (!selectedDate) {
+        setSelectedDate(new Date(taskToEdit.reminderDate));
+      }
+      handleEditTask(taskToEdit.key, taskInput, selectedDate);
+      setTaskInput("");
+      setSelectedDate("");
+      setFormattedDate("");
     }
   };
 
@@ -36,11 +66,31 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
         multiline
         autoCapitalize="none"
         autoCorrect={false}
-        onChangeText={(text) => setInput(text)}
+        onChangeText={(text) => setTaskInput(text)}
         style={styles.input}
         placeholder={lang.languages.inputPlaceholder[lang.current]}
-        value={input}
+        value={taskInput}
       />
+      <View style={styles.remminder}>
+        <TouchableOpacity onPress={showDatePicker}>
+          <Text style={{ color: colors.light }}>Reminder...</Text>
+          <TextInput
+            style={styles.inputdate}
+            ref={inputRef}
+            placeholder="Select Date"
+            value={formattedDate}
+            editable={false} // Make the input non-editable
+          />
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="datetime"
+          locale="de_DE"
+          is24Hour
+          onConfirm={handleDateConfirm}
+          onCancel={hideDatePicker}
+        />
+      </View>
       <TouchableOpacity style={styles.btnEdit} onPress={handleEdit}>
         <Text style={styles.btnEditText}>
           {lang.languages.saveButton[lang.current]}
@@ -73,6 +123,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 15,
   },
+  inputdate: {
+    minHeight: 40,
+    marginTop: 5,
+    marginBottom: 1,
+    backgroundColor: colors.white,
+    color: colors.dark,
+    fontSize: 18,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.light,
+    borderBottomColor: "#DEE9F3",
+    borderRadius: 5,
+    paddingHorizontal: 15,
+  },
   btnEdit: {
     height: 50,
     backgroundColor: colors.success,
@@ -80,6 +143,9 @@ const styles = StyleSheet.create({
     marginTop: 8,
     padding: 11,
     borderRadius: 5,
+  },
+  remminder: {
+    marginTop: 10,
   },
   btnEditText: {
     textAlign: "center",

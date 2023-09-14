@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { StyleSheet, View, Alert, Platform } from "react-native";
 // Contexts
 import { TasksContext } from "../context/TasksContext";
 import { LanguageContext } from "../context/LanguageContext";
@@ -17,9 +17,13 @@ import AddLabelButton from "../components/labels/AddLabelButton";
 
 export default function LabelsScreen() {
   const { lang } = useContext(LanguageContext);
-  const { labels, isLoading, addLabel, editLabel, orderLabels } = useContext(
-    TasksContext
-  );
+  const {
+    labels,
+    isLoading,
+    addLabel,
+    editLabel,
+    orderLabels
+  } = useContext(TasksContext);
 
   // Update Hook
   const { notifyUpdate } = useAppUpdate(lang);

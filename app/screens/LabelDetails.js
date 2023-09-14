@@ -61,8 +61,8 @@ export default function LabelDetails({ route, navigation }) {
   };
 
   // Edit Task in Storage
-  const handleEditTask = (taskKey, input) => {
-    editTask(taskKey, input);
+  const handleEditTask = (taskKey, taskInput, reminderDate) => {
+    editTask(taskKey, taskInput, reminderDate);
     setEditModalVisible(false);
   };
 

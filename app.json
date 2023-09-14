@@ -20,7 +20,13 @@
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "light",
-      "bundleIdentifier": "nademi.task.list"
+      "bundleIdentifier": "nademi.task.list",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -34,6 +40,15 @@
     "web": {
       "favicon": "./app/assets/favicon.png"
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./app/assets/favicon.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
     "description": "A simple App for storing Tasks",
     "githubUrl": "https://github.com/nesho84/nademi-tasklist",
     "androidNavigationBar": {

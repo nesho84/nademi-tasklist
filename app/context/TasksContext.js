@@ -1,16 +1,112 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from "uuid";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
-
+import { v4 as uuidv4 } from "uuid";
+import * as Notifications from "expo-notifications";
+import * as TaskManager from "expo-task-manager";
 import tempLabels from "../../tempData";
+
+// BACKGROUND Task
+const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
+TaskManager.defineTask(BACKGROUND_NOTIFICATION_TASK,
+  ({ data, error, executionInfo }) => {
+    console.log('Received a notification in the background!', Platform.OS, data);
+  }
+);
+// Register BACKGROUND Task
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
+
+// Notification handler
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 export const TasksContext = createContext();
 
 export default function TasksContextProvider(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [labels, setLabels] = useState([]);
+  const [hasPermission, setHasPermission] = useState(null);
+
+  // ---------------------- Notifications START ---------------------- //
+
+  async function checkAndScheduleNotifications() {
+    console.log("Checking notifications called...");
+
+    // Check for notifications permissions
+    handleNotificationsPermission();
+
+    // Extract tasks into a single array
+    const allTasks = [].concat(...labels.map((label) => label.tasks));
+
+    for (const task of allTasks) {
+      if (task.reminderDate && task.reminderDone === false) {
+        // Date today
+        const currentDateTime = new Date();
+        // Convert to JavaScript Date
+        const reminderDateTime = new Date(task.reminderDate);
+
+        const timeDifferenceInSeconds = Math.max(0, (reminderDateTime - currentDateTime) / 1000);
+
+        console.log("timeDifferenceInSeconds: " + timeDifferenceInSeconds);
+
+        if (timeDifferenceInSeconds > 0) {
+          await Notifications.scheduleNotificationAsync({
+            content: {
+              title: "Task Reminder",
+              body: task.name,
+              data: { taskKey: task.key },
+            },
+            trigger: {
+              seconds: timeDifferenceInSeconds,
+            },
+          });
+        }
+      }
+    }
+  };
+
+  async function handleNotificationsPermission() {
+    // Check if the user has previously granted permission
+    AsyncStorage.getItem('notificationPermission').then((value) => {
+      if (value === 'granted') {
+        if (!hasPermission) {
+          setHasPermission(true);
+        }
+      } else {
+        setHasPermission(false);
+      }
+    });
+
+    // Check if notifications permissions are set
+    if (!hasPermission && hasPermission === null) {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status === 'granted') {
+        // User granted permission
+        setHasPermission(true);
+        // Store the permission choice
+        AsyncStorage.setItem('notificationPermission', 'granted');
+      } else {
+        // User denied permission
+        setHasPermission(false);
+        // Store the permission choice
+        AsyncStorage.setItem('notificationPermission', 'denied');
+        Alert.alert(
+          `Notifications`,
+          `You need to enable permissions in order to receive notifications`,
+          [{ text: "OK" }],
+          { cancelable: false }
+        );
+        return;
+      }
+    }
+  };
+  // ---------------------- Notifications END ---------------------- //
 
   // Show Keyboard on TextInput focus
   const inputRef = useRef();
@@ -43,6 +139,8 @@ export default function TasksContextProvider(props) {
       name: taskName,
       date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
       checked: false,
+      reminderDate: "",
+      reminderDone: false,
     };
 
     const updatedLabel = labels.map((label) =>
@@ -57,18 +155,37 @@ export default function TasksContextProvider(props) {
   };
 
   // Edit Task
-  const editTask = (taskKey, input) => {
-    // const updatedLabels = [];
-    // for (let label of labels) {
-    //   for (let task of label.tasks) {
-    //     if (taskKey === task.key) {
-    //       task.name = input;
-    //     }
-    //   }
-    //   updatedLabels.push(label);
-    // }
+  const editTask = (taskKey, taskInput, reminderDate) => {
     const updatedLabels = labels.map((label) => {
-      label.tasks.map((task) => task.key === taskKey && (task.name = input));
+      label.tasks = label.tasks.map((task) => {
+        if (task.key === taskKey) {
+          task.name = taskInput;
+          task.reminderDate = reminderDate;
+        }
+        return task;
+      });
+      return label;
+    });
+
+    // Update Storage
+    saveInStorage(storageKey, updatedLabels);
+    // Then set the new state
+    setLabels(updatedLabels);
+    // Schedule a notification only if reminderDate is set
+    if (reminderDate) {
+      checkAndScheduleNotifications();
+    }
+  };
+
+  // Task Notication Done
+  const reminderTaskDone = (taskKey) => {
+    const updatedLabels = labels.map((label) => {
+      label.tasks = label.tasks.map((task) => {
+        if (task.key === taskKey) {
+          task.reminderDone = true;
+        }
+        return task;
+      });
       return label;
     });
 
@@ -101,11 +218,6 @@ export default function TasksContextProvider(props) {
 
   // Delete a single task from the Storage
   const deleteTask = (taskKey) => {
-    // const updatedLabels = [];
-    // for (let label of labels) {
-    //   label.tasks = label.tasks.filter((task) => taskKey !== task.key);
-    //   updatedLabels.push(label);
-    // }
     let updatedLabels = labels.map((lab) => {
       lab.tasks = lab.tasks.filter((task) => taskKey !== task.key);
       return lab;
@@ -212,16 +324,27 @@ export default function TasksContextProvider(props) {
     if (mounted) {
       // // Temp Labels for testing...
       // saveInStorage(storageKey, tempLabels);
-      loadLabels().then(() => {
-        // Timeout for loading...
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 500);
-      });
+
+      loadLabels();
+
+
+      // Timeout for loading...
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     }
 
-    return function cleanup() {
+    // Handle Received Notifications
+    const subscription = Notifications.addNotificationReceivedListener((notification) => {
+      console.log("NOTIFICATION Received");
+      const taskKey = notification.request.content.data.taskKey;
+      // Reminder Task done
+      reminderTaskDone(taskKey);
+    });
+
+    return () => {
       mounted = false;
+      subscription.remove();
     };
   }, []);
 

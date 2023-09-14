@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import moment from "moment";
 
 // Sample data for the new Tasks with labels
 const tempLabels = [
@@ -11,19 +12,21 @@ const tempLabels = [
       {
         key: uuidv4(),
         name: "Book a train ticket",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: true,
+        reminderDate: moment(new Date()).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
       },
       {
         key: uuidv4(),
         name: "Passport check",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "Water",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
     ],
@@ -37,25 +40,25 @@ const tempLabels = [
       {
         key: uuidv4(),
         name: "Book a train ticket",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "test2",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "test3",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "Passport check",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: true,
       },
     ],
@@ -69,19 +72,19 @@ const tempLabels = [
       {
         key: uuidv4(),
         name: "Book a train ticket",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: true,
       },
       {
         key: uuidv4(),
         name: "Passport check",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "2 Passport check",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: true,
       },
     ],
@@ -95,31 +98,31 @@ const tempLabels = [
       {
         key: uuidv4(),
         name: "Some todo",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "test1",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "test2",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "test3",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "Something else",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: true,
       },
     ],
@@ -133,19 +136,19 @@ const tempLabels = [
       {
         key: uuidv4(),
         name: "password1",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: true,
       },
       {
         key: uuidv4(),
         name: "Password2",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "Password3",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
     ],
@@ -159,19 +162,19 @@ const tempLabels = [
       {
         key: uuidv4(),
         name: "wash",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: true,
       },
       {
         key: uuidv4(),
         name: "repair",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: true,
       },
       {
         key: uuidv4(),
         name: "change tires",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: true,
       },
     ],
@@ -185,13 +188,13 @@ const tempLabels = [
       {
         key: uuidv4(),
         name: "test app",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
       {
         key: uuidv4(),
         name: "change themes",
-        date: new Date(),
+        date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
       },
     ],
