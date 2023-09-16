@@ -98,9 +98,6 @@ export default function TasksList(props) {
             {/* -----Task dateTime----- */}
             <Text
               style={[
-                {
-                  // textDecorationLine: item.checked ? "line-through" : "none",
-                },
                 theme.current === "light"
                   ? {
                     color: item.checked
