@@ -21,10 +21,8 @@ export default function LabelsScreen() {
     TasksContext
   );
 
-  // Update Hook
-  const { notifyUpdate } = useAppUpdate(lang);
-  // Notify if the app is Updated
-  if (!isLoading) notifyUpdate();
+  // Check for app Updates
+  useAppUpdate(lang);
 
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);

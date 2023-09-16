@@ -5,8 +5,9 @@ to clone from git and publish changes for update:
 - remove "@react-native-picker/picker": "1.9.2",
 - remove "@react-navigation/drawer": "^5.12.4",
 - remove "react-native-draggable-flatlist": "^2.5.4",
+- remove "@react-native-community/datetimepicker": "^3.0.4",
 3. npm install
-   * if dosent work use: npm install --legacy-peer-deps
+   * if dosent work use: npm install --legacy-peer-deps or npm install --force
 4. install removed dependencies after (if you removed)
 
 -----------------------------------------------------------
@@ -15,6 +16,8 @@ to clone from git and publish changes for update:
 expo start
 or
 npx expo start
+or
+expo start --tunnel
 
 - on emulator or device use(expo sdk40):
 Expo Go version 2.18.8
@@ -40,3 +43,12 @@ Sometimes if good idea to run, to clear duplicated dependencies:
 npm dedupe
 or
 npm dedupe --legacy-peer-deps
+
+-----------------------------------------------------------------
+other useful npm commands:
+npm info package-name
+npm cache clean -f
+npm ci instead of npm install
+npm config set registry https://registry.npmjs.org/
+npm install -g expo-cli
+expo install
