@@ -15,8 +15,8 @@ export default function AddTask({ lang, ...props }) {
   const handleAdd = () => {
     if (task.length < 1) {
       Alert.alert(
-        `${lang.languages.alerts.requiredField.title[lang.current]}`,
-        `${lang.languages.alerts.requiredField.message[lang.current]}`,
+        `${lang.languages.alerts.requiredInputField.title[lang.current]}`,
+        `${lang.languages.alerts.requiredInputField.message[lang.current]}`,
         [{ task: "OK" }],
         { cancelable: false }
       );

@@ -23,6 +23,11 @@ export default {
     deutsch: "Text eingeben...",
     shqip: "Shkruaj tekst...",
   },
+  setReminder: {
+    english: "Set Reminder...",
+    deutsch: "Erinnerung einstellen...",
+    shqip: "Cakto kujtesën...",
+  },
   // Save buttons
   saveButton: {
     english: "SAVE",
@@ -136,7 +141,7 @@ export default {
       deutsch: "Ja",
       shqip: "Po",
     },
-    requiredField: {
+    requiredInputField: {
       title: {
         english: "Required field",
         deutsch: "Pflichtfeld",
@@ -146,6 +151,18 @@ export default {
         english: "Please insert at least one or more charachters.",
         deutsch: "Bitte fügen Sie mindestens ein oder mehrere Zeichen ein.",
         shqip: "Ju lutemi shkruani të paktën një ose më shumë karaktere.",
+      },
+    },
+    reminderDateTime: {
+      title: {
+        english: "Invalid Date",
+        deutsch: "Datum ungültig",
+        shqip: "Data e pavlefshme",
+      },
+      message: {
+        english: "Date and Time cannot be in the past.",
+        deutsch: "Datum und Uhrzeit dürfen nicht in der Vergangenheit liegen.",
+        shqip: "Data dhe ora nuk mund të jenë në të kaluarën.",
       },
     },
     appExit: {

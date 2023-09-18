@@ -17,8 +17,8 @@ export default function AddLabel({ handleAddLabel, lang }) {
   const handleAdd = () => {
     if (label.length < 1) {
       Alert.alert(
-        `${lang.languages.alerts.requiredField.title[lang.current]}`,
-        `${lang.languages.alerts.requiredField.message[lang.current]}`,
+        `${lang.languages.alerts.requiredInputField.title[lang.current]}`,
+        `${lang.languages.alerts.requiredInputField.message[lang.current]}`,
         [{ text: "OK" }],
         { cancelable: false }
       );

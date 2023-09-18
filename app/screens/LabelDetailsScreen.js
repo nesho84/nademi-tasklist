@@ -17,7 +17,7 @@ import EditTask from "../components/tasks/EditTask";
 import TasksList from "../components/tasks/TasksList";
 import AddTask from "../components/tasks/AddTask";
 
-export default function LabelDetails({ route, navigation }) {
+export default function LabelDetailsScreen({ route, navigation }) {
   const { lang } = useContext(LanguageContext);
 
   const {
@@ -61,8 +61,8 @@ export default function LabelDetails({ route, navigation }) {
   };
 
   // Edit Task in Storage
-  const handleEditTask = (taskKey, input) => {
-    editTask(taskKey, input);
+  const handleEditTask = (taskKey, taskInput, reminderDate) => {
+    editTask(taskKey, taskInput, reminderDate);
     setEditModalVisible(false);
   };
 

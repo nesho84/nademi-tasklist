@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
+import useNotifications from "../hooks/useNotifications";
 
 import tempLabels from "../../tempData";
 
@@ -11,10 +12,13 @@ export default function TasksContextProvider(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [labels, setLabels] = useState([]);
 
+  // Notifications Hook
+  const { scheduleNotification } = useNotifications();
+
   // Show Keyboard on TextInput focus
   const inputRef = useRef();
 
-  const storageKey = "@TaskList_Key";
+  let storageKey = "@TaskList_Key";
 
   // Add Label
   const addLabel = (text, color) => {
@@ -30,18 +34,20 @@ export default function TasksContextProvider(props) {
     ];
 
     // Update Storage
-    saveInStorage(storageKey, newLabel);
+    saveInStorage(newLabel);
     // Then set the new state
     setLabels(newLabel);
   };
 
   // Add Task
-  const addTask = (labelKey, taskName) => {
+  const addTask = (labelKey, taskInput) => {
     let newTask = {
       key: uuidv4(),
-      name: taskName,
+      name: taskInput,
       date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
       checked: false,
+      reminderDate: null,
+      reminderDone: false,
     };
 
     const updatedLabel = labels.map((label) =>
@@ -50,31 +56,37 @@ export default function TasksContextProvider(props) {
         : label
     );
     // Update Storage
-    saveInStorage(storageKey, updatedLabel);
+    saveInStorage(updatedLabel);
     // Then set the new state
     setLabels(updatedLabel);
   };
 
   // Edit Task
-  const editTask = (taskKey, input) => {
-    // const updatedLabels = [];
-    // for (let label of labels) {
-    //   for (let task of label.tasks) {
-    //     if (taskKey === task.key) {
-    //       task.name = input;
-    //     }
-    //   }
-    //   updatedLabels.push(label);
-    // }
+  const editTask = async (taskKey, taskInput, reminderDate) => {
     const updatedLabels = labels.map((label) => {
-      label.tasks.map((task) => task.key === taskKey && (task.name = input));
+      label.tasks = label.tasks.map((task) => {
+        if (task.key === taskKey) {
+          task.name = taskInput;
+          task.reminderDate = reminderDate;
+        }
+        return task;
+      });
       return label;
     });
 
     // Update Storage
-    saveInStorage(storageKey, updatedLabels);
+    await saveInStorage(updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
+
+    // Schedule Task Notification
+    if (reminderDate) {
+      await scheduleNotification({
+        key: taskKey,
+        name: taskInput,
+        reminderDate: reminderDate
+      });
+    }
   };
 
   // Edit label
@@ -83,7 +95,7 @@ export default function TasksContextProvider(props) {
       label.key === labelKey ? { ...label, title: input, color: color } : label
     );
     // Update Storage
-    saveInStorage(storageKey, updatedLabel);
+    saveInStorage(updatedLabel);
     // Then set the new state
     setLabels(updatedLabel);
   };
@@ -93,7 +105,7 @@ export default function TasksContextProvider(props) {
     const updatedLabels = labels.filter((label) => label.key !== labelKey);
 
     // Update Storage
-    saveInStorage(storageKey, updatedLabels);
+    saveInStorage(updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
   };
@@ -110,7 +122,7 @@ export default function TasksContextProvider(props) {
       return lab;
     });
     // Update Storage
-    saveInStorage(storageKey, updatedLabels);
+    saveInStorage(updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
   };
@@ -125,7 +137,7 @@ export default function TasksContextProvider(props) {
     });
 
     // Update Storage
-    saveInStorage(storageKey, updatedLabels);
+    saveInStorage(updatedLabels);
     // Then set the new state
     setLabels(updatedLabels);
   };
@@ -133,7 +145,7 @@ export default function TasksContextProvider(props) {
   // Ordering Labels with drag and drop
   const orderLabels = (orderedTasks) => {
     // Update Storage
-    saveInStorage(storageKey, orderedTasks);
+    saveInStorage(orderedTasks);
     // Then set the new state
     setLabels(orderedTasks);
   };
@@ -165,15 +177,15 @@ export default function TasksContextProvider(props) {
       updatedLabel.push(label);
     }
     // Update Storage
-    saveInStorage(storageKey, updatedLabel);
+    saveInStorage(updatedLabel);
     // Then set the new state
     setLabels(updatedLabel);
   };
 
   // Write to the storage
-  const saveInStorage = async (key, item) => {
+  const saveInStorage = async (item) => {
     try {
-      await AsyncStorage.setItem(key, JSON.stringify(item));
+      await AsyncStorage.setItem(storageKey, JSON.stringify(item));
     } catch (err) {
       alert(err);
     }
@@ -210,7 +222,7 @@ export default function TasksContextProvider(props) {
 
     if (mounted) {
       // // Temp Labels for testing...
-      // saveInStorage(storageKey, tempLabels);
+      // saveInStorage(tempLabels);
       loadLabels().then(() => {
         // Timeout for loading...
         setTimeout(() => {

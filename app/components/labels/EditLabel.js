@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,6 @@ import {
   View,
   Alert,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
 import AppColorPicker from "../AppColorPicker";
 
@@ -18,8 +17,8 @@ export default function EditLabel({ labelToEdit, handleEditLabel, lang }) {
   const handleEdit = () => {
     if (input.length < 1) {
       Alert.alert(
-        `${lang.languages.alerts.requiredField.title[lang.current]}`,
-        `${lang.languages.alerts.requiredField.message[lang.current]}`,
+        `${lang.languages.alerts.requiredInputField.title[lang.current]}`,
+        `${lang.languages.alerts.requiredInputField.message[lang.current]}`,
         [{ text: "OK" }],
         { cancelable: false }
       );

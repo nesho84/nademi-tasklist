@@ -8,7 +8,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { LanguageContext } from "../context/LanguageContext";
 
 import LabelsScreen from "../screens/LabelsScreen";
-import LabelDetailsScreen from "../screens/LabelDetails";
+import LabelDetailsScreen from "../screens/LabelDetailsScreen";
 import AboutScreen from "../screens/AboutScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 
