@@ -41,7 +41,7 @@ export default function useAppUpdate(lang) {
         );
       }
     } catch (error) {
-      console.log("Error checking for updates:", error);
+      // console.log("Error checking for updates:", error);
     }
   };
 

@@ -9,6 +9,7 @@ to clone from git and publish changes for update:
 3. npm install
    * if dosent work use: npm install --legacy-peer-deps or npm install --force
 4. install removed dependencies after (if you removed)
+5. run: "expo doctor" to check for dependencies compability
 
 -----------------------------------------------------------
 

@@ -13,7 +13,7 @@ export default function TasksContextProvider(props) {
   const [labels, setLabels] = useState([]);
 
   // Notifications Hook
-  const { scheduleNotification } = useNotifications();
+  const { scheduleNotification, cancelScheduledNotification } = useNotifications();
 
   // Show Keyboard on TextInput focus
   const inputRef = useRef();
@@ -46,8 +46,10 @@ export default function TasksContextProvider(props) {
       name: taskInput,
       date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
       checked: false,
-      reminderDate: null,
-      reminderDone: false,
+      // reminder: {
+      //   dateTime: null,
+      //   notificationId: null,
+      // }
     };
 
     const updatedLabel = labels.map((label) =>
@@ -62,31 +64,42 @@ export default function TasksContextProvider(props) {
   };
 
   // Edit Task
-  const editTask = async (taskKey, taskInput, reminderDate) => {
+  const editTask = async (taskObject) => {
+    // Check if there's an existing reminder
+    if (taskObject.reminder.dateTime) {
+      // If there's an existing reminder and an existing notificationId, cancel the existing notification
+      if (taskObject.reminder.notificationId) {
+        await cancelScheduledNotification(taskObject.reminder.notificationId);
+      }
+      // Schedule a new notification
+      const notificationId = await scheduleNotification(taskObject);
+      // Update the task notificationId
+      taskObject.reminder.notificationId = notificationId;
+    }
+
     const updatedLabels = labels.map((label) => {
-      label.tasks = label.tasks.map((task) => {
-        if (task.key === taskKey) {
-          task.name = taskInput;
-          task.reminderDate = reminderDate;
-        }
-        return task;
-      });
-      return label;
+      return {
+        ...label,
+        tasks: label.tasks.map((task) => {
+          if (task.key === taskObject.key) {
+            return {
+              ...task,
+              name: taskObject.name,
+              reminder: {
+                dateTime: taskObject.reminder.dateTime,
+                notificationId: taskObject.reminder.notificationId,
+              },
+            };
+          }
+          return task;
+        }),
+      };
     });
 
-    // Update Storage
+    // Update Storage and set the new state
     await saveInStorage(updatedLabels);
-    // Then set the new state
     setLabels(updatedLabels);
-
-    // Schedule Task Notification
-    if (reminderDate) {
-      await scheduleNotification({
-        key: taskKey,
-        name: taskInput,
-        reminderDate: reminderDate
-      });
-    }
+    // console.log(JSON.stringify(updatedLabels, null, 2));
   };
 
   // Edit label
@@ -112,11 +125,6 @@ export default function TasksContextProvider(props) {
 
   // Delete a single task from the Storage
   const deleteTask = (taskKey) => {
-    // const updatedLabels = [];
-    // for (let label of labels) {
-    //   label.tasks = label.tasks.filter((task) => taskKey !== task.key);
-    //   updatedLabels.push(label);
-    // }
     let updatedLabels = labels.map((lab) => {
       lab.tasks = lab.tasks.filter((task) => taskKey !== task.key);
       return lab;
@@ -206,11 +214,8 @@ export default function TasksContextProvider(props) {
   const loadLabels = async () => {
     try {
       let storageTasks = await AsyncStorage.getItem(storageKey);
-      storageTasks = JSON.parse(storageTasks);
-      // console.log(storageTasks);
-
       if (storageTasks !== null) {
-        setLabels(storageTasks);
+        setLabels(JSON.parse(storageTasks));
       }
     } catch (err) {
       alert(err);
@@ -219,7 +224,6 @@ export default function TasksContextProvider(props) {
 
   useEffect(() => {
     let mounted = true;
-
     if (mounted) {
       // // Temp Labels for testing...
       // saveInStorage(tempLabels);

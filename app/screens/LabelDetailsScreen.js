@@ -61,8 +61,8 @@ export default function LabelDetailsScreen({ route, navigation }) {
   };
 
   // Edit Task in Storage
-  const handleEditTask = (taskKey, taskInput, reminderDate) => {
-    editTask(taskKey, taskInput, reminderDate);
+  const handleEditTask = (taskObj) => {
+    editTask(taskObj);
     setEditModalVisible(false);
   };
 
@@ -180,7 +180,6 @@ export default function LabelDetailsScreen({ route, navigation }) {
             setModalVisible={setEditModalVisible}
           >
             <EditTask
-              labels={labels}
               taskToEdit={taskToEdit}
               handleEditTask={handleEditTask}
               lang={lang}

@@ -165,6 +165,18 @@ export default {
         shqip: "Data dhe ora nuk mund të jenë në të kaluarën.",
       },
     },
+    notificationPermission: {
+      title: {
+        english: "Notification Permission",
+        deutsch: "Benachrichtigungsberechtigung",
+        shqip: "Leja e njoftimit",
+      },
+      message: {
+        english: "You have denied notification permission. Please enable it in your device settings to receive notifications.",
+        deutsch: "Sie haben die Benachrichtigungsberechtigung verweigert. Bitte aktivieren Sie es in Ihren Geräteeinstellungen, um Benachrichtigungen zu erhalten.",
+        shqip: "Ju keni refuzuar lejen e njoftimit. Ju lutemi aktivizoni atë në opsionet e pajisjes tuaj për të marrë njoftime.",
+      },
+    },
     appExit: {
       title: {
         english: "Hold on!",

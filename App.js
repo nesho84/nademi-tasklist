@@ -6,8 +6,6 @@ import DrawerNavigator from "./app/navigation/DrawerNavigator";
 import LanguageContextProvider from "./app/context/LanguageContext";
 import ThemeContextProvider from "./app/context/ThemeContext";
 import TasksContextProvider from "./app/context/TasksContext";
-// Notifications
-import * as Notifications from "expo-notifications";
 
 export default function App() {
   return (

@@ -14,20 +14,30 @@ const tempLabels = [
         name: "Book a train ticket",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
-        reminder: true,
-        reminderDate: moment(new Date()).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "Passport check",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "Water",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
     ],
   },
@@ -42,18 +52,30 @@ const tempLabels = [
         name: "Book a train ticket",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "test2",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "test3",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
@@ -80,6 +102,10 @@ const tempLabels = [
         name: "Passport check",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
@@ -100,24 +126,40 @@ const tempLabels = [
         name: "Some todo",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "test1",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "test2",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "test3",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
@@ -144,12 +186,20 @@ const tempLabels = [
         name: "Password2",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "Password3",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
     ],
   },
@@ -190,12 +240,20 @@ const tempLabels = [
         name: "test app",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
       {
         key: uuidv4(),
         name: "change themes",
         date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
         checked: false,
+        reminder: {
+          notificationId: null,
+          dateTime: null,
+        }
       },
     ],
   },

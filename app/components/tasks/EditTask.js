@@ -13,25 +13,19 @@ import colors from "../../config/colors";
 import { Ionicons } from '@expo/vector-icons';
 
 export default function EditTask({ handleEditTask, taskToEdit, lang }) {
+  const taskToEditDateTime = taskToEdit.reminder?.dateTime ?? null;
   const dateTimeToString = (date) => {
     return date ? moment(date).format("DD.MM.YYYY HH:mm") : lang.languages.setReminder[lang.current];
   }
   const [taskInput, setTaskInput] = useState(taskToEdit.name.toString());
+  const [inputDateTime, setInputDateTime] = useState(dateTimeToString(taskToEditDateTime));
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
-  const [selectedDateTime, setSelectedDateTime] = useState(taskToEdit.reminderDate);
-  const [inputDateTime, setInputDateTime] = useState(dateTimeToString(taskToEdit.reminderDate));
-
-  console.log("*******************************************");
-  console.log("Reminder date: " + taskToEdit.reminderDate);
-  console.log("Selected date: " + selectedDateTime);
-  console.log("Input date: " + inputDateTime);
-  console.log("*******************************************");
+  const [selectedDateTime, setSelectedDateTime] = useState(taskToEditDateTime);
 
   const handleDateConfirm = (dateTime) => {
     const currentDateTime = new Date();
-    const reminderDateTime = new Date(taskToEdit.reminderDate);
+    const reminderDateTime = new Date(dateTime);
     const timeDifferenceInSeconds = Math.max(0, (reminderDateTime - currentDateTime) / 1000);
-
     if (timeDifferenceInSeconds <= 0) {
       Alert.alert(
         `${lang.languages.alerts.reminderDateTime.title[lang.current]}`,
@@ -39,7 +33,8 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
         [{ text: "OK" }],
         { cancelable: false }
       );
-      return false;
+      setDatePickerVisible(false);
+      return;
     } else {
       setSelectedDateTime(dateTime);
       setInputDateTime(dateTimeToString(dateTime));
@@ -57,12 +52,30 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
       );
       return false;
     } else {
-      handleEditTask(taskToEdit.key, taskInput, selectedDateTime);
+      handleEditTask({
+        ...taskToEdit,
+        name: taskInput,
+        reminder: {
+          ...taskToEdit.reminder,
+          dateTime: selectedDateTime
+        }
+      });
       setTaskInput("");
       setSelectedDateTime("");
       setInputDateTime("");
     }
   };
+
+  const hasActiveReminder = () => {
+    const currentDateTime = new Date();
+    const reminderDateTime = new Date(taskToEditDateTime);
+    const timeDifferenceInSeconds = Math.max(0, (reminderDateTime - currentDateTime) / 1000);
+    if (taskToEditDateTime && timeDifferenceInSeconds > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <View style={styles.editTaskContainer}>
@@ -82,13 +95,13 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
 
       <TouchableOpacity style={styles.inputDateContainer} onPress={() => setDatePickerVisible(true)}>
         <TextInput
-          style={{ color: colors.dark, fontSize: 16 }}
+          style={{ color: colors.muted }}
           placeholder={lang.languages.setReminder[lang.current]}
           value={inputDateTime}
           editable={false}
         />
-        <Ionicons name={taskToEdit.reminderDate ? "notifications" : "notifications-off"}
-          size={22}
+        <Ionicons name={hasActiveReminder() ? "notifications" : "notifications-off"}
+          size={20}
           color={colors.info}
         />
       </TouchableOpacity>
