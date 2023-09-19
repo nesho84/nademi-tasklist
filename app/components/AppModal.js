@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import colors from "../config/colors";
 import {
@@ -6,7 +6,7 @@ import {
   View,
   Modal,
   TouchableWithoutFeedback,
-  Keyboard,
+  Keyboard
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -16,6 +16,7 @@ export default function AppModal(props) {
   return (
     <Modal
       onShow={() => (props.inputRef ? props.inputRef.current.focus() : {})}
+      onRequestClose={() => props.setModalVisible(false)}
       animationType="slide"
       visible={props.modalVisible}
     >
