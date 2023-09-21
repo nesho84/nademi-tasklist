@@ -102,6 +102,11 @@ export default {
       deutsch: "Abgeschlossen",
       shqip: "Përfunduar",
     },
+    reminders: {
+      english: "Reminders",
+      deutsch: "Erinnerungen",
+      shqip: "Përkujtues",
+    },
     of: {
       english: "of",
       deutsch: "von",

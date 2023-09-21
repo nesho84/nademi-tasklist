@@ -43,10 +43,10 @@ export default function TasksContextProvider(props) {
       name: taskInput,
       date: moment(new Date()).format('DD.MM.YYYY HH:mm'),
       checked: false,
-      // reminder: {
-      //   dateTime: null,
-      //   notificationId: null,
-      // }
+      reminder: {
+        dateTime: null,
+        notificationId: null,
+      }
     };
 
     const updatedLabel = labels.map((label) =>

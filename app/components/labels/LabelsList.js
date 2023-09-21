@@ -21,6 +21,19 @@ export default function LabelsList({
     const checkedTasksCount = item.tasks.filter((task) => task.checked).length;
     const unCheckedTasksCount = item.tasks.length - checkedTasksCount;
 
+    // Active task Reminders count
+    const taskActiveRemindersCount = item.tasks.reduce((count, task) => {
+      if (task.reminder && task.reminder.dateTime !== null && task.reminder.notificationId !== null) {
+        const currentDateTime = new Date();
+        const reminderDateTime = new Date(task.reminder.dateTime);
+        const timeDifferenceInSeconds = Math.max(0, (reminderDateTime - currentDateTime) / 1000);
+        if (timeDifferenceInSeconds > 0) {
+          return count + 1;
+        }
+      }
+      return count;
+    }, 0);
+
     return (
       <TouchableOpacity
         onPress={() =>
@@ -60,19 +73,22 @@ export default function LabelsList({
             </TouchableOpacity>
           </View>
           {/* Tasks summary*/}
-          <View
-            style={{
-              alignSelf: "stretch",
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-            }}
-          >
+          <View style={styles.summaryContainer}>
+            {/* Remaining count */}
             <View style={{ alignItems: "center" }}>
               <Text style={styles.count}>{unCheckedTasksCount}</Text>
               <Text style={styles.subtitle}>
                 {lang.languages.labels.remaining[lang.current]}
               </Text>
             </View>
+            {/* Reminders count */}
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.count}>{taskActiveRemindersCount}</Text>
+              <Text style={styles.subtitle}>
+                {lang.languages.labels.reminders[lang.current]}
+              </Text>
+            </View>
+            {/* Completed count */}
             <View style={{ alignItems: "center" }}>
               <Text style={styles.count}>{checkedTasksCount}</Text>
               <Text style={styles.subtitle}>
@@ -81,7 +97,7 @@ export default function LabelsList({
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity >
     );
   };
 
@@ -104,7 +120,6 @@ export default function LabelsList({
           onDragEnd={({ data }) => orderLabels(data)}
         />
       ) : (
-        // -----No Labels to show-----
         <AppNoItems />
       )}
       {/* -----Label List END----- */}
@@ -140,6 +155,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
+  },
+  summaryContainer: {
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   labelBoxTitle: {
     flexShrink: 1,
