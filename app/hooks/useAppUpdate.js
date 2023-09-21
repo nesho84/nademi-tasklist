@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Updates from "expo-updates";
@@ -6,18 +6,10 @@ import * as Updates from "expo-updates";
 export default function useAppUpdate(lang) {
   let updateStorageKey = "@AppUpdateStatus";
 
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      checkForUpdates();
-      notifyUpdate();
-    }
-
-    return () => (mounted = false);
-  }, []);
-
   const checkForUpdates = async () => {
+    // Show alert if Update was Successful
+    notifyUpdate();
+
     try {
       const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
@@ -81,4 +73,5 @@ export default function useAppUpdate(lang) {
     }
   }
 
+  return { checkForUpdates };
 }

@@ -123,17 +123,17 @@ export default function LabelDetailsScreen({ route, navigation }) {
     <AppScreen>
       {currentLabel && (
         <View style={styles.container}>
-          {/* Label and Header Title */}
+          {/* Header container */}
           <View
             style={[
-              styles.headerTitle,
+              styles.headerContainer,
               { borderBottomColor: currentLabel.color },
             ]}
           >
             {/* Header Title */}
             <Text
               style={{
-                fontSize: 30,
+                fontSize: 21,
                 color: currentLabel.color,
                 paddingHorizontal: 10,
               }}
@@ -198,10 +198,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
   },
-  headerTitle: {
-    // marginBottom: 10,
-    paddingTop: 10,
-    paddingBottom: 6,
+  headerContainer: {
+    paddingTop: 1,
+    paddingBottom: 5,
     borderBottomWidth: 1,
     alignSelf: "stretch",
   },

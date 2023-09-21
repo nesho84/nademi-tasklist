@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useCallback, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 // Contexts
 import { TasksContext } from "../context/TasksContext";
 import { LanguageContext } from "../context/LanguageContext";
@@ -17,16 +18,32 @@ import AddLabelButton from "../components/labels/AddLabelButton";
 
 export default function LabelsScreen() {
   const { lang } = useContext(LanguageContext);
-  const { labels, isLoading, addLabel, editLabel, orderLabels } = useContext(
-    TasksContext
-  );
+  const {
+    labels,
+    isLoading,
+    addLabel,
+    editLabel,
+    orderLabels
+  } = useContext(TasksContext);
 
-  // Check for app Updates
-  useAppUpdate(lang);
+  const { checkForUpdates } = useAppUpdate(lang);
 
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [labelToEdit, setLabelToEdit] = useState(null);
+
+  // Check for app Update on screen focus
+  useFocusEffect(
+    useCallback(() => {
+      let mounted = true;
+      if (mounted) {
+        checkForUpdates();
+      }
+      return () => {
+        mounted = false;
+      };
+    }, [])
+  );
 
   // Handle Add Label
   const handleAddLabel = (text, color) => {

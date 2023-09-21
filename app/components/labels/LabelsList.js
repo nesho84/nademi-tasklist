@@ -35,18 +35,20 @@ export default function LabelsList({
             { marginBottom: lastItem === item ? 6 : 0 },
           ]}
         >
-          {/* -----Item title and edit icon Container----- */}
+          {/* -----Item title and icons Container----- */}
           <View style={styles.labelBoxHeaderContainer}>
-            <View style={styles.iconBeforeTitle}>
-              <MaterialCommunityIcons
-                style={{ marginRight: 5 }}
-                name="label-outline"
-                size={26}
-                color={colors.light}
-                onPress={() => {}}
-              />
-              <Text style={styles.labelBoxTitle}>{item.title}</Text>
-            </View>
+            {/* Icon before Label title */}
+            <MaterialCommunityIcons
+              style={{ marginRight: 5 }}
+              name="label-outline"
+              size={26}
+              color={colors.light}
+              onPress={() => { }}
+            />
+            {/* Label title */}
+            <Text style={styles.labelBoxTitle}>
+              {item.title}
+            </Text>
             {/* EditLabel Icon */}
             <TouchableOpacity onPress={() => handleEditModal(item)}>
               <MaterialCommunityIcons
@@ -57,7 +59,7 @@ export default function LabelsList({
               />
             </TouchableOpacity>
           </View>
-
+          {/* Tasks summary*/}
           <View
             style={{
               alignSelf: "stretch",
@@ -129,19 +131,15 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   labelBoxHeaderContainer: {
-    alignSelf: "stretch",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    alignSelf: "stretch",
     paddingHorizontal: 10,
     paddingBottom: 2,
     marginBottom: 5,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
-  },
-  iconBeforeTitle: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   labelBoxTitle: {
     flexShrink: 1,
@@ -150,6 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 21,
     fontWeight: "bold",
     marginBottom: 1,
+    marginRight: "auto"
   },
   count: {
     fontSize: 24,

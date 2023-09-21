@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import colors from "../config/colors";
 import {

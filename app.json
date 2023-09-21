@@ -15,7 +15,7 @@
     },
     "notification": {
       "icon": "./app/assets/reminder-icon.png",
-      "color": "#000000"
+      "color": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -35,7 +35,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#ffffff"
       },
       "userInterfaceStyle": "dark",
       "package": "nademi.task.list",

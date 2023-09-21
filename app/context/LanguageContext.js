@@ -28,10 +28,8 @@ export default function LanguageContextProvider(props) {
   const loadLanguage = async () => {
     try {
       let storageLanguage = await AsyncStorage.getItem(languageKey);
-      storageLanguage = JSON.parse(storageLanguage);
-
       if (storageLanguage !== null) {
-        setCurrent(storageLanguage);
+        setCurrent(JSON.parse(storageLanguage));
       } else {
         saveInStorage(current);
       }
@@ -40,14 +38,14 @@ export default function LanguageContextProvider(props) {
     }
   };
 
-  // Clear language from the Storage
-  const clearLanguage = async () => {
-    try {
-      await AsyncStorage.removeItem(languageKey);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // // Clear language from the Storage
+  // const clearLanguage = async () => {
+  //   try {
+  //     await AsyncStorage.removeItem(languageKey);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   useEffect(() => {
     let mounted = true;

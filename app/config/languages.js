@@ -5,6 +5,14 @@ export default {
     deutsch: "Wird geladen...",
     shqip: "Ngarkohet...",
   },
+  // Reminder / Notifications
+  notifications: {
+    title: {
+      english: "Task Reminder",
+      deutsch: "Aufgabenerinnerung",
+      shqip: "Kujtesa e detyrës",
+    }
+  },
   // About screen and links
   about: {
     english: "About",

@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
-import { Alert } from 'react-native';
-import { LanguageContext } from "../context/LanguageContext";
+import { Alert, Linking } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import { LanguageContext } from "../context/LanguageContext";
 
 // Notification handler
 Notifications.setNotificationHandler({
@@ -13,10 +13,16 @@ Notifications.setNotificationHandler({
 });
 
 export default function useNotifications() {
+    // Load Languages
     const { lang } = useContext(LanguageContext);
 
     // Function to schedule a notification
     const scheduleNotification = async (taskObj) => {
+        // First request permission
+        requestPermission();
+        // Android channel configuration
+        setNotificationChannel();
+
         try {
             let notificationId = null;
 
@@ -27,7 +33,7 @@ export default function useNotifications() {
             if (timeDifferenceInSeconds > 0) {
                 notificationId = await Notifications.scheduleNotificationAsync({
                     content: {
-                        title: 'Task Reminder',
+                        title: lang.current ? lang.languages.notifications.title[lang.current] : "Task Reminder",
                         body: `${taskObj.name.substring(0, 40)}...`,
                         data: { taskKey: taskObj.key },
                     },
@@ -67,7 +73,8 @@ export default function useNotifications() {
                         {
                             text: "OK",
                             onPress: async () => {
-                                await AsyncStorage.removeItem(updateStorageKey);
+                                // Open device settings
+                                Linking.openSettings();
                             },
                         },
                     ],
@@ -80,25 +87,17 @@ export default function useNotifications() {
     };
 
     const setNotificationChannel = async () => {
-        // some android configuration
         if (Platform.OS === 'android') {
             Notifications.setNotificationChannelAsync('default', {
                 name: 'default',
                 importance: Notifications.AndroidImportance.MAX,
                 vibrationPattern: [0, 250, 250, 250],
-                lightColor: '#FF231F7C',
+                lightColor: '#ffffff',
             });
         }
     }
 
     useEffect(() => {
-        let mounted = true;
-
-        if (mounted) {
-            requestPermission();
-            setNotificationChannel();
-        }
-
         // Handle received notifications here (app open in Foreground)
         const receivedListener = Notifications.addNotificationReceivedListener(async (notification) => {
             // console.log('Received notification:', notification);
@@ -106,13 +105,11 @@ export default function useNotifications() {
         });
         // Handle received responses here (app closed in backgrdound)
         const responseReceivedListener = Notifications.addNotificationResponseReceivedListener(async (response) => {
-            // console.log('Received response from notification:', response);
-            await Notifications.setBadgeCountAsync(1);
+            // console.log('User responded to received notification:', response);
         });
 
         return () => {
             // Cleanup listeners when unmounting
-            mounted = false;
             receivedListener.remove();
             responseReceivedListener.remove();
         };

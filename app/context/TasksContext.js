@@ -2,8 +2,8 @@ import React, { createContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import useNotifications from "../hooks/useNotifications";
 
+import useNotifications from "../hooks/useNotifications";
 import tempLabels from "../../tempData";
 
 export const TasksContext = createContext();
@@ -14,9 +14,6 @@ export default function TasksContextProvider(props) {
 
   // Notifications Hook
   const { scheduleNotification, cancelScheduledNotification } = useNotifications();
-
-  // Show Keyboard on TextInput focus
-  const inputRef = useRef();
 
   let storageKey = "@TaskList_Key";
 
@@ -224,6 +221,7 @@ export default function TasksContextProvider(props) {
 
   useEffect(() => {
     let mounted = true;
+
     if (mounted) {
       // // Temp Labels for testing...
       // saveInStorage(tempLabels);
@@ -235,10 +233,13 @@ export default function TasksContextProvider(props) {
       });
     }
 
-    return function cleanup() {
+    return () => {
       mounted = false;
     };
   }, []);
+
+  // Show Keyboard on TextInput focus
+  const inputRef = useRef();
 
   return (
     <TasksContext.Provider
