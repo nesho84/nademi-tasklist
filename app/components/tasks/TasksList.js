@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import DraggableFlatList from "react-native-draggable-flatlist";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import TasksDivider from "./TasksDivider";
 import AppNoItems from "../AppNoItems";
 import colors from "../../config/colors";
@@ -33,29 +33,44 @@ export default function TasksList(props) {
 
   // Single Task template
   const RenderTask = ({ item, index, drag, isActive }) => {
+
+    // Task Reminder active logic
+    const itemDateTime = item.reminder?.dateTime ?? null;
+    const hasActiveReminder = () => {
+      const currentDateTime = new Date();
+      const reminderDateTime = new Date(itemDateTime);
+      const timeDifferenceInSeconds = Math.max(0, (reminderDateTime - currentDateTime) / 1000);
+      if (itemDateTime && timeDifferenceInSeconds > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return (
       <TouchableOpacity
         onPress={() => props.handleEditModal(item)}
         onLongPress={drag}
+        style={[
+          styles.tasksListContainer,
+          theme.current === "light"
+            ? {
+              backgroundColor: item.checked
+                ? colors.checkedItem
+                : colors.uncheckedItem,
+            }
+            : {
+              borderColor: item.checked
+                ? colors.checkedItemDark
+                : colors.uncheckedItemDark,
+              borderWidth: 1,
+            },
+          isActive && { backgroundColor: colors.muted },
+        ]}
       >
-        <View
-          style={[
-            styles.tasksListContainer,
-            theme.current === "light"
-              ? {
-                backgroundColor: item.checked
-                  ? colors.checkedItem
-                  : colors.uncheckedItem,
-              }
-              : {
-                borderColor: item.checked
-                  ? colors.checkedItemDark
-                  : colors.uncheckedItemDark,
-                borderWidth: 1,
-              },
-            isActive && { backgroundColor: colors.muted },
-          ]}
-        >
+
+        {/* Top Section */}
+        <View style={styles.tasksListContainerTop}>
           {/* -----Task checkbox----- */}
           <View style={styles.checkboxAndTitleContainer}>
             <Checkbox
@@ -90,76 +105,72 @@ export default function TasksList(props) {
                       ? colors.checkedItemTextDark
                       : colors.light,
                   },
-                { fontSize: 17 },
+                { fontSize: 15 },
               ]}
             >
               {item.name}
             </Text>
-            {/* -----Task dateTime----- */}
-            <Text
-              style={[
-                theme.current === "light"
-                  ? {
-                    color: item.checked
-                      ? colors.checkedItemText
-                      : colors.light,
-                  }
-                  : {
-                    color: item.checked
-                      ? colors.darkGrey
-                      : colors.darkGrey,
+
+          </View>
+          {/* -----Delete icon----- */}
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert(
+                `${props.lang.languages.alerts.deleteTask.title[
+                props.lang.current
+                ]
+                }`,
+                `${props.lang.languages.alerts.deleteTask.message[
+                props.lang.current
+                ]
+                }`,
+                [
+                  {
+                    text: `${props.lang.languages.alerts.yes[props.lang.current]
+                      }`,
+                    onPress: () => props.handleDeleteTask(item.key),
                   },
-                { fontSize: 10 },
-              ]}
-            >
-              {item.date}
-            </Text>
-          </View>
-          {/* -----Task delete icon----- */}
-          <View>
-            <TouchableOpacity
-              onPress={() =>
-                Alert.alert(
-                  `${props.lang.languages.alerts.deleteTask.title[
-                  props.lang.current
-                  ]
-                  }`,
-                  `${props.lang.languages.alerts.deleteTask.message[
-                  props.lang.current
-                  ]
-                  }`,
-                  [
-                    {
-                      text: `${props.lang.languages.alerts.yes[props.lang.current]
-                        }`,
-                      onPress: () => props.handleDeleteTask(item.key),
-                    },
-                    {
-                      text: `${props.lang.languages.alerts.no[props.lang.current]
-                        }`,
-                    },
-                  ],
-                  { cancelable: false }
-                )
-              }
-            >
-              <FontAwesome name="remove" size={23} color={colors.lightMuted} />
-            </TouchableOpacity>
-          </View>
-          {/* -----Action icons divider ----- */}
-          <View style={{ marginBottom: 2.1 }}>
-            <Text style={{ fontSize: 18, color: colors.lightMuted, marginHorizontal: 1 }}> | </Text>
-          </View>
-          {/* -----Task share icon----- */}
-          <View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => shareTask(item.name)}
-            >
-              <FontAwesome name="share-alt" size={22} color={colors.lightMuted} style={{ marginRight: 3 }} />
-            </TouchableOpacity>
-          </View>
+                  {
+                    text: `${props.lang.languages.alerts.no[props.lang.current]
+                      }`,
+                  },
+                ],
+                { cancelable: false }
+              )
+            }
+          >
+            <Ionicons name="close" size={24} color={colors.lightMuted} style={{ marginRight: 3 }} />
+          </TouchableOpacity>
         </View>
+
+        {/* Bottom Section */}
+        <View style={styles.tasksListContainerBottom}>
+          {/* -----Reminder icon----- */}
+          <Ionicons name={hasActiveReminder() ? "notifications" : "notifications-off"} size={16} color={colors.darkGrey} style={{ marginRight: 7 }} />
+          {/* -----Share icon----- */}
+          <TouchableOpacity activeOpacity={0.7} onPress={() => shareTask(item.name)}>
+            <Ionicons name="md-share-social" size={16} color={colors.darkGrey} style={{ marginLeft: 17 }} />
+          </TouchableOpacity>
+          {/* -----Task dateTime----- */}
+          <Text style={[
+            theme.current === "light"
+              ? {
+                color: item.checked
+                  ? colors.checkedItemText
+                  : colors.light,
+              }
+              : {
+                color: item.checked
+                  ? colors.darkGrey
+                  : colors.darkGrey,
+              },
+            { fontSize: 11 },
+          ]}
+          >
+            {item.date}
+          </Text>
+        </View>
+
       </TouchableOpacity>
     );
   };
@@ -229,12 +240,23 @@ export default function TasksList(props) {
 
 const styles = StyleSheet.create({
   tasksListContainer: {
+    borderRadius: 5,
+    marginTop: 5,
+    marginHorizontal: 5
+  },
+  tasksListContainerTop: {
     flexDirection: "row",
     alignItems: "center",
     padding: 5,
+  },
+  tasksListContainerBottom: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#394046",
     borderRadius: 5,
-    marginTop: 5,
-    marginHorizontal: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 3
   },
   itemText: {
     width: "100%",

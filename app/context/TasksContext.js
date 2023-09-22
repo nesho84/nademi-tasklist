@@ -13,7 +13,7 @@ export default function TasksContextProvider(props) {
   const [labels, setLabels] = useState([]);
 
   // Notifications Hook
-  const { scheduleNotification, cancelScheduledNotification } = useNotifications();
+  const { scheduleNotification, cancelScheduledNotification } = useNotifications(refreshState);
 
   let storageKey = "@TaskList_Key";
 
@@ -219,12 +219,19 @@ export default function TasksContextProvider(props) {
     }
   };
 
+  // Refresh the state trick
+  async function refreshState() {
+    setLabels([...labels]);
+    loadLabels();
+  }
+
   useEffect(() => {
     let mounted = true;
 
     if (mounted) {
       // // Temp Labels for testing...
       // saveInStorage(tempLabels);
+
       loadLabels().then(() => {
         // Timeout for loading...
         setTimeout(() => {

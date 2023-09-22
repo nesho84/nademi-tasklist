@@ -133,7 +133,7 @@ export default function LabelDetailsScreen({ route, navigation }) {
             {/* Header Title */}
             <Text
               style={{
-                fontSize: 21,
+                fontSize: 22,
                 color: currentLabel.color,
                 paddingHorizontal: 10,
               }}

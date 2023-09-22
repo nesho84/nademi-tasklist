@@ -12,8 +12,7 @@ Notifications.setNotificationHandler({
     }),
 });
 
-export default function useNotifications() {
-    // Load Languages
+export default function useNotifications(refreshContext) {
     const { lang } = useContext(LanguageContext);
 
     // Function to schedule a notification
@@ -100,12 +99,21 @@ export default function useNotifications() {
     useEffect(() => {
         // Handle received notifications here (app open in Foreground)
         const receivedListener = Notifications.addNotificationReceivedListener(async (notification) => {
+            // const taskKey = notification.request.content.data.taskKey;
             // console.log('Received notification:', notification);
+
+            // Refresh Tasks Context state
+            await refreshContext();
+
             await Notifications.setBadgeCountAsync(1);
         });
         // Handle received responses here (app closed in backgrdound)
         const responseReceivedListener = Notifications.addNotificationResponseReceivedListener(async (response) => {
+            // const taskKey = notification.request.content.data.taskKey;
             // console.log('User responded to received notification:', response);
+
+            // Refresh Tasks Context state
+            await refreshContext();
         });
 
         return () => {

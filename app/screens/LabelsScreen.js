@@ -23,7 +23,7 @@ export default function LabelsScreen() {
     isLoading,
     addLabel,
     editLabel,
-    orderLabels
+    orderLabels,
   } = useContext(TasksContext);
 
   const { checkForUpdates } = useAppUpdate(lang);
