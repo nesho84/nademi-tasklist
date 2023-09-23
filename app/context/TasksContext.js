@@ -29,7 +29,6 @@ export default function TasksContextProvider(props) {
       },
       ...labels,
     ];
-
     // Update Storage
     saveInStorage(newLabel);
     // Then set the new state
@@ -48,7 +47,6 @@ export default function TasksContextProvider(props) {
         notificationId: null,
       }
     };
-
     const updatedLabel = labels.map((label) =>
       label.key === labelKey
         ? { ...label, tasks: [newTask, ...label.tasks] }
@@ -64,8 +62,8 @@ export default function TasksContextProvider(props) {
   const editTask = async (taskObject) => {
     // Check if there's an existing reminder
     if (taskObject.reminder.dateTime) {
-      // If there's an existing reminder and an existing notificationId, cancel the existing notification
       if (taskObject.reminder.notificationId) {
+        // Cancel the existing notification
         await cancelScheduledNotification(taskObject.reminder.notificationId);
       }
       // Schedule a new notification
@@ -92,28 +90,38 @@ export default function TasksContextProvider(props) {
         }),
       };
     });
-
-    // Update Storage and set the new state
-    await saveInStorage(updatedLabels);
+    // Update Storage
+    saveInStorage(updatedLabels);
+    // Then set the new state
     setLabels(updatedLabels);
     // console.log(JSON.stringify(updatedLabels, null, 2));
   };
 
   // Edit label
   const editLabel = (labelKey, input, color) => {
-    const updatedLabel = labels.map((label) =>
+    const updatedLabels = labels.map((label) =>
       label.key === labelKey ? { ...label, title: input, color: color } : label
     );
     // Update Storage
-    saveInStorage(updatedLabel);
+    saveInStorage(updatedLabels);
     // Then set the new state
-    setLabels(updatedLabel);
+    setLabels(updatedLabels);
   };
 
   // Delete a single Label from the Storage
   const deleteLabel = (labelKey) => {
-    const updatedLabels = labels.filter((label) => label.key !== labelKey);
-
+    let updatedLabels = labels.filter((label) => {
+      if (labelKey == label.key) {
+        label.tasks.forEach((task) => {
+          if (task.reminder && task.reminder.notificationId) {
+            // Cancel the existing notification
+            cancelScheduledNotification(task.reminder.notificationId);
+          }
+        });
+        return false; // Exclude the label from the updated list
+      }
+      return true; // Keep other labels
+    });
     // Update Storage
     saveInStorage(updatedLabels);
     // Then set the new state
@@ -122,10 +130,19 @@ export default function TasksContextProvider(props) {
 
   // Delete a single task from the Storage
   const deleteTask = (taskKey) => {
-    let updatedLabels = labels.map((lab) => {
-      lab.tasks = lab.tasks.filter((task) => taskKey !== task.key);
-      return lab;
-    });
+    const updatedLabels = labels.map((label) => ({
+      ...label,
+      tasks: label.tasks.filter((task) => {
+        if (taskKey === task.key) {
+          if (task.reminder && task.reminder.notificationId) {
+            // Cancel the existing notification
+            cancelScheduledNotification(task.reminder.notificationId);
+          }
+          return false; // Exclude the task from the updated list
+        }
+        return true; // Keep other tasks
+      }),
+    }));
     // Update Storage
     saveInStorage(updatedLabels);
     // Then set the new state
@@ -134,13 +151,23 @@ export default function TasksContextProvider(props) {
 
   // Change to checked or unchecked
   const checkUncheckTask = (taskKey) => {
-    let updatedLabels = labels.map((lab) => {
-      lab.tasks.map(
-        (task) => taskKey === task.key && (task.checked = !task.checked)
-      );
-      return lab;
+    const updatedLabels = labels.map((label) => {
+      const updatedTasks = label.tasks.map((task) => {
+        if (taskKey === task.key) {
+          if (task.reminder && task.reminder.notificationId) {
+            // Cancel the existing notification
+            cancelScheduledNotification(task.reminder.notificationId);
+          }
+          return {
+            ...task,
+            checked: !task.checked,
+            reminder: { dateTime: null, notificationId: null }
+          };
+        }
+        return task;
+      });
+      return { ...label, tasks: updatedTasks };
     });
-
     // Update Storage
     saveInStorage(updatedLabels);
     // Then set the new state
@@ -221,8 +248,12 @@ export default function TasksContextProvider(props) {
 
   // Refresh the state trick
   async function refreshState() {
+    setIsLoading(true);
     setLabels([...labels]);
     loadLabels();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 250);
   }
 
   useEffect(() => {

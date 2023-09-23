@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ThemeContext } from "../../context/ThemeContext";
-import { LanguageContext } from "../../context/LanguageContext";
 
 export default function TasksDivider({ checkedTasks, lang }) {
   const { theme } = useContext(ThemeContext);

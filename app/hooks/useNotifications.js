@@ -104,7 +104,6 @@ export default function useNotifications(refreshContext) {
 
             // Refresh Tasks Context state
             await refreshContext();
-
             await Notifications.setBadgeCountAsync(1);
         });
         // Handle received responses here (app closed in backgrdound)

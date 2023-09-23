@@ -18,7 +18,8 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
     return date ? moment(date).format("DD.MM.YYYY HH:mm") : lang.languages.setReminder[lang.current];
   }
   const [taskInput, setTaskInput] = useState(taskToEdit.name.toString());
-  const [inputDateTime, setInputDateTime] = useState(dateTimeToString(taskToEditDateTime));
+  const [inputReminder, setInputReminder] = useState(dateTimeToString(taskToEditDateTime));
+  const [inputRActive, setInputRActive] = useState(false);
   const [isDatePickerVisible, setDatePickerVisible] = useState(false);
   const [selectedDateTime, setSelectedDateTime] = useState(taskToEditDateTime);
 
@@ -48,7 +49,8 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
       return;
     } else {
       setSelectedDateTime(dateTime);
-      setInputDateTime(dateTimeToString(dateTime));
+      setInputReminder(dateTimeToString(dateTime));
+      setInputRActive(true);
       setDatePickerVisible(false);
     }
   };
@@ -73,7 +75,7 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
       });
       setTaskInput("");
       setSelectedDateTime("");
-      setInputDateTime("");
+      setInputReminder("");
     }
   };
 
@@ -96,20 +98,21 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
       <TouchableOpacity
         style={[
           styles.inputDateContainer,
-          { backgroundColor: hasActiveReminder() ? colors.white : colors.checkedItemDark }
+          { backgroundColor: hasActiveReminder() || inputRActive ? colors.light : colors.checkedItemDark }
         ]}
         onPress={() => setDatePickerVisible(true)}>
         <TextInput
           style={{
-            color: hasActiveReminder() ? colors.success : colors.muted,
+            color: hasActiveReminder() || inputRActive ? colors.success : colors.muted,
           }}
           placeholder={lang.languages.setReminder[lang.current]}
-          value={inputDateTime}
+          value={inputReminder}
           editable={false}
         />
-        <Ionicons name={hasActiveReminder() ? "notifications" : "notifications-off"}
+        <Ionicons
+          name={hasActiveReminder() || inputRActive ? "notifications" : "notifications-off"}
           size={20}
-          color={hasActiveReminder() ? colors.success : colors.muted}
+          color={hasActiveReminder() || inputRActive ? colors.success : colors.muted}
         />
       </TouchableOpacity>
       <DateTimePickerModal

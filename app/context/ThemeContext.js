@@ -34,10 +34,8 @@ export default function ThemeContextProvider(props) {
   const loadTheme = async () => {
     try {
       let storageTheme = await AsyncStorage.getItem(themeKey);
-      storageTheme = JSON.parse(storageTheme);
-
       if (storageTheme !== null) {
-        setCurrent(storageTheme);
+        setCurrent(JSON.parse(storageTheme));
       } else {
         saveInStorage(current);
       }

@@ -146,26 +146,32 @@ export default function TasksList(props) {
         {/* Bottom Section */}
         <View style={styles.tasksListContainerBottom}>
           {/* -----Reminder icon----- */}
-          <Ionicons name={hasActiveReminder() ? "notifications" : "notifications-off"} size={16} color={colors.darkGrey} style={{ marginRight: 7 }} />
+          <Ionicons
+            name={hasActiveReminder() ? "notifications" : "notifications-off"}
+            size={16}
+            color={hasActiveReminder() ? colors.success : colors.darkGrey}
+            style={{ marginRight: 7 }}
+          />
           {/* -----Share icon----- */}
           <TouchableOpacity activeOpacity={0.7} onPress={() => shareTask(item.name)}>
             <Ionicons name="md-share-social" size={16} color={colors.darkGrey} style={{ marginLeft: 17 }} />
           </TouchableOpacity>
           {/* -----Task dateTime----- */}
-          <Text style={[
-            theme.current === "light"
-              ? {
-                color: item.checked
-                  ? colors.checkedItemText
-                  : colors.light,
-              }
-              : {
-                color: item.checked
-                  ? colors.darkGrey
-                  : colors.darkGrey,
-              },
-            { fontSize: 11 },
-          ]}
+          <Text
+            style={[
+              theme.current === "light"
+                ? {
+                  color: item.checked
+                    ? colors.checkedItemText
+                    : colors.light,
+                }
+                : {
+                  color: item.checked
+                    ? colors.darkGrey
+                    : colors.darkGrey,
+                },
+              { fontSize: 11 },
+            ]}
           >
             {item.date}
           </Text>
@@ -254,7 +260,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#394046",
-    borderRadius: 5,
+    borderBottomRightRadius: 5,
+    borderBottomLeftRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 3
   },

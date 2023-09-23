@@ -34,7 +34,7 @@ export default function MainStackNavigator() {
         }}
       />
       <Stack.Screen
-        name="Label-Details"
+        name="LabelDetails"
         component={LabelDetailsScreen}
         options={({ route }) => ({
           // title: route.params.label.title,

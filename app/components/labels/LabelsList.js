@@ -37,7 +37,7 @@ export default function LabelsList({
     return (
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("Label-Details", { labelKey: item.key })
+          navigation.navigate("LabelDetails", { labelKey: item.key })
         }
         onLongPress={drag}
       >

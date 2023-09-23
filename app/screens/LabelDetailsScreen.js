@@ -107,7 +107,10 @@ export default function LabelDetailsScreen({ route, navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => handleDeleteLabel(currentLabel.key)}>
+        <TouchableOpacity onPress={() => {
+          // console.log(currentLabel);
+          handleDeleteLabel(currentLabel.key);
+        }}>
           <MaterialCommunityIcons
             name="playlist-remove"
             size={25}
@@ -117,7 +120,7 @@ export default function LabelDetailsScreen({ route, navigation }) {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, currentLabel]);
 
   return (
     <AppScreen>
