@@ -10,6 +10,7 @@ export default {
   lightLight: "#DEE9F3",
   dark: "#343a40",
   lightDark: "#454B52",
+  lighterDark: "#515961",
   muted: "#6c757d",
   lightMuted: "#616161",
   white: "#ffffff",

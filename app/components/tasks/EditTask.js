@@ -98,7 +98,7 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
         {/* Show as TaskText or TaskInput */}
         <View style={[
           styles.textInputContainer,
-          { backgroundColor: taskInputActive ? colors.lightDark : colors.dark }
+          { backgroundColor: taskInputActive ? colors.lighterDark : colors.lightDark }
         ]}>
           <ScrollView ref={scrollViewRef}>
             {taskInputActive === false ? (
@@ -108,7 +108,7 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
                     linkDefault={true}
                     linkStyle={{ color: '#2980b9' }}
                   >
-                    <Text style={{ color: colors.light }}>{taskInput}</Text>
+                    <Text style={{ color: colors.light, fontSize: 15 }}>{taskInput}</Text>
                   </Hyperlink>
                 </View>
               </TouchableWithoutFeedback>
@@ -132,10 +132,7 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
 
         {/* Custom DateTime picker input */}
         <TouchableOpacity
-          style={[
-            styles.inputDateContainer,
-            { backgroundColor: hasActiveReminder() || inputRActive ? colors.light : colors.lightDark }
-          ]}
+          style={styles.inputDateContainer}
           onPress={() => setDatePickerVisible(true)}>
           <TextInput
             style={{
@@ -203,7 +200,7 @@ const styles = StyleSheet.create({
     minHeight: 35,
     marginTop: 5,
     marginBottom: 5,
-    backgroundColor: colors.light,
+    backgroundColor: colors.lightDark,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: colors.light,
     borderBottomColor: colors.lightLight,
