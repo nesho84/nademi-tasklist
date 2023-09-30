@@ -8,6 +8,7 @@ import {
   Alert,
   Share,
 } from "react-native";
+import Hyperlink from 'react-native-hyperlink'
 import Checkbox from "expo-checkbox";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -15,6 +16,7 @@ import TasksDivider from "./TasksDivider";
 import AppNoItems from "../AppNoItems";
 import colors from "../../config/colors";
 import { ThemeContext } from "../../context/ThemeContext";
+import moment from "moment";
 
 export default function TasksList(props) {
   const { theme } = useContext(ThemeContext);
@@ -89,27 +91,32 @@ export default function TasksList(props) {
           </View>
           {/* -----Task text----- */}
           <View style={styles.itemText}>
-            <Text
-              style={[
-                {
-                  textDecorationLine: item.checked ? "line-through" : "none",
-                },
-                theme.current === "light"
-                  ? {
-                    color: item.checked
-                      ? colors.checkedItemText
-                      : colors.light,
-                  }
-                  : {
-                    color: item.checked
-                      ? colors.checkedItemTextDark
-                      : colors.light,
-                  },
-                { fontSize: 15 },
-              ]}
+            <Hyperlink
+              linkDefault={true}
+              linkStyle={{ color: '#2980b9' }}
             >
-              {item.name}
-            </Text>
+              <Text
+                style={[
+                  {
+                    textDecorationLine: item.checked ? "line-through" : "none",
+                  },
+                  theme.current === "light"
+                    ? {
+                      color: item.checked
+                        ? colors.checkedItemText
+                        : colors.light,
+                    }
+                    : {
+                      color: item.checked
+                        ? colors.checkedItemTextDark
+                        : colors.light,
+                    },
+                  { fontSize: 15 },
+                ]}
+              >
+                {item.name}
+              </Text>
+            </Hyperlink>
 
           </View>
           {/* -----Delete icon----- */}
@@ -150,11 +157,23 @@ export default function TasksList(props) {
             name={hasActiveReminder() ? "notifications" : "notifications-off"}
             size={16}
             color={hasActiveReminder() ? colors.success : colors.darkGrey}
-            style={{ marginRight: 7 }}
+            style={{}}
           />
+          {/* Reminder dateTime */}
+          {hasActiveReminder() && (
+            <Text
+              style={{
+                marginLeft: -80,
+                fontSize: 11,
+                color: hasActiveReminder() ? colors.success : colors.darkGrey
+              }}
+            >
+              {moment(item.reminder.dateTime).format('DD.MM.YYYY HH:mm')}
+            </Text>
+          )}
           {/* -----Share icon----- */}
           <TouchableOpacity activeOpacity={0.7} onPress={() => shareTask(item.name)}>
-            <Ionicons name="md-share-social" size={16} color={colors.darkGrey} style={{ marginLeft: 17 }} />
+            <Ionicons name="md-share-social" size={16} color={colors.darkGrey} style={{}} />
           </TouchableOpacity>
           {/* -----Task dateTime----- */}
           <Text

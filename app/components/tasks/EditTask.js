@@ -102,6 +102,7 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
         ]}>
           <ScrollView ref={scrollViewRef}>
             {taskInputActive === false ? (
+              // Inactive Input
               <TouchableWithoutFeedback onPress={() => setTaskInputActive(true)}>
                 <View style={styles.textInputInactive}>
                   <Hyperlink
@@ -113,6 +114,7 @@ export default function EditTask({ handleEditTask, taskToEdit, lang }) {
                 </View>
               </TouchableWithoutFeedback>
             ) : (
+              // Active Input
               <View style={styles.textInputActive}>
                 <TextInput
                   style={{ color: colors.light, fontSize: 15 }}
