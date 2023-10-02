@@ -7,7 +7,7 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { LanguageContext } from "../context/LanguageContext";
 import { TasksContext } from "../context/TasksContext";
 import colors from "../config/colors";
@@ -112,8 +112,8 @@ export default function LabelDetailsScreen({ route, navigation }) {
           handleDeleteLabel(currentLabel.key);
         }}>
           <MaterialCommunityIcons
-            name="playlist-remove"
-            size={25}
+            name="delete-alert-outline"
+            size={24}
             color={colors.danger}
             style={{ marginRight: 12 }}
           />

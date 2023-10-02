@@ -11,7 +11,7 @@ import {
 import Hyperlink from 'react-native-hyperlink'
 import Checkbox from "expo-checkbox";
 import DraggableFlatList from "react-native-draggable-flatlist";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import TasksDivider from "./TasksDivider";
 import AppNoItems from "../AppNoItems";
 import colors from "../../config/colors";
@@ -35,7 +35,6 @@ export default function TasksList(props) {
 
   // Single Task template
   const RenderTask = ({ item, index, drag, isActive }) => {
-
     // Task Reminder active logic
     const itemDateTime = item.reminder?.dateTime ?? null;
     const hasActiveReminder = () => {
@@ -156,7 +155,7 @@ export default function TasksList(props) {
           <Ionicons
             name={hasActiveReminder() ? "notifications" : "notifications-off"}
             size={16}
-            color={hasActiveReminder() ? colors.success : colors.darkGrey}
+            color={hasActiveReminder() ? colors.success : colors.dark}
             style={{}}
           />
           {/* Reminder dateTime */}
@@ -165,7 +164,7 @@ export default function TasksList(props) {
               style={{
                 marginLeft: -80,
                 fontSize: 11,
-                color: hasActiveReminder() ? colors.success : colors.darkGrey
+                color: hasActiveReminder() ? colors.success : colors.dark
               }}
             >
               {moment(item.reminder.dateTime).format('DD.MM.YYYY HH:mm')}
@@ -173,7 +172,7 @@ export default function TasksList(props) {
           )}
           {/* -----Share icon----- */}
           <TouchableOpacity activeOpacity={0.7} onPress={() => shareTask(item.name)}>
-            <Ionicons name="md-share-social" size={16} color={colors.darkGrey} style={{}} />
+            <Ionicons name="md-share-social" size={16} color={colors.dark} style={{}} />
           </TouchableOpacity>
           {/* -----Task dateTime----- */}
           <Text
@@ -186,8 +185,8 @@ export default function TasksList(props) {
                 }
                 : {
                   color: item.checked
-                    ? colors.darkGrey
-                    : colors.darkGrey,
+                    ? colors.dark
+                    : colors.dark,
                 },
               { fontSize: 11 },
             ]}
@@ -289,6 +288,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 8,
     flexShrink: 1,
+  },
+  deleteTaskIcon: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    zIndex: 2
   },
   checkboxAndTitleContainer: {
     flexDirection: "row",
